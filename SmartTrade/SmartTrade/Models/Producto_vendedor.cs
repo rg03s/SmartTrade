@@ -12,8 +12,8 @@ namespace SmartTrade.Models
 
         public int Stock {  get; set; }
 
-        public Vendedor vendedor { get; set; }
+        public Vendedor Vendedor { get; set; }
 
-        public Producto producto { get; set; }
+        public Producto Producto { get; set; }
     }
 }

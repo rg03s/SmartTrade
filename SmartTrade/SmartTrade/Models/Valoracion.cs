@@ -8,15 +8,15 @@ namespace SmartTrade.Models
     {
         public int Id { get; set; }
 
-        public DateTime fecha { get; set; }
+        public DateTime Fecha { get; set; }
 
-        public double nota { get; set; }
+        public double Nota { get; set; }
 
-        public string comentario { get; set; }
+        public string Comentario { get; set; }
 
-        public Producto producto { get; set; }
+        public Producto Producto { get; set; }
 
-        public Comprador comprador { get; set; }    
+        public Comprador Comprador { get; set; }    
 
 
     }

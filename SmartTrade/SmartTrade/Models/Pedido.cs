@@ -12,8 +12,8 @@ namespace SmartTrade.Models
 
         public double Precio_total { get; set; }
 
-        public ICollection<Producto> productos { get; set; }
+        public ICollection<Producto> Productos { get; set; }
 
-        public Comprador comprador { get; set; }
+        public Comprador Comprador { get; set; }
     }
 }
