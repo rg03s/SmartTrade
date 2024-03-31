@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.Registro">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand" Padding="40" >
+
+            <Label Text="SmartTrade" 
+                   FontSize="30" 
+                   FontAttributes="Bold"
+                   TextColor="HotPink"
+                   HorizontalOptions="Center"
+                   FontFamily="Arial"
+                   />
+            
+            <Entry Placeholder="Nombre" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <Entry Placeholder="Nombre de usuario" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <Entry Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <Entry Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                <CheckBox x:Name="showPasswordCheckbox" />
+                <Label Text="Mostrar Contraseña" />
+            </StackLayout>
+            <Entry Placeholder="Dirección" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <StackLayout Orientation="Vertical" Margin="0,0,0,20">
+                <Label Text="Fecha de Nacimiento:" HorizontalOptions="Start" />
+                <DatePicker x:Name="datePicker" />
+            </StackLayout>
+
+            <Button
+                VerticalOptions="Center"
+                Text="Regístrate"
+                TextColor="White"
+                BackgroundColor="Transparent"
+                BorderColor="HotPink"
+                BorderWidth="1.5"
+                CornerRadius="50" 
+                ></Button>
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Don't have an account?" TextColor="Gray"/>
+                        <Span Text="Register" TextColor="Gray" FontAttributes="Bold" TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

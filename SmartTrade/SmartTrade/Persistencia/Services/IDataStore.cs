@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SmartTrade.Services
+namespace SmartTrade.Persistencia.Services
 {
     public interface IDataStore<T>
     {

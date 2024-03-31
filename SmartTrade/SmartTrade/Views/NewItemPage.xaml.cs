@@ -1,4 +1,4 @@
-﻿using SmartTrade.Models;
+﻿using SmartTrade.Entities;
 using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;

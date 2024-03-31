@@ -4,7 +4,7 @@
              x:Class="SmartTrade.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:SmartTrade.ViewModels"  
-             xmlns:model="clr-namespace:SmartTrade.Models"  
+             xmlns:model="clr-namespace:SmartTrade.Entities"  
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>

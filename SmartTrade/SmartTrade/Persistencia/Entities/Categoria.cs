@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
     public partial class Categoria
     {

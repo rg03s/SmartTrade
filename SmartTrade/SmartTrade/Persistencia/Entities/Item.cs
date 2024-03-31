@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
     public class Item
     {

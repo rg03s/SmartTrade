@@ -1,4 +1,4 @@
-﻿using SmartTrade.Services;
+﻿using SmartTrade.Persistencia.Services;
 using SmartTrade.Views;
 using System;
 using Xamarin.Forms;
@@ -14,7 +14,7 @@ namespace SmartTrade
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            MainPage = new Registro();
         }
 
         protected override void OnStart()

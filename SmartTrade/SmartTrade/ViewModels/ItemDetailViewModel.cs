@@ -1,4 +1,4 @@
-﻿using SmartTrade.Models;
+﻿using SmartTrade.Entities;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
     public partial class Producto_vendedor
     {
@@ -10,7 +10,7 @@ namespace SmartTrade.Models
 
         public double Precio { get; set; }
 
-        public int Stock {  get; set; }
+        public int Stock { get; set; }
 
         public Vendedor Vendedor { get; set; }
 

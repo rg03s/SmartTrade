@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
     public partial class Producto : BaseModel
     {
@@ -25,6 +25,6 @@ namespace SmartTrade.Models
         [Column("puntos")]
         public int Puntos { get; set; }
         [Column("producto_vendedores")]
-        public ICollection<Producto_vendedor> Producto_vendedores { get;}
+        public ICollection<Producto_vendedor> Producto_vendedores { get; }
     }
 }

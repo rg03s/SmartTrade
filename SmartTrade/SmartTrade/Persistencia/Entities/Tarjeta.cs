@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
     public partial class Tarjeta
     {
         public int Numero { get; set; }
 
-        public DateTime Fecha_cad {  get; set; }
+        public DateTime Fecha_cad { get; set; }
 
         public int Num_seguridad { get; set; }
 

@@ -1,5 +1,5 @@
-﻿using SmartTrade.Models;
-using SmartTrade.Services;
+﻿using SmartTrade.Entities;
+using SmartTrade.Persistencia.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

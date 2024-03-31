@@ -1,13 +1,10 @@
-﻿using Postgrest.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xamarin.Essentials;
-using Supabase;
 
-namespace SmartTrade.Models
+namespace SmartTrade.Entities
 {
-    public partial class Comprador 
+    public partial class Usuario
     {
         public string Nickname { get; set; }
         public string Nombre { get; set; }
@@ -18,8 +15,6 @@ namespace SmartTrade.Models
         public string Email { get; set; }
 
         public DateTime Fecha_nac { get; set; }
-
-        public int Puntos { get; set; }
 
     }
 }
