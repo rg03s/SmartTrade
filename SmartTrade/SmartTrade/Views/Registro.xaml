@@ -35,6 +35,7 @@
                 BorderColor="HotPink"
                 BorderWidth="1.5"
                 CornerRadius="50" 
+                Clicked="Button_Clicked"
                 ></Button>
 
             <Label HorizontalOptions="Center">

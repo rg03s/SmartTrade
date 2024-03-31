@@ -10,7 +10,7 @@ using System.Data;
 
 namespace SmartTrade.Persistencia.Services
 {
-    internal class STDAL : IDAL
+    public partial class STDAL : IDAL
     {
         private readonly ConexionSupabase dbContext;
 

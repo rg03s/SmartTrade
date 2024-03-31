@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SmartTrade.Persistencia.Services
 {
-    internal interface IDAL
+    public partial interface IDAL
     {
         void Insert<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;

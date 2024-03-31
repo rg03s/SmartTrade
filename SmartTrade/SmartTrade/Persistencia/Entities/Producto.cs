@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace SmartTrade.Entities
 {
-    public partial class Producto : BaseModel
+    public partial class Producto
     {
         [PrimaryKey("id")]
         public int Id { get; set; }

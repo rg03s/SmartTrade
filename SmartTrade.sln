@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTrade.Android", "Smart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTrade.iOS", "SmartTrade\SmartTrade.iOS\SmartTrade.iOS.csproj", "{6771AF2A-1B61-45D7-9360-B89849442FF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTrade", "SmartTrade\SmartTrade\SmartTrade.csproj", "{6423B6D8-BBB0-4FAE-BBE3-A45C744D0A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTrade", "SmartTrade\SmartTrade\SmartTrade.csproj", "{6423B6D8-BBB0-4FAE-BBE3-A45C744D0A67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -18,5 +18,10 @@ namespace SmartTrade.Entities
             this.Email = email;
             this.Fecha_nac = fecha_nac;
         }
+
+        public override string ToString()
+        {
+            return $"Nombre: {Nombre}, Email: {Email}";
+        }
     }
 }
