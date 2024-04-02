@@ -16,6 +16,8 @@ namespace SmartTrade
             STService service = new STService(new STDAL(new ConexionSupabase()));
             DependencyService.Register<MockDataStore>();
             MainPage = new Registro(service);
+            
+            //MainPage = new ProductPage(service);
         }
 
         protected override void OnStart()
