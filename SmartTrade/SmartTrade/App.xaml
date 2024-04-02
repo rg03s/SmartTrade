@@ -27,6 +27,24 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-        </ResourceDictionary>        
+
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesomeBrands">
+                <On Platform="Android" Value="FontAwesome6Brands.otf#Regular" />
+                <On Platform="iOS" Value="FontAwesome6Brands-Regular" />
+                <On Platform="UWP" Value="/Assets/FontAwesome6Brands.otf#Font Awesome 5 Brands" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesomeSolid">
+                <On Platform="Android" Value="FontAwesome6Solid.otf#Regular" />
+                <On Platform="iOS" Value="FontAwesome6Free-Solid" />
+                <On Platform="UWP" Value="/Assets/FontAwesome6Solid.otf#Font Awesome 5 Free" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesomeRegular">
+                <On Platform="Android" Value="FontAwesome6Regular.otf#Regular" />
+                <On Platform="iOS" Value="FontAwesome6Free-Regular" />
+                <On Platform="UWP" Value="/Assets/FontAwesome6Regular.otf#Font Awesome 5 Free" />
+            </OnPlatform>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
