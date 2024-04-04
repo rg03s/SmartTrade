@@ -7,8 +7,34 @@
              x:Class="SmartTrade.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand" Padding="40">
+            
+            <Label Text="SmartTrade" 
+                FontSize="30" 
+                FontAttributes="Bold"
+                TextColor="HotPink"
+                HorizontalOptions="Center"
+                FontFamily="Arial"
+            />
+
+            <Entry Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <Entry Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                <CheckBox x:Name="showPasswordCheckbox" />
+                <Label Text="Mostrar Contraseña" />
+            </StackLayout>
+
+            <Button
+                VerticalOptions="Center"
+                Text="Login"
+                TextColor="White"
+                BackgroundColor="Transparent"
+                BorderColor="HotPink"
+                BorderWidth="1.5"
+                CornerRadius="50" 
+                Command="{Binding LoginCommand}"
+            ></Button>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
