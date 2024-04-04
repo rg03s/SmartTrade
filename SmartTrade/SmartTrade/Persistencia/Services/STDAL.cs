@@ -12,8 +12,8 @@ namespace SmartTrade.Persistencia.Services
 {
     public partial class STDAL : IDAL
     {
-        private readonly ConexionSupabase dbContext;
-
+        
+        private readonly ConexionSupabase dbContext ;
         public STDAL(ConexionSupabase dbContext)
         {
             this.dbContext = dbContext;

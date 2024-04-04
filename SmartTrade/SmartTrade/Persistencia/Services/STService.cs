@@ -25,13 +25,17 @@ namespace SmartTrade.Persistencia.Services
 
         public void AddUser(Usuario usuario)
         {
-            // Restricción: No puede haber dos asignaturas con el mismo code
+           
             if (dal.GetById<Usuario>(usuario.Email) == null)
             {
                 dal.Insert<Usuario>(usuario);
                 Commit();
 
             }
+        }
+
+        public void GetUsuarios() {
+            dal.GetAll<Usuario>();
         }
 
     }

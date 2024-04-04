@@ -16,15 +16,30 @@ namespace SmartTrade.Persistencia.Services
 {
     public partial class ConexionSupabase : DbContext
     {
-        private static readonly string ConnectionString = "User Id=postgres;Password=hXz9CorkXzkqIj9z;Host=db.apjeqdhvkthosokvpvma.supabase.co;Port=5432;Database=postgres";
+        private static readonly string ConnectionString = "User Id=postgres;Password=6QgwpfPsBqcFfqHq;Host=db.apjeqdhvkthosokvpvma.supabase.co;Port=5432;Database=postgres";
+        private readonly DbContextOptionsBuilder optionsBuilder;
+        private static readonly ConexionSupabase instance = new ConexionSupabase();
 
-        public ConexionSupabase() { }
+        static ConexionSupabase() { }
+        public ConexionSupabase() {
+            optionsBuilder = new DbContextOptionsBuilder();
+            optionsBuilder.UseNpgsql(ConnectionString);
+            
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder = new DbContextOptionsBuilder();
                 optionsBuilder.UseNpgsql(ConnectionString);
+            }
+        }
+
+        public static ConexionSupabase Instance
+        {
+            get
+            {
+                return instance;
             }
         }
         public DbSet<Vendedor> Vendedor { get; set; }
