@@ -23,5 +23,13 @@ namespace SmartTrade.Entities
         {
             return $"Nombre: {Nombre}, Email: {Email}";
         }
+
+
+        public Boolean IsContraseñaValida(string contraseña) 
+        {
+
+            if (string.IsNullOrEmpty(contraseña) || contraseña.Length < 8) return false;
+            return contraseña.Any(char.IsDigit);
+        }
     }
 }

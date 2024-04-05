@@ -1,45 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-
-             x:Class="SmartTrade.Views.Registro">
+             x:Class="SmartTrade.Views.RegistroVendedor">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand" Padding="40" >
 
             <Label Text="SmartTrade" 
-             FontSize="30" 
-             FontAttributes="Bold"
-             TextColor="HotPink"
-             HorizontalOptions="Center"
-             FontFamily="Arial"
-             />
+                FontSize="30" 
+                FontAttributes="Bold"
+                TextColor="HotPink"
+                HorizontalOptions="Center"
+                FontFamily="Arial"
+                />
 
             <Entry x:Name="Nombre" Placeholder="Nombre" TextColor="White" PlaceholderColor="Gray" Focused="Nombre_Focused"  TextChanged="Nombre_TextChanged" ></Entry>
             <Entry x:Name="NombreUser" Placeholder="Nombre de usuario" TextColor="White" PlaceholderColor="Gray" Focused="NombreUser_Focused" TextChanged="NombreUser_TextChanged" ></Entry>
             <Entry Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" x:Name="Correo"  Unfocused="Correo_Unfocused" Focused="Correo_Focused" TextChanged="Correo_TextChanged"></Entry>
             <Entry Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray" x:Name="Contraseña" Focused="Contraseña_Focused" TextChanged="Contraseña_TextChanged" ></Entry>
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
-                <CheckBox x:Name="VerContraseña" IsChecked="False" CheckedChanged="VerContraseña_Changed" />
+                <CheckBox x:Name="showPasswordCheckbox" IsChecked="False" CheckedChanged="VerContraseña_Changed" />
                 <Label Text="Mostrar Contraseña" />
             </StackLayout>
             <Label x:Name="ContraseñaNoValida" Text="La contraseña debe tener al menos 8 caracteres y contener al menos un número." TextColor="Red" IsVisible="False"/>
             <Entry Placeholder="Dirección" TextColor="White" PlaceholderColor="Gray" x:Name="Direccion" Focused="Direccion_Focused" TextChanged="Direccion_TextChanged"></Entry>
+            <Entry Placeholder="IBAN" TextColor="White" PlaceholderColor="Gray" x:Name="IBAN" Focused="IBAN_Focused" TextChanged="IBAN_TextChanged" Unfocused="IBAN_Unfocused" ></Entry>
+            <Label x:Name="IbanNoValido" Text="IBAN no válido" TextColor="Red" IsVisible="False"/>
             <StackLayout Orientation="Vertical" Margin="0,0,0,20">
                 <Label Text="Fecha de Nacimiento:" HorizontalOptions="Start" />
                 <DatePicker x:Name="datePicker"  />
             </StackLayout>
 
             <Button
-             x:Name="Registrarse"
-          VerticalOptions="Center"
-          Text="Regístrate"
-          TextColor="Black"
-          BackgroundColor="Transparent"
-          BorderColor="HotPink"
-          BorderWidth="1.5"
-          CornerRadius="50" 
-          Clicked="Registrarse_Clicked"
-          ></Button>
+                x:Name="Registrarse"
+             VerticalOptions="Center"
+             Text="Regístrate"
+             TextColor="Black"
+             BackgroundColor="Transparent"
+             BorderColor="HotPink"
+             BorderWidth="1.5"
+             CornerRadius="50" 
+             Clicked="Registrarse_Clicked"
+             ></Button>
 
             <Label>
                 <Label.FormattedText>
@@ -47,7 +48,7 @@
                         <Span Text="¿Ya tienes una cuenta?" />
                         <Span Text="Inicia sesión" TextColor="Blue">
                             <Span.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                <TapGestureRecognizer Tapped="IniciarSesion_Tapped" />
                             </Span.GestureRecognizers>
                         </Span>
                     </FormattedString>
