@@ -11,5 +11,7 @@ namespace SmartTrade.Persistencia.Services
         void AddUser(Usuario u);
 
         void GetUsuarios();
+
+        bool Login(string email, string password);
     }  
 }

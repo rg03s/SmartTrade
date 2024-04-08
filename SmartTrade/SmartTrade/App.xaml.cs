@@ -14,9 +14,8 @@ namespace SmartTrade
            
             InitializeComponent();
             ISTService service = new STService(new STDAL(SupabaseContext.Instance));
-           // DependencyService.Register<MockDataStore>();
+            // DependencyService.Register<MockDataStore>();
             MainPage = new NavigationPage(new SeleccionRegistro(service));
-            
             //MainPage = new ProductPage(service);
         }
 

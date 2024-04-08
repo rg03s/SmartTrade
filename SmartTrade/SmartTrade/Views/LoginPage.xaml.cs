@@ -15,15 +15,16 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private STService service;
+        private ISTService service;
         //private string username;
         //private string password;
         private ProductPage productPage;
         //private Registro registro;
         //private LoginPage loginPage;
 
-        public LoginPage(STService service)
+        public LoginPage(ISTService service)
         {
+            this.service = service;
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
         }
