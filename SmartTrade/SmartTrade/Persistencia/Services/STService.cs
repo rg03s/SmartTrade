@@ -31,8 +31,9 @@ namespace SmartTrade.Persistencia.Services
 
         public void AddUser(Usuario u)
         {
-        {
+            dalUsuario.Add(u);
         }
+        
 
 
 
@@ -59,19 +60,17 @@ namespace SmartTrade.Persistencia.Services
             dal.GetAll<Usuario>();
         }
         */
+        
 
-        public bool Login(string email, string password)
+        public async Task<bool> Login(string nickname, string password)
         {
+            Usuario usuario = await dalUsuario.GetById(nickname);
             // Si no existe el usuario
-            Usuario usuario = dal.GetById<Usuario>(email);
-
             if (usuario == null)
-            {
                 return false;
-            }
-            
+
             // Si la contraseña no coincide
-            else if (usuario.Contraseña != password)
+            else if (usuario.Password != password)
             {
                 return false;
             }

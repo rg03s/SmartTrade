@@ -12,7 +12,7 @@ namespace SmartTrade.Persistencia.Services
         Task Add(T entity);
         Task Delete(T entity);
         Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(int id);
+        Task<T> GetById(string id);
 
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;

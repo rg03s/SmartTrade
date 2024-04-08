@@ -31,7 +31,7 @@ namespace SmartTrade.Persistencia.Services
             return await _table.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetById(string id)
         {
             return await _table.FindAsync(id);
         }
