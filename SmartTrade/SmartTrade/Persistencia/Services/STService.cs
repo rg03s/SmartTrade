@@ -9,7 +9,7 @@ using SmartTrade.Persistencia;
 
 namespace SmartTrade.Persistencia.Services
 {
-    public partial class STService
+    public partial class STService : ISTService
     {
         private readonly IDAL dal;
 

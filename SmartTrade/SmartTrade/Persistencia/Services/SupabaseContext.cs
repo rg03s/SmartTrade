@@ -14,14 +14,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartTrade.Persistencia.Services
 {
-    public partial class ConexionSupabase : DbContext
+    public partial class SupabaseContext : DbContext
     {
         private static readonly string ConnectionString = "User Id=postgres;Password=6QgwpfPsBqcFfqHq;Host=db.apjeqdhvkthosokvpvma.supabase.co;Port=5432;Database=postgres";
         private readonly DbContextOptionsBuilder optionsBuilder;
-        private static readonly ConexionSupabase instance = new ConexionSupabase();
+        private static readonly SupabaseContext instance = new SupabaseContext();
 
-        static ConexionSupabase() { }
-        public ConexionSupabase() {
+        static SupabaseContext() { }
+        private SupabaseContext() {
+            Console.WriteLine("hoLAAAAAA");
             optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseNpgsql(ConnectionString);
             
@@ -29,13 +30,14 @@ namespace SmartTrade.Persistencia.Services
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            Console.WriteLine("HoLAAAAAA");
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseNpgsql(ConnectionString);
             }
         }
 
-        public static ConexionSupabase Instance
+        public static SupabaseContext Instance
         {
             get
             {
@@ -49,6 +51,13 @@ namespace SmartTrade.Persistencia.Services
         public DbSet<Producto> Producto { get; set; }
         public DbSet<Producto_vendedor> Producto_Vendedor { get; set; }
         public DbSet<Valoracion> Valoracion { get; set; }
+        public DbSet<Deporte> Deporte { get; set; }
+        public DbSet<Papeleria> Papeleria { get; set;}
+        public DbSet<Ropa> Ropa { get; set; }
+        public DbSet<Tarjeta> Tarjeta { get; set;}
+        public DbSet<Tecnologia> Tecnologia { get;set; }
+
+        public DbSet<Usuario> Usuario { get; set; } 
 
 
 

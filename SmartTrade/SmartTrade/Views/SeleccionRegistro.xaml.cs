@@ -8,14 +8,15 @@ using SmartTrade.Views;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SmartTrade.Entities;
 
 namespace SmartTrade.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SeleccionRegistro : ContentPage
     {
-        private STService service;
-        public SeleccionRegistro(STService service)
+        private ISTService service;
+        public SeleccionRegistro(ISTService service)
         {
             InitializeComponent();
             this.service = service;
@@ -23,7 +24,9 @@ namespace SmartTrade.Views
 
         private async void RegistroVendedor(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            Usuario u = new Usuario("nat", "natalia", "hola1234", "abcd", "nat@gmail.com", DateTime.Now);
+            service.AddUser(u);
+                await Navigation.PopAsync();
             RegistroVendedor registroVendedor = new RegistroVendedor(service);
             await Navigation.PushAsync(registroVendedor);
         }
