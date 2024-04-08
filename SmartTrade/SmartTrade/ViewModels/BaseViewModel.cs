@@ -13,7 +13,7 @@ namespace SmartTrade.ViewModels
 
         public INavigation Navigation;
 
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore< Item>>();
+      //  public IDataStore<Item> DataStore => DependencyService.Get<IDataStore< Item>>();
 
         bool isBusy = false;
         public bool IsBusy

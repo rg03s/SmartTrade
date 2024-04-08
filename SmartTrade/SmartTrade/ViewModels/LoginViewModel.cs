@@ -41,7 +41,7 @@ namespace SmartTrade.ViewModels
         public string txtclave
         {
             get { return clave; }
-            set { SetValue(ref clave, value); }
+           // set { SetValue(ref clave, value); }
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace SmartTrade.ViewModels
                 string supabaseUrl = "https://apjeqdhvkthosokvpvma.supabase.co";
                 string supabaseKey = Environment.GetEnvironmentVariable("SUPABASE_KEY");
                 var autenticacion = new SupabaseClient(supabaseUrl, supabaseKey);
-                var authuser = await autenticacion.SignInWithEmailAndPasswordAsync(objusuario.EmailField.ToString(), objusuario.PasswordField.ToString());
+               // var authuser = await autenticacion.SignInWithEmailAndPasswordAsync(objusuario.EmailField.ToString(), objusuario.PasswordField.ToString());
                 //corrige el error anterior para que funcione correctamente
                 
                 //string obtenertoken = authuser.AccessToken;
@@ -88,7 +88,7 @@ namespace SmartTrade.ViewModels
         #region Constructor
         public LoginViewModel(INavigation navegar)
         {
-            Navigation = navegar;
+           // Navigation = navegar;
             LoginCommand = new Command(async () => await LoginUsuario());
 
         }

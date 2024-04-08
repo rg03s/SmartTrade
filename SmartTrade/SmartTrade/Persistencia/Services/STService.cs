@@ -25,7 +25,7 @@ namespace SmartTrade.Persistencia.Services
 
         public void AddUser(Usuario usuario)
         {
-            if (dal.GetById<Usuario>(usuario.Email) == null)
+            if (dal.GetById<Usuario>(usuario.Nickname ) == null)
             {
                 dal.Insert<Usuario>(usuario);
                 Commit();

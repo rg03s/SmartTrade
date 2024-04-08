@@ -13,7 +13,7 @@ namespace SmartTrade.Persistencia.Services
     public partial class STDAL : IDAL
     {
         
-        private readonly SupabaseContext dbContext ;
+        private readonly SupabaseContext dbContext;
         public STDAL(SupabaseContext dbContext)
         {
             this.dbContext = dbContext;
