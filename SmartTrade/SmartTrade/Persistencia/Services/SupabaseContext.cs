@@ -21,16 +21,17 @@ namespace SmartTrade.Persistencia.Services
         private static readonly SupabaseContext instance = new SupabaseContext();
 
         static SupabaseContext() { }
-        private SupabaseContext() {
-            Console.WriteLine("hoLAAAAAA");
+        private SupabaseContext()
+        {
+            
             optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseNpgsql(ConnectionString);
-            
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Console.WriteLine("HoLAAAAAA");
+            
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseNpgsql(ConnectionString);
@@ -51,16 +52,12 @@ namespace SmartTrade.Persistencia.Services
         public DbSet<Producto> Producto { get; set; }
         public DbSet<Producto_vendedor> Producto_Vendedor { get; set; }
         public DbSet<Valoracion> Valoracion { get; set; }
-        public DbSet<Deporte> Deporte { get; set; }
-        public DbSet<Papeleria> Papeleria { get; set;}
-        public DbSet<Ropa> Ropa { get; set; }
-        public DbSet<Tarjeta> Tarjeta { get; set;}
-        public DbSet<Tecnologia> Tecnologia { get;set; }
+    }
+   
 
-        public DbSet<Usuario> Usuario { get; set; } 
-
-
-
+    public class DBConn
+    {
+        public const string WebApyAuthentication = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwamVxZGh2a3Rob3Nva3Zwdm1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkyODg4NjIsImV4cCI6MjAyNDg2NDg2Mn0.f7CoRtVVO60qER7HzCtcZyELhSEf_GbdMsSYiJq_7iE";
     }
 }
 
