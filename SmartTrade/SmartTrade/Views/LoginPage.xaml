@@ -32,7 +32,7 @@
                 BorderColor="HotPink"
                 BorderWidth="1.5"
                 CornerRadius="50" 
-                Command="{Binding LoginCommand}"
+                Clicked="Ingresar_Clicked"
             ></Button>
 
             <Label HorizontalOptions="Center">

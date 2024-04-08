@@ -14,9 +14,9 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private STService service;
+        private ISTService service;
 
-        public ProductPage(STService service)
+        public ProductPage(ISTService service)
         {
             InitializeComponent();
             this.service = service;

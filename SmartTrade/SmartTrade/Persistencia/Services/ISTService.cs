@@ -13,5 +13,6 @@ namespace SmartTrade.Persistencia.Services
 
         void GetUsuarios();
         */
+        bool Login(string email, string password);
     }  
 }

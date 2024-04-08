@@ -14,6 +14,7 @@ namespace SmartTrade.Persistencia.Services
         private readonly IDAL<Usuario> dalUsuario;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
+        private Usuario loggedUser;
 
         public STService()
         {
@@ -28,10 +29,9 @@ namespace SmartTrade.Persistencia.Services
             }
         }
 
-
         public void AddUser(Usuario u)
         {
-            dalUsuario.Add(u);
+        {
         }
 
 
@@ -59,6 +59,30 @@ namespace SmartTrade.Persistencia.Services
             dal.GetAll<Usuario>();
         }
         */
+
+        public bool Login(string email, string password)
+        {
+            // Si no existe el usuario
+            Usuario usuario = dal.GetById<Usuario>(email);
+
+            if (usuario == null)
+            {
+                return false;
+            }
+            
+            // Si la contraseña no coincide
+            else if (usuario.Contraseña != password)
+            {
+                return false;
+            }
+
+            else
+            {
+                loggedUser = usuario;
+                return true;
+            }
+
+        }
 
     }
 }
