@@ -1,6 +1,10 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartTrade.MainPage"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:SmartTrade.ViewModels" x:DataType="viewmodels:CatalogoViewModel"
+             mc:Ignorable="d"
+             x:Class="SmartTrade.Views.Catalogo"
              BackgroundColor="White">
     <StackLayout>
         <Label Text="SmartTrade" HorizontalOptions="Start" TextColor="Navy" FontSize="Large" />
@@ -18,10 +22,10 @@
             <CarouselView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout>
-                        <Image Source="{Binding Imagen}" />
+                        <Image Source />
                         <Label Text="{Binding Nombre}" />
-                        <Label Text="{Binding Precio}" StringFormat="Precio: {0:C}" />
-                        <Label Text="{Binding HuellaEcologica}" StringFormat="Huella ecológica: {0:P}" TextColor="ForestGreen" />
+                        <Label Text="{Binding Precio, StringFormat='Precio: {0:C}'}" />
+                        <Label Text="{Binding Huella_eco, StringFormat='Huella ecológica: {0:P}'}" TextColor="ForestGreen" />
                     </StackLayout>
                 </DataTemplate>
             </CarouselView.ItemTemplate>
