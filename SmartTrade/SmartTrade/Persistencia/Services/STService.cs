@@ -12,10 +12,12 @@ namespace SmartTrade.Persistencia.Services
     public partial class STService : ISTService
     {
         private readonly IDAL dal;
+        private Usuario loggedUser;
 
         public STService(IDAL dal)
         {
             this.dal = dal;
+            loggedUser = new Usuario();
         }
 
         public void Commit()
@@ -36,6 +38,30 @@ namespace SmartTrade.Persistencia.Services
 
         public void GetUsuarios() {
             dal.GetAll<Usuario>();
+        }
+
+        public bool Login(string email, string password)
+        {
+            // Si no existe el usuario
+            Usuario usuario = dal.GetById<Usuario>(email);
+
+            if (usuario == null)
+            {
+                return false;
+            }
+            
+            // Si la contraseña no coincide
+            else if (usuario.Contraseña != password)
+            {
+                return false;
+            }
+
+            else
+            {
+                loggedUser = usuario;
+                return true;
+            }
+
         }
 
     }
