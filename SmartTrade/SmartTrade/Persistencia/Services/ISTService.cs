@@ -7,9 +7,11 @@ namespace SmartTrade.Persistencia.Services
 {
     public partial interface ISTService
     {
+        /*
         void Commit();
         void AddUser(Usuario u);
 
         void GetUsuarios();
+        */
     }  
 }

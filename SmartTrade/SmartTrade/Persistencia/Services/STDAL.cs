@@ -6,42 +6,59 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartTrade.Entities;
 using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Postgrest;
 
 
 namespace SmartTrade.Persistencia.Services
 {
-    public partial class STDAL : IDAL
+    public partial class STDAL<T> : IDAL<T> where T : class
     {
-        
-        private readonly SupabaseContext dbContext;
+
+        private readonly SupabaseContext sc;
+        protected readonly DbSet<T> _table;
+
+
         public STDAL(SupabaseContext dbContext)
         {
-            this.dbContext = dbContext;
+            sc = dbContext;
+            _table = dbContext.Set<T>();
         }
 
-        public void Insert<T>(T entity) where T : class
+
+        public async Task<IEnumerable<T>> GetAll()
         {
-            dbContext.Set<T>().Add(entity);
+            return await _table.ToListAsync();
         }
 
-        public void Delete<T>(T entity) where T : class
+        public async Task<T> GetById(int id)
         {
-            dbContext.Set<T>().Remove(entity);
+            return await _table.FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll<T>() where T : class
+        public async Task Add(T entity)
         {
-            return dbContext.Set<T>();
+            await _table.AddAsync(entity);
+            await sc.SaveChangesAsync();
         }
 
-        public T GetById<T>(IComparable id) where T : class
+        public async Task Update(T entity)
         {
-            return dbContext.Set<T>().Find(id);
+            _table.Update(entity);
+            await sc.SaveChangesAsync();
         }
 
-        public bool Exists<T>(IComparable id) where T : class
+        public async Task Delete(T entity)
         {
-            return dbContext.Set<T>().Find(id) != null;
+            _table.Remove(entity);
+            await sc.SaveChangesAsync();
+        }
+
+
+        /*
+        public async Task<bool> ExistsAsync<T>(IComparable id) 
+        {
+            return await Dbtabla.FindAsync(id) != null;
         }
 
         public void Clear<T>() where T : class
@@ -58,6 +75,7 @@ namespace SmartTrade.Persistencia.Services
         {
             dbContext.SaveChanges();
         }
+        */
 
     }
 }

@@ -16,7 +16,7 @@ namespace SmartTrade.Persistencia.Repositorios
 {
     internal class RepositorioUsuario : RepositorioGenerico<Usuario>, IRepositorioUsuario
     {
-        public RepositorioUsuario(SupabasePrueba context) : base(context)
+        public RepositorioUsuario(SupabaseContext context) : base(context)
         {
 
         }

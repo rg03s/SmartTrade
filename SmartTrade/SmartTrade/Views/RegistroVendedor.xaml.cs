@@ -14,8 +14,8 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RegistroVendedor : ContentPage
     {
-        private ISTService service;
-        public RegistroVendedor(ISTService service)
+        private STService service;
+        public RegistroVendedor(STService service)
         {
             InitializeComponent();
             this.service = service;

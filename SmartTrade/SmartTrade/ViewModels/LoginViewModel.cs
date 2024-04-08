@@ -68,7 +68,7 @@ namespace SmartTrade.ViewModels
                 
                 //string obtenertoken = authuser.AccessToken;
 
-                STService service = new STService(new STDAL(SupabaseContext.Instance));
+                STService service = STService.Instance;
                 var Propiedades_NavigationPage = new NavigationPage(new ProductPage(service));
 
                 Propiedades_NavigationPage.BarBackgroundColor = Color.RoyalBlue;

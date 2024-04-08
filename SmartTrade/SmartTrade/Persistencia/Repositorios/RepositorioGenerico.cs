@@ -9,9 +9,9 @@ namespace SmartTrade.Persistencia.Repositorios
 {
     public class RepositorioGenerico<T> : IRepositorioGenerico<T> where T : class
     {
-        protected readonly SupabasePrueba sc;
+        protected readonly SupabaseContext sc;
         protected readonly DbSet<T> _table;
-        public RepositorioGenerico(SupabasePrueba context)
+        public RepositorioGenerico(SupabaseContext context)
         {
             sc = context;
             _table = context.Set<T>();

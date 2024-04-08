@@ -9,15 +9,36 @@ using SmartTrade.Persistencia;
 
 namespace SmartTrade.Persistencia.Services
 {
-    public partial class STService : ISTService
+    public class STService : ISTService
     {
-        private readonly IDAL dal;
+        private readonly IDAL<Usuario> dalUsuario;
+        private SupabaseContext supabaseContext = SupabaseContext.Instance;
+        private static STService instance = new STService();
 
-        public STService(IDAL dal)
+        public STService()
         {
-            this.dal = dal;
+            dalUsuario = new STDAL<Usuario>(supabaseContext);
+
+        }
+        public static STService Instance
+        {
+            get
+            {
+                return STService.instance;
+            }
         }
 
+
+        public void AddUser(Usuario u)
+        {
+            dalUsuario.Add(u);
+        }
+
+
+
+
+
+        /*
         public void Commit()
         {
             dal.Commit();
@@ -25,16 +46,19 @@ namespace SmartTrade.Persistencia.Services
 
         public void AddUser(Usuario usuario)
         {
-            if (dal.GetById<Usuario>(usuario.Nickname ) == null)
-            {
+           
+            
                 dal.Insert<Usuario>(usuario);
-                Commit();
-            }
+                dal.Commit();
+                
+
+            
         }
 
         public void GetUsuarios() {
             dal.GetAll<Usuario>();
         }
+        */
 
     }
 }

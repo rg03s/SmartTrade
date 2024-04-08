@@ -11,12 +11,12 @@ namespace SmartTrade
 
         public App()
         {
-           
+
             InitializeComponent();
-            ISTService service = new STService(new STDAL(SupabaseContext.Instance));
-           // DependencyService.Register<MockDataStore>();
+            STService service = STService.Instance;
+            // DependencyService.Register<MockDataStore>();
             MainPage = new NavigationPage(new SeleccionRegistro(service));
-            
+
             //MainPage = new ProductPage(service);
         }
 
