@@ -52,6 +52,10 @@ namespace SmartTrade.Persistencia.Services
         public DbSet<Producto> Producto { get; set; }
         public DbSet<Producto_vendedor> Producto_Vendedor { get; set; }
         public DbSet<Valoracion> Valoracion { get; set; }
+
+        public DbSet<Usuario> Usuario { get; set; }
+
+
     }
    
 

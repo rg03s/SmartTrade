@@ -29,7 +29,7 @@ namespace SmartTrade.Views
             if (IsValidDate(username, password))
             {
                 await DisplayAlert("Logrado","Inicio exitoso","OK");
-                STService service = new STService(new STDAL(new ConexionSupabase()));
+                STService service = new STService(new STDAL(SupabaseContext.Instance));
                 await Navigation.PushAsync(new ProductPage(service));
             }
             else

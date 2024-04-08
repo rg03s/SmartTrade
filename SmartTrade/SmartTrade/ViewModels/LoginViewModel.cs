@@ -36,7 +36,7 @@ namespace SmartTrade.ViewModels
         public string txtemail
         {
             get { return email; }
-            set { SetValue(ref email, value); }
+           // set { SetValue(ref email, value); }
         }
         public string txtclave
         {
@@ -66,9 +66,9 @@ namespace SmartTrade.ViewModels
                 var authuser = await autenticacion.SignInWithEmailAndPasswordAsync(objusuario.EmailField.ToString(), objusuario.PasswordField.ToString());
                 //corrige el error anterior para que funcione correctamente
                 
-                string obtenertoken = authuser.AccessToken;
+                //string obtenertoken = authuser.AccessToken;
 
-                STService service = new STService(new STDAL(new ConexionSupabase()));
+                STService service = new STService(new STDAL(SupabaseContext.Instance));
                 var Propiedades_NavigationPage = new NavigationPage(new ProductPage(service));
 
                 Propiedades_NavigationPage.BarBackgroundColor = Color.RoyalBlue;
