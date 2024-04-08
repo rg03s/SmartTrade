@@ -17,8 +17,8 @@
                 FontFamily="Arial"
             />
 
-            <Entry Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" ></Entry>
-            <Entry Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="correo" Text="{Binding txtemail}" Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" ></Entry>
+            <Entry x:Name="contraseña" Text="{Binding txtclave}" Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
                 <CheckBox x:Name="showPasswordCheckbox" />
                 <Label Text="Mostrar Contraseña" />
@@ -34,7 +34,19 @@
                 CornerRadius="50" 
                 Command="{Binding LoginCommand}"
             ></Button>
-            
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="¿No estás registrado?" TextColor="Gray"/>
+                        <Span Text=" Regístrate" TextColor="Gray" FontAttributes="Bold" TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Label.GestureRecognizers>
+            </Label>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
