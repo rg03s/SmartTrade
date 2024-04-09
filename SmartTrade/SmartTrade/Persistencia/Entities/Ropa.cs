@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartTrade.Entities
 {
-    public partial class Ropa : Categoria
+    public partial class Ropa : Producto
     {
         public int Talla { get; set; }
 

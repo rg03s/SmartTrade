@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartTrade.Logica.Entities
+namespace SmartTrade.Entities
 {
-    internal class Categoria
+    public partial class Categoria
     {
+        public Categoria() { }
+        public Categoria(string nombre)
+        {
+            this.Nombre = nombre;
+        }
     }
 }
