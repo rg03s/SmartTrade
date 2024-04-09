@@ -7,24 +7,29 @@ using System.Text;
 
 namespace SmartTrade.Logica.Entities
 {
-    public class Fabrica : IFabrica<Producto>
+    public class Fabrica : IFabrica
     {
-        public Producto CrearProducto(params object[] args)
+        public Producto CrearProducto(string categoria, string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, int precio, Dictionary<string, object> atributosEspecificos)
         {
-            Type type = typeof(Producto);
-            Type[] parameterTypes = args.Select(arg => arg.GetType()).ToArray();
-            ConstructorInfo constructor = type.GetConstructor(parameterTypes);
-
-            if (constructor == null)
+            switch (categoria.ToLower())
             {
-                throw new ArgumentException("No se encontró un constructor compatible.");
+                case "deporte":
+                    string tipo = atributosEspecificos["tipo"] as string;
+                    return new Deporte(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio, tipo);
+                case "ropa":
+                    int talla = Convert.ToInt32(atributosEspecificos["talla"]);
+                    string color = atributosEspecificos["color"] as string;
+                    return new Ropa(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio, talla, color);
+                case "papeleria":
+                    string material = atributosEspecificos["material"] as string;
+                    return new Papeleria(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio, material);
+                case "tecnologia":
+                    string dispositivo = atributosEspecificos["dispositivo"] as string; 
+                    return new Tecnologia(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio, dispositivo);
+                default:
+                    throw new ArgumentException("Categoría del producto desconocida o no disponible");
             }
-
-            // Convierte cada argumento al tipo adecuado
-            object[] parameters = args.Select(arg => Convert.ChangeType(arg, arg.GetType())).ToArray();
-
-            //invoca el constructor del producto
-            return (Producto)constructor.Invoke(parameters);
         }
     }
+
 }

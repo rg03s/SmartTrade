@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SmartTrade.Logica.Entities
 {
-    public interface IFabrica<T> where T : Producto, new()
+    public interface IFabrica
     {
-        T CrearProducto(params object[] args);
+        Producto CrearProducto(string categoria, string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, int precio, Dictionary<string, object> atributosEspecificos);
     }
 
 }

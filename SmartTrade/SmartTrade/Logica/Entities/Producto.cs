@@ -18,8 +18,8 @@ namespace SmartTrade.Entities
             this.Puntos = puntos;
             this.Categoria = cat;
 
-            Producto_vendedor pv = new Producto_vendedor(this, vend, stock, precio);
-            this.Producto_vendedores.Add(pv);
+            //Producto_vendedor pv = new Producto_vendedor(this, vend, stock, precio);
+            //this.Producto_vendedores.Add(pv);
             
         }
     }
