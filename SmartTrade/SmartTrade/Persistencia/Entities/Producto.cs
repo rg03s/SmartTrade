@@ -25,7 +25,7 @@ namespace SmartTrade.Entities
         [Column("puntos")]
         public int Puntos { get; set; }
         [Column("producto_vendedores")]
-        public ICollection<Producto_vendedor> Producto_vendedores { get; }
+        public ICollection<Producto_vendedor> Producto_vendedores { get; set; }
         public Categoria Categoria { get; set; }
     }
 }

@@ -74,7 +74,7 @@ namespace SmartTrade.Persistencia.Services
             }
 
             // Si la contraseña no coincide
-            else if (usuario.Contraseña != password)
+            else if (usuario.Password != password)
             {
                 return false;
             }

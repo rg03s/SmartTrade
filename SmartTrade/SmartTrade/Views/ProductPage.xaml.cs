@@ -1,4 +1,6 @@
-﻿using SmartTrade.Persistencia.Services;
+﻿using SmartTrade.Entities;
+using SmartTrade.Logica.Entities;
+using SmartTrade.Persistencia.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,21 @@ namespace SmartTrade.Views
         {
             InitializeComponent();
             this.service = service;
+
+            //test
+            Dictionary<string, object> atributosDeporte = new Dictionary<string, object>
+            {
+                {"tipo", "Fútbol"}
+            };
+
+            IFabrica fabrica = new Fabrica();
+            Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
+            Categoria categoria = new Categoria("Ropa");
+            Producto producto = fabrica.CrearProducto("deporte", "Balón de fútbol", "balon", "balon.jpg", "balon3d", "Balón de fútbol", 10, vendedor, categoria, 10, 10, atributosDeporte);
+
+            Console.WriteLine(producto.Nombre);
+            //TODO
+            //cambiar informacion por la del producto que se tiene que recibir en el constructor
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
