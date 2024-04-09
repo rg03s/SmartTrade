@@ -24,30 +24,38 @@ namespace SmartTrade.Views
 
         private void BtnAtras_click(object sender, EventArgs e)
         {
-            Console.WriteLine("Atras");
+            //TODO
+            //cambiar de vista a catalogo. Pongo a login temporalmente
+            LoginPage login = new LoginPage(service);
         }
 
         private void BtnCarrito_click(object sender, EventArgs e)
         {
+            //TODO
+            //cambiar de vista a carrito
             Console.WriteLine("Carrito");
         }
 
         private void BtnPerfil_click(object sender, EventArgs e)
         {
+            //TODO
             Console.WriteLine("Perfil");
         }
 
         private void BtnAgregarCarrito_click(object sender, EventArgs e)
         {
+            //TODO
             Console.WriteLine("Carrito");
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {
+            //TODO
             Console.WriteLine("Modelo 3D");
         }
 
         private void BtnVerComentarios_click(object sender, EventArgs e)
         {
+            //TODO
             Console.WriteLine("Ver Comentarios");
         }
     }

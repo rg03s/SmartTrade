@@ -5,6 +5,7 @@ using Postgrest.Attributes;
 
 namespace SmartTrade.Entities
 {
+    [Table("Categoria")]
     public partial class Categoria
     {
         [PrimaryKey("id")]
