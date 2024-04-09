@@ -13,7 +13,7 @@ namespace SmartTrade.Entities
         {
             this.Nickname = nickname;
             this.Nombre = nombre;
-            this.Contraseña = password;
+            this.Password = password;
             this.Direccion = direccion;
             this.Email = email;
             this.Fecha_nac = fecha_nac;
