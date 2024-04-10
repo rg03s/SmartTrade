@@ -8,7 +8,7 @@ namespace SmartTrade.Entities
     public partial class Producto
     {
         public Producto() { }
-        public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, int precio)
+        public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, double precio)
         {
             this.Nombre = nombre;
             this.Huella_eco = huella;

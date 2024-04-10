@@ -90,15 +90,15 @@
 
                     </Grid>
                     <!-- Imagen del producto -->
-                    <Image Aspect="AspectFit" HeightRequest="250" WidthRequest="300" Source="camisetaVCF.jpg" />
+                    <Image Aspect="AspectFit" HeightRequest="250" WidthRequest="300" x:Name="imagen_producto" />
 
                     <!-- Información del producto -->
                     <StackLayout Orientation="Horizontal">
                         <Label VerticalOptions="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Vendido por " FontSize="13" TextColor="Black"/>
-                                    <Span Text="UPVShop" TextColor="Blue" FontSize="13" FontAttributes="Bold"/>
+                                    <Span Text="Vendido por " FontSize="13" TextColor="Black" x:Name="vendido_por"/>
+                                    <Span Text="UPVShop" TextColor="Blue" FontSize="13" FontAttributes="Bold" x:Name="vendedor"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -117,12 +117,12 @@
 
 
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Camiseta Valencia CF" FontAttributes="Bold" FontSize="24" Margin="0,0,0,0" TextColor="Black"/>
+                        <Label Text="Camiseta Valencia CF" FontAttributes="Bold" FontSize="24" Margin="0,0,0,0" TextColor="Black" x:Name="titulo_producto"/>
                         <Label HorizontalOptions="EndAndExpand" VerticalOptions="Center">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="&#xf577; " FontAttributes="Bold" TextColor="Green" FontFamily="{StaticResource FontAwesomeSolid}"/>
-                                    <Span Text="20%" FontAttributes="Bold" TextColor="Green"/>
+                                    <Span Text="20%" FontAttributes="Bold" TextColor="Green" x:Name="huella_eco"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -132,6 +132,7 @@
                         Text="Esta es la primera equipación para niños que llevará el Valencia Club de Fútbol para la temporada 2023/2024. Tanto si quieres animar al equipo desde las gradas como durante el día a día esta camiseta es perfecta para ello. Se ha fabricado con al menos un 20% de material reciclado. ¡Llévala con orgullo!" 
                         TextColor="Black"
                         Margin="0,10,0,0"
+                        x:Name="producto_descripcion"
                     />
 
                     <!-- Especificaciones del producto -->
@@ -145,29 +146,65 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- ATRIBUTOS ROPA -->
+                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_talla_ropa">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="&#xf553; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
-                                    <Span Text="Talla S" TextColor="Black"/>
+                                    <Span Text="&#xf545; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Talla S" TextColor="Black" x:Name="talla_ropa"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
 
-                        <Label Grid.Column="1" Margin="-70,0,0,0">
+                        <Label Grid.Column="0" Grid.Row="1" IsVisible="false" x:Name="label_tipoPrenda_ropa">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="&#xf111; " FontFamily="{StaticResource FontAwesomeRegular}" TextColor="Black"/>
-                                    <Span Text="Color blanco" TextColor="Black"/>
+                                    <Span Text="&#xf553; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Talla S" TextColor="Black" x:Name="tipoPrenda_ropa"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
+
+                        <Label Grid.Column="1" Grid.Row="0" Margin="-70,0,0,0" IsVisible="false" x:Name="label_color_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf111; " FontFamily="{StaticResource FontAwesomeRegular}" TextColor="Black"/>
+                                    <Span Text="Color blanco" TextColor="Black" x:Name="color_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="1" Grid.Row="1" Margin="-70,0,0,0" IsVisible="false" x:Name="label_marca_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf54e; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Color blanco" TextColor="Black" x:Name="marca_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        
+                        <!-- FIN ATRIBUTOS ROPA -->
+                        
+                        
+                        
+                        <!-- ATRIBUTOS TECNOLOGIA -->
+                        <!-- ... -->
+                        <!-- FIN ATRIBUTOS TECNOLOGIA -->
+                        
+                        
+                        <!-- LOS OTROS... -->
+                        
                     </Grid>
 
 
 
                     <!-- Precio -->
-                    <Label Text="69.99€" FontAttributes="Bold" FontSize="24" Margin="0,20,0,0" TextColor="Black"/>
+                    <Label Text="69.99€" FontAttributes="Bold" FontSize="24" Margin="0,20,0,0" TextColor="Black" x:Name="precio_producto"/>
                 </StackLayout>
             </ScrollView>
             <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">

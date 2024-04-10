@@ -9,7 +9,7 @@ namespace SmartTrade.Logica.Entities
 {
     public class Fabrica : IFabrica
     {
-        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, int precio, Dictionary<string, object> atributosEspecificos)
+        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, double precio, Dictionary<string, object> atributosEspecificos)
         {
             switch (cat.Nombre.ToLower())
             {
