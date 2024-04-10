@@ -13,10 +13,10 @@ namespace SmartTrade.Persistencia.Services
         Task Delete(T entity);
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(string id);
+        Usuario GetByEmail(string email);
 
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;
-        // IEnumerable<T> GetWhere<T>(Expression<Func<T, bool>> predicate) where T : class;
 
         // void Commit();
     }

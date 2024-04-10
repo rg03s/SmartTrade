@@ -20,17 +20,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Button
-                     Grid.Row="2"
-                     VerticalOptions="Center"
-                     Text="Registrar user"
-                     TextColor="Black"
-                     BackgroundColor="Transparent"
-                     BorderColor="HotPink"
-                     BorderWidth="1.5"
-                     CornerRadius="50" 
-                     Clicked="Button_Clicked"
-                 ></Button>
+               
                 <Button
                     Grid.Row="0"
                     VerticalOptions="Center"

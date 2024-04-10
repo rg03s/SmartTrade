@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SmartTrade.Persistencia.Services
 {
@@ -13,6 +14,6 @@ namespace SmartTrade.Persistencia.Services
 
         void GetUsuarios();
         */
-        bool Login(string nickname, string password);
+        Task<bool> Login(string nickname, string password);
     }  
 }

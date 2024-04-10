@@ -43,15 +43,6 @@ namespace SmartTrade.Views
             await Navigation.PushAsync(inicioSesion);
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-            // Usuario u = new Usuario("nataliaaa2355", "natalia1", "hola1234", "abcd", "natal@gmail.com", DateTime.Now);
-            Usuario u = new Usuario("nataliagdaa", "NATALIAGarg", "abcd1234", "calle 2", "ngaaad@gmail.com", DateTime.Now);
-            Console.WriteLine(u.ToString());
-            service.AddUser(u);
-            // _repo.AñadirUsuario(u);
-            //_repo.AñadirUsuario(uu);
-            //_repo.MostrarUsuarios();
-        }
+       
     }
 }

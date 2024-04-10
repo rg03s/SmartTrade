@@ -8,6 +8,8 @@ using SmartTrade.Entities;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Postgrest;
+using SkiaSharp;
+using Supabase.Interfaces;
 
 
 namespace SmartTrade.Persistencia.Services
@@ -16,41 +18,71 @@ namespace SmartTrade.Persistencia.Services
     {
 
         private readonly SupabaseContext sc;
-        protected readonly DbSet<T> _table;
+        protected readonly DbSet<T> table;
 
 
         public STDAL(SupabaseContext dbContext)
         {
             sc = dbContext;
-            _table = dbContext.Set<T>();
+            table = dbContext.Set<T>();
+        }
+
+
+        /*
+        Future<List<Map<String, dynamic>>> getWhere<T>(
+      String tableName, String columnName, dynamic value) async {
+    final response = await _client
+        .from(tableName)
+        .select<List<Map<String, dynamic>>>()
+        .eq(columnName, value);
+    return response;
+  }
+        */
+        /*
+    public IEnumerable<T> GetWhere<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            return sc.Set<T>().Where(predicate).AsEnumerable();
+        }
+        */
+        public Usuario GetByEmail(string email)
+        {
+            if (sc.Usuario.Any(us => us.Email == email) == false) { return null; }
+            else { return sc.Usuario.Where(us => us.Email == email).Single(); }
         }
 
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _table.ToListAsync();
+            return await table.ToListAsync();
         }
 
         public async Task<T> GetById(string id)
         {
-            return await _table.FindAsync(id);
+            try {
+                return await table.FindAsync(id);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+           
         }
 
         public async Task Add(T entity)
         {
-            await _table.AddAsync(entity);
+            await table.AddAsync(entity);
             await sc.SaveChangesAsync();
         }
 
         public async Task Update(T entity)
         {
-            _table.Update(entity);
+            table.Update(entity);
             await sc.SaveChangesAsync();
         }
 
         public async Task Delete(T entity)
         {
-            _table.Remove(entity);
+            table.Remove(entity);
             await sc.SaveChangesAsync();
         }
 

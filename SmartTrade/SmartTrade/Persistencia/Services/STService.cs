@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Internal;
+using Postgrest;
 using SmartTrade.Entities;
 using SmartTrade.Persistencia;
+using Supabase.Gotrue;
+using Xamarin.Essentials;
 
 namespace SmartTrade.Persistencia.Services
 {
@@ -29,12 +34,34 @@ namespace SmartTrade.Persistencia.Services
             }
         }
 
-        public void AddUser(Usuario u)
+        public async Task AddUser(Usuario usuario)
         {
-            dalUsuario.Add(u);
-        }
+            if (dalUsuario.GetByEmail(usuario.Email) != null)
+            {
+                throw new EmailYaRegistradoException();
+            }
+            else if (await dalUsuario.GetById(usuario.Nickname) != null)
+            {
+                throw new NickYaRegistradoException();
+            }
+            else {
+                if (usuario.Email.Contains("@"))
+                {
+                    if (usuario.Email.StartsWith("@"))
+                        throw new EmailFormatoIncorrectoException();
+                    if (usuario.Email.EndsWith(".com") || usuario.Email.EndsWith(".es"))
+                    {
+                       await dalUsuario.Add(usuario);
+                    }
+                    else throw new EmailFormatoIncorrectoException();
+                }
+                else throw new EmailFormatoIncorrectoException();
+            }
         
 
+        }
+
+        
 
 
 
@@ -60,7 +87,7 @@ namespace SmartTrade.Persistencia.Services
             dal.GetAll<Usuario>();
         }
         */
-        
+
 
         public async Task<bool> Login(string nickname, string password)
         {

@@ -134,7 +134,7 @@ namespace SmartTrade.Views
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
-            SeleccionRegistro inicioSesion = new SeleccionRegistro(service);
+                LoginPage inicioSesion = new LoginPage(service);
             await Navigation.PushAsync(inicioSesion);
         }
 
@@ -158,9 +158,28 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Por favor, introduzca una contraseña válida.", "Aceptar");
                 return;
             }
+            else try
+                {
 
-            // Si todas las validaciones pasan, navegar a la siguiente página
-            await Navigation.PushAsync(new SeleccionRegistro(service));
+                    Usuario usuarioNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date);
+                    await service.AddUser(usuarioNuevo);
+                    await Navigation.PopAsync();
+                    ProductPage paginaPrincipal = new ProductPage(service);
+                    await Navigation.PushAsync(paginaPrincipal);
+                }
+                catch (EmailYaRegistradoException ex)
+                {
+                    await DisplayAlert("Error", ex.Message, "Aceptar");
+
+                }
+                catch (EmailFormatoIncorrectoException ex)
+                {
+                    await DisplayAlert("Error", ex.Message, "Aceptar");
+                }
+                catch (NickYaRegistradoException ex)
+                {
+                    await DisplayAlert("Error", ex.Message, "Aceptar");
+                }
         }
     }
 }
