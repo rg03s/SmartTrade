@@ -4,10 +4,13 @@ using System.Text;
 
 namespace SmartTrade.Entities
 {
-    public partial class Ropa : Categoria
+    public partial class Ropa : Producto
     {
-        public int Talla { get; set; }
+        public string Talla { get; set; }
 
         public string Color { get; set; }
+        public string Marca { get; set; }
+        public string TipoPrenda { get; set; }
+
     }
 }

@@ -41,7 +41,7 @@ namespace SmartTrade.Views
                 }
                 else
                 {
-                    if (service.Login(username, password))
+                    if (await service.Login(username, password))
                     {
                         correo.Text = string.Empty;
                         contraseña.Text = string.Empty;

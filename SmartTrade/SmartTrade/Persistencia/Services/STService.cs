@@ -92,9 +92,13 @@ namespace SmartTrade.Persistencia.Services
         public async Task<bool> Login(string nickname, string password)
         {
             Usuario usuario = await dalUsuario.GetById(nickname);
+            Usuario correo = await dalUsuario.GetById(usuario.Email);
             // Si no existe el usuario
-            if (usuario == null)
+            if (usuario == null || correo == null)
+            {
                 return false;
+
+            }
 
             // Si la contraseña no coincide
             else if (usuario.Password != password)
