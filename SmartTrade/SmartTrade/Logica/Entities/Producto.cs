@@ -18,6 +18,7 @@ namespace SmartTrade.Entities
             this.Puntos = puntos;
             this.Categoria = cat;
 
+            //ARREGLAR. TIRA EXCEPCION
             //Producto_vendedor pv = new Producto_vendedor(this, vend, stock, precio);
             //this.Producto_vendedores.Add(pv);
             
