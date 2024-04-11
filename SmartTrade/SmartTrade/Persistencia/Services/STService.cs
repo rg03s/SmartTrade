@@ -36,7 +36,7 @@ namespace SmartTrade.Persistencia.Services
 
         public async Task AddUser(Usuario usuario)
         {
-            if (dalUsuario.GetByEmail(usuario.Email) != null)
+            if (dalUsuario.GetById(usuario.Email) != null)
             {
                 throw new EmailYaRegistradoException();
             }
