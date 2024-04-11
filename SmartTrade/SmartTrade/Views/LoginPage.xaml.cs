@@ -60,5 +60,10 @@ namespace SmartTrade.Views
                 contraseña.Text = string.Empty;
             }
         }
+        private void VerContraseña_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (VerContraseña.IsChecked == true) contraseña.IsPassword = false;
+            else contraseña.IsPassword = true; ;
+        }
     }
 }

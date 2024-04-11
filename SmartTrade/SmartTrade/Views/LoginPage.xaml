@@ -20,7 +20,7 @@
             <Entry x:Name="correo" Text="{Binding txtemail}" Placeholder="Correo electrónico/Usuario" TextColor="White" PlaceholderColor="Gray" ></Entry>
             <Entry x:Name="contraseña" Text="{Binding txtclave}" Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
-                <CheckBox x:Name="showPasswordCheckbox" />
+                <CheckBox x:Name="VerContraseña" IsChecked="False" CheckedChanged="VerContraseña_Changed" />
                 <Label Text="Mostrar Contraseña" />
             </StackLayout>
 
