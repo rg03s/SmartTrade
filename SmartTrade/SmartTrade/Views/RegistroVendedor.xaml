@@ -12,8 +12,15 @@
                 HorizontalOptions="Center"
                 FontFamily="Arial"
                 />
-
-            <Entry x:Name="Nombre" Placeholder="Nombre" TextColor="White" PlaceholderColor="Gray" Focused="Nombre_Focused"  TextChanged="Nombre_TextChanged" ></Entry>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Entry x:Name="Nombre" Placeholder="Nombre" TextColor="White" PlaceholderColor="Gray" Focused="Nombre_Focused"  TextChanged="Nombre_TextChanged" Grid.Column="0"></Entry>
+                <Entry x:Name="Apellido" Placeholder="Apellido" TextColor="White" PlaceholderColor="Gray" Focused="Apellido_Focused"  TextChanged="Apellido_TextChanged" Grid.Column="1"></Entry>
+            </Grid>
+           
             <Entry x:Name="NombreUser" Placeholder="Nombre de usuario" TextColor="White" PlaceholderColor="Gray" Focused="NombreUser_Focused" TextChanged="NombreUser_TextChanged" ></Entry>
             <Entry Placeholder="Correo electrónico" TextColor="White" PlaceholderColor="Gray" x:Name="Correo"  Unfocused="Correo_Unfocused" Focused="Correo_Focused" TextChanged="Correo_TextChanged"></Entry>
             <Entry Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray" x:Name="Contraseña" Focused="Contraseña_Focused" TextChanged="Contraseña_TextChanged" ></Entry>
@@ -22,12 +29,47 @@
                 <Label Text="Mostrar Contraseña" />
             </StackLayout>
             <Label x:Name="ContraseñaNoValida" Text="La contraseña debe tener al menos 8 caracteres y contener al menos un número." TextColor="Red" IsVisible="False"/>
-            <Entry Placeholder="Dirección" TextColor="White" PlaceholderColor="Gray" x:Name="Direccion" Focused="Direccion_Focused" TextChanged="Direccion_TextChanged"></Entry>
+            
+            <StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Campo para la calle -->
+                    <Entry Placeholder="Calle" x:Name="txtCalle" Grid.Column="0" PlaceholderColor="Gray"/>
+
+                    <!-- Campo para el número -->
+                    <Entry Placeholder="Número" x:Name="txtNumero" Grid.Column="1" PlaceholderColor="Gray" />
+                    <Picker Title="Ciudad" x:Name="pickerCiudad" Grid.Row="1" Grid.Column="0" >
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Madrid</x:String>
+                                <x:String>Valencia</x:String>
+                                <x:String>Barcelona</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+
+                    <!-- Campo para el país -->
+                    <Picker Title="Pais" x:Name="pickerPais"  Grid.Row="1" Grid.Column="1">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>España</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Grid>
+
+                <!-- Campo para la ciudad -->
+                
+            </StackLayout>
+
             <Entry Placeholder="IBAN" TextColor="White" PlaceholderColor="Gray" x:Name="IBAN" Focused="IBAN_Focused" TextChanged="IBAN_TextChanged" Unfocused="IBAN_Unfocused" ></Entry>
             <Label x:Name="IbanNoValido" Text="IBAN no válido" TextColor="Red" IsVisible="False"/>
             <StackLayout Orientation="Vertical" Margin="0,0,0,20">
                 <Label Text="Fecha de Nacimiento:" HorizontalOptions="Start" />
-                <DatePicker x:Name="datePicker"  />
+                <DatePicker x:Name="fecha_nacimiento"  />
             </StackLayout>
 
             <Button

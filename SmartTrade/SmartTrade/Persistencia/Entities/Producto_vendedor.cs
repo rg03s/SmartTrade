@@ -1,13 +1,16 @@
-﻿using Postgrest.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SmartTrade.Entities
 {
+    [Table("Producto_vendedor")]
     public partial class Producto_vendedor
     {
-        [PrimaryKey("id")]
+        [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("precio")]
@@ -17,9 +20,9 @@ namespace SmartTrade.Entities
         public int Stock { get; set; }
 
         [Column("vendedor")]
-        public Vendedor Vendedor { get; set; }
+        public string nicknameVendedor { get; set; }
 
         [Column("producto")]
-        public Producto Producto { get; set; }
+        public int IdProducto{ get; set; }
     }
 }

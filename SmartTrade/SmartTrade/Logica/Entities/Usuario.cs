@@ -9,7 +9,7 @@ namespace SmartTrade.Entities
     public partial class Usuario
     {
         public Usuario() { }
-        public Usuario(string nickname, string nombre, string password, string direccion, string email, DateTime fecha_nac)
+        public Usuario(string nickname, string nombre, string password, string direccion, string email, DateTime fecha_nac, Boolean isVendedor)
         {
             this.Nickname = nickname;
             this.Nombre = nombre;
@@ -17,8 +17,22 @@ namespace SmartTrade.Entities
             this.Direccion = direccion;
             this.Email = email;
             this.Fecha_nac = fecha_nac;
+            this.IsVendedor = isVendedor;
         }
 
+        public void AddDatosVendedor(string cuenta_bancaria)
+        {
+            if (this.IsVendedor)
+            {
+                this.Cuenta_bancaria = cuenta_bancaria;
+                this.Productos_vendedor = new List<Producto_vendedor>();
+            }
+        }
+
+        public void AddDatosComprador()
+        {
+            this.Puntos = 0;
+        }
         public override string ToString()
         {
             return $"Nombre: {Nombre}, Email: {Email}";

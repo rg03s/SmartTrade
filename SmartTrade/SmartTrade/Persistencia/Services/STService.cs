@@ -17,6 +17,9 @@ namespace SmartTrade.Persistencia.Services
     public class STService : ISTService
     {
         private readonly IDAL<Usuario> dalUsuario;
+        private readonly IDAL<Vendedor> dalVendedor;
+        private readonly IDAL<Comprador> dalComprador;
+        private readonly IDAL<Tarjeta> dalTarjeta;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -57,13 +60,30 @@ namespace SmartTrade.Persistencia.Services
                 }
                 else throw new EmailFormatoIncorrectoException();
             }
-        
-
         }
 
-        
+        public Boolean MayorDe18(DateTime fecha_nac) 
+        {
+           TimeSpan edad = DateTime.Now - fecha_nac;
+            if ((int)(edad.TotalDays / 365.25) >= 18) return true;
+            else return false;
+        }
 
+        public async Task AddUserVendedor(Vendedor vendedor)
+        {
+              
+              await dalVendedor.Add(vendedor);
+        }
 
+        public async Task AddUserComprador(Comprador comprador)
+        {
+            await dalComprador.Add(comprador);
+        }
+
+        public async Task AddTarjeta(Tarjeta tarjeta) 
+        {
+            await dalTarjeta.Add(tarjeta);
+        }
 
 
         /*

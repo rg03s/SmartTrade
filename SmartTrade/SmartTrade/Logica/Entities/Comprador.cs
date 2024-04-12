@@ -10,8 +10,7 @@ namespace SmartTrade.Entities
     {
         public Comprador() { }
 
-        public Comprador(string nickname, string nombre, string contraseña, string direccion, string email, DateTime fecha_nac, int puntos) : base(nickname, nombre, contraseña, direccion, email, fecha_nac)
-        {
+        public Comprador(string nickname, string nombre, string contraseña, string direccion, string email, DateTime fecha_nac, int puntos) { 
             this.Puntos = puntos;
         }
     }

@@ -14,7 +14,6 @@ namespace SmartTrade.Persistencia.Services
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(string id);
         Usuario GetByEmail(string email);
-
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;
 

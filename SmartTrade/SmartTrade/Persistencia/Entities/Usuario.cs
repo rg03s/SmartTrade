@@ -12,11 +12,8 @@ namespace SmartTrade.Entities
     [Table("Usuario")]
     public partial class Usuario 
     {
-
-
         [Key]
         [Column("nickname")]
-
         public string Nickname { get; set; }
 
         [Column("nombre")]
@@ -34,5 +31,17 @@ namespace SmartTrade.Entities
         [Column("fecha_nac")]
         public DateTime Fecha_nac { get; set; }
 
+        [Column("isVendedor")]
+        public bool IsVendedor { get; set; }
+
+
+        [Column("cuenta_bancaria")]
+        public string Cuenta_bancaria { get; set; }
+
+        [NotMapped]
+        public ICollection<Producto_vendedor> Productos_vendedor { get; set; }
+
+        [Column("puntos")]
+        public int Puntos { get; set; }
     }
 }

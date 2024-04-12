@@ -36,6 +36,19 @@ namespace SmartTrade.Views
             if (!string.IsNullOrEmpty(Nombre.Text)) { Nombre.TextColor = Color.Black; }          
         }
 
+        //Manejadores del Campo Apellido
+        private void Apellido_Focused(object sender, FocusEventArgs e)
+        {
+            if (string.IsNullOrEmpty(Apellido.Text))
+            {
+                Apellido.TextColor = Color.Gray;
+            }
+        }
+        private void Apellido_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Apellido.Text)) { Apellido.TextColor = Color.Black; }
+        }
+
         //Manejadores del Campo Nickname
         private void NombreUser_Focused(object sender, FocusEventArgs e)
         {
@@ -124,17 +137,28 @@ namespace SmartTrade.Views
 
 
         //Manejadores del Campo Dirección 
-        private void Direccion_Focused(object sender, FocusEventArgs e)
+        private void Calle_Focused(object sender, FocusEventArgs e)
         {
-            if (string.IsNullOrEmpty(Direccion.Text))
+            if (string.IsNullOrEmpty(txtCalle.Text))
             {
-                Direccion.TextColor = Color.Gray;
+                txtCalle.TextColor = Color.Gray;
             }
         }
 
-        private void Direccion_TextChanged(object sender, TextChangedEventArgs e)
+        private void Numero_Focused(object sender, FocusEventArgs e)
         {
-            if (!string.IsNullOrEmpty(Direccion.Text)) { Direccion.TextColor = Color.Black; }
+            if (string.IsNullOrEmpty(txtNumero.Text))
+            {
+                txtNumero.TextColor = Color.Gray;
+            }
+        }
+        private void Calle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtCalle.Text)) { txtCalle.TextColor = Color.Black; }
+        }
+        private void Numero_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtNumero.Text)) { txtNumero.TextColor = Color.Black; }
         }
 
         //Manejadores del Campo IBAN (Cuenta bancaria)
@@ -172,16 +196,21 @@ namespace SmartTrade.Views
             await Navigation.PushAsync(inicioSesion);
         }
 
+       
+
 
 
         //Si todos los campos están correctamente completados se registrará el usuario
         private async void Registrarse_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Nombre.Text) || string.IsNullOrWhiteSpace(Direccion.Text) || string.IsNullOrWhiteSpace(NombreUser.Text))
+            
+            if (string.IsNullOrWhiteSpace(Nombre.Text) || string.IsNullOrWhiteSpace(txtCalle.Text) || string.IsNullOrWhiteSpace(txtNumero.Text) || pickerPais.SelectedItem == null || pickerCiudad.SelectedItem == null || string.IsNullOrWhiteSpace(NombreUser.Text))
             {
                 await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
                 return;
             }
+            
+            
 
             // Validar el formato del correo electrónico
             if (!IsValidoCorreo(Correo.Text))
@@ -199,11 +228,23 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Por favor, introduzca una contraseña válida.", "Aceptar");
                 return;
             }
+            if (service.MayorDe18(fecha_nacimiento.Date) == false) 
+            {
+                await DisplayAlert("Error", "Debes ser mayor de 18 años", "Aceptar");
+                return;
+            }
             else try
                 {
-
-                    Usuario usuarioNuevo = new Usuario(NombreUser.Text,Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date);
+                    string paisSeleccionado = pickerPais.SelectedItem.ToString();
+                    string ciudadSeleccionada = pickerCiudad.SelectedItem.ToString();
+                    string Direccion = txtCalle.Text + "," + txtNumero.Text + "," + ciudadSeleccionada + "," + paisSeleccionado;
+                    Usuario usuarioNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion, Correo.Text, fecha_nacimiento.Date, true);
+                    //     Vendedor vendedorNuevo = new Vendedor(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date, IBAN.Text);
+                    usuarioNuevo.AddDatosVendedor(IBAN.Text);
                     await service.AddUser(usuarioNuevo);
+
+                    //    await service.AddUserVendedor(vendedorNuevo); 
+
                     await Navigation.PopAsync();
                     ProductPage paginaPrincipal = new ProductPage(service);
                     await Navigation.PushAsync(paginaPrincipal);
@@ -222,5 +263,7 @@ namespace SmartTrade.Views
                     await DisplayAlert("Error", ex.Message, "Aceptar");
                 }
         }
+
+        
     }
 }

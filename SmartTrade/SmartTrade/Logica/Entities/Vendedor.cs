@@ -10,7 +10,7 @@ namespace SmartTrade.Entities
     {
         public Vendedor() {}
 
-        public Vendedor(string nickname, string nombre, string contraseña, string direccion, string email, DateTime fecha_nac, string cuenta_bancaria) : base(nickname, nombre, contraseña, direccion, email, fecha_nac)
+        public Vendedor(string nickname, string nombre, string contraseña, string direccion, string email, DateTime fecha_nac, string cuenta_bancaria) 
         {
             this.Cuenta_bancaria = cuenta_bancaria;
 
