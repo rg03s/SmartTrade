@@ -15,14 +15,14 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private ISTService service;
+        private STService service;
         //private string username;
         //private string password;
         private ProductPage productPage;
         //private Registro registro;
         //private LoginPage loginPage;
 
-        public LoginPage(ISTService service)
+        public LoginPage(STService service)
         {
             this.service = service;
             InitializeComponent();
@@ -45,6 +45,7 @@ namespace SmartTrade.Views
                     {
                         correo.Text = string.Empty;
                         contraseña.Text = string.Empty;
+                        await Navigation.PopAsync();
                         productPage = new ProductPage(service);
                         await Navigation.PushAsync(productPage);
                     }
@@ -64,6 +65,44 @@ namespace SmartTrade.Views
         {
             if (VerContraseña.IsChecked == true) contraseña.IsPassword = false;
             else contraseña.IsPassword = true; ;
+        }
+
+        private void Correo_Focused(object sender, FocusEventArgs e)
+        {
+            if (string.IsNullOrEmpty(correo.Text))
+            {
+                correo.TextColor = Color.Gray;
+            }
+        }
+
+        private void Correo_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(correo.Text))
+            { 
+                correo.TextColor = Color.Black;
+            }
+        }
+
+        private void Contraseña_Focused(object sender, FocusEventArgs e)
+        {
+            if (string.IsNullOrEmpty(contraseña.Text))
+            {
+                contraseña.TextColor = Color.Gray;
+            }
+        }
+
+        private void Contraseña_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(contraseña.Text)) 
+            { 
+                contraseña.TextColor = Color.Black; 
+            }
+        }
+        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+            Registro registro = new Registro(service);
+            await Navigation.PushAsync(registro);
         }
     }
 }

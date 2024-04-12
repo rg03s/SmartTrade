@@ -15,7 +15,7 @@ namespace SmartTrade
             InitializeComponent();
             STService service = STService.Instance;
             // DependencyService.Register<MockDataStore>();
-           MainPage = new NavigationPage(new SeleccionRegistro(service));
+           MainPage = new NavigationPage(new LoginPage(service));
             
            // MainPage = new ProductPage(service);
         }

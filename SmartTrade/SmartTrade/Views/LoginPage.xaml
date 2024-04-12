@@ -17,8 +17,8 @@
                 FontFamily="Arial"
             />
 
-            <Entry x:Name="correo" Text="{Binding txtemail}" Placeholder="Correo electrónico/Usuario" TextColor="White" PlaceholderColor="Gray" ></Entry>
-            <Entry x:Name="contraseña" Text="{Binding txtclave}" Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="correo" Placeholder="Correo electrónico/Usuario" TextColor="White" PlaceholderColor="Gray" Focused="Correo_Focused"  TextChanged="Correo_TextChanged" ></Entry>
+            <Entry x:Name="contraseña" Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray" Focused="Contraseña_Focused"  TextChanged="Contraseña_TextChanged"></Entry>
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
                 <CheckBox x:Name="VerContraseña" IsChecked="False" CheckedChanged="VerContraseña_Changed" />
                 <Label Text="Mostrar Contraseña" />
@@ -35,16 +35,17 @@
                 Clicked="Ingresar_Clicked"
             ></Button>
 
-            <Label HorizontalOptions="Center">
+            <Label>
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="¿No estás registrado?" TextColor="Gray"/>
-                        <Span Text=" Regístrate" TextColor="Gray" FontAttributes="Bold" TextDecorations="Underline"/>
+                        <Span Text="¿No estás registrado?" />
+                        <Span Text=" Regístrate" TextColor="Blue" >
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Span.GestureRecognizers>
+                        </Span>
                     </FormattedString>
                 </Label.FormattedText>
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer/>
-                </Label.GestureRecognizers>
             </Label>
 
         </StackLayout>
