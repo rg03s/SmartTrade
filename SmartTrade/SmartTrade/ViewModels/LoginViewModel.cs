@@ -1,8 +1,14 @@
-﻿using SmartTrade.Views;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SmartTrade.Persistencia.Services;
+using SmartTrade.Views;
+using Supabase;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace SmartTrade.ViewModels
 {

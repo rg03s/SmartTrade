@@ -7,8 +7,47 @@
              x:Class="SmartTrade.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand" Padding="40">
+            
+            <Label Text="SmartTrade" 
+                FontSize="30" 
+                FontAttributes="Bold"
+                TextColor="HotPink"
+                HorizontalOptions="Center"
+                FontFamily="Arial"
+            />
+
+            <Entry x:Name="correo" Placeholder="Correo electrónico/Usuario" TextColor="White" PlaceholderColor="Gray" Focused="Correo_Focused"  TextChanged="Correo_TextChanged" ></Entry>
+            <Entry x:Name="contraseña" Placeholder="Contraseña" IsPassword="True" TextColor="White" PlaceholderColor="Gray" Focused="Contraseña_Focused"  TextChanged="Contraseña_TextChanged"></Entry>
+            <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+                <CheckBox x:Name="VerContraseña" IsChecked="False" CheckedChanged="VerContraseña_Changed" />
+                <Label Text="Mostrar Contraseña" />
+            </StackLayout>
+
+            <Button
+                VerticalOptions="Center"
+                Text="Login"
+                TextColor="White"
+                BackgroundColor="Transparent"
+                BorderColor="HotPink"
+                BorderWidth="1.5"
+                CornerRadius="50" 
+                Clicked="Ingresar_Clicked"
+            ></Button>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="¿No estás registrado?" />
+                        <Span Text=" Regístrate" TextColor="Blue" >
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

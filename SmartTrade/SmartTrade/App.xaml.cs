@@ -11,11 +11,13 @@ namespace SmartTrade
 
         public App()
         {
-           
+
             InitializeComponent();
-            STService service = new STService(new STDAL(new ConexionSupabase()));
-            DependencyService.Register<MockDataStore>();
-            MainPage = new Catalogo(service);
+            STService service = STService.Instance;
+            // DependencyService.Register<MockDataStore>();
+           MainPage = new NavigationPage(new LoginPage(service));
+            
+           // MainPage = new ProductPage(service);
         }
 
         protected override void OnStart()

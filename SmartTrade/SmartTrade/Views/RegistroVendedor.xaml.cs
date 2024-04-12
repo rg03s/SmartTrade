@@ -1,12 +1,10 @@
-﻿using System;
+﻿using SmartTrade.Entities;
+using SmartTrade.Persistencia.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SmartTrade.Entities;
-using SmartTrade.Persistencia.Services;
-using Supabase;
-using SmartTrade.Views;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,15 +12,17 @@ using Xamarin.Forms.Xaml;
 namespace SmartTrade.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Registro : ContentPage
+    public partial class RegistroVendedor : ContentPage
     {
         private STService service;
-        public Registro(STService service)
+        public RegistroVendedor(STService service)
         {
             InitializeComponent();
             this.service = service;
         }
-        //Manejadores Campo Nombre
+
+
+        //Manejadores del Campo Nombre
         private void Nombre_Focused(object sender, FocusEventArgs e)
         {
             if (string.IsNullOrEmpty(Nombre.Text))
@@ -33,8 +33,9 @@ namespace SmartTrade.Views
 
         private void Nombre_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(Nombre.Text)) { Nombre.TextColor = Color.Black; }
+            if (!string.IsNullOrEmpty(Nombre.Text)) { Nombre.TextColor = Color.Black; }          
         }
+
         //Manejadores del Campo Apellido
         private void Apellido_Focused(object sender, FocusEventArgs e)
         {
@@ -48,7 +49,7 @@ namespace SmartTrade.Views
             if (!string.IsNullOrEmpty(Apellido.Text)) { Apellido.TextColor = Color.Black; }
         }
 
-        //Manejadores Campo Nickname
+        //Manejadores del Campo Nickname
         private void NombreUser_Focused(object sender, FocusEventArgs e)
         {
             if (string.IsNullOrEmpty(NombreUser.Text))
@@ -62,22 +63,13 @@ namespace SmartTrade.Views
             if (!string.IsNullOrEmpty(NombreUser.Text)) { NombreUser.TextColor = Color.Black; }
         }
 
-        //Manejadores Campo Correo electrónico
+        //Manejadores del Campo Correo
+
         private void Correo_Focused(object sender, FocusEventArgs e)
         {
             if (string.IsNullOrEmpty(Correo.Text))
             {
                 Correo.TextColor = Color.Gray;
-            }
-        }
-
-        private void Correo_Unfocused(object sender, FocusEventArgs e)
-        {
-            string texto = Correo.Text;
-
-            if (!IsValidoCorreo(texto))
-            {
-                Correo.TextColor = Color.Red;
             }
         }
 
@@ -98,7 +90,19 @@ namespace SmartTrade.Views
                 return false;
             }
         }
-        //Manejadores Campo Contraseña
+
+        private void Correo_Unfocused(object sender, FocusEventArgs e)
+        {
+            string texto = Correo.Text;
+
+            if (!IsValidoCorreo(texto))
+            {
+                Correo.TextColor = Color.Red;
+            }
+        }
+
+
+        //Manejadores del Campo Password
         private void Contraseña_Focused(object sender, FocusEventArgs e)
         {
             if (string.IsNullOrEmpty(Contraseña.Text))
@@ -107,12 +111,13 @@ namespace SmartTrade.Views
             }
         }
 
+
         public Boolean IsValidaContraseña(string contraseña)
         {
 
             if (string.IsNullOrEmpty(contraseña) || contraseña.Length < 8) return false;
             return contraseña.Any(char.IsDigit);
-        }
+        } 
 
         private void Contraseña_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -121,16 +126,17 @@ namespace SmartTrade.Views
             if (IsValidaContraseña(password) == false)
             { ContraseñaNoValida.IsVisible = true; }
             else ContraseñaNoValida.IsVisible = false;
-
+            
         }
 
         private void VerContraseña_Changed(object sender, TextChangedEventArgs e)
         {
-            if (VerContraseña.IsChecked == true) Contraseña.IsPassword = false;
-            else Contraseña.IsPassword = true; ;
+            if(showPasswordCheckbox.IsChecked == true) Contraseña.IsPassword = false;
+            else Contraseña.IsPassword=true; ;
         }
 
-        //Manejadores de los Campos Dirección 
+
+        //Manejadores del Campo Dirección 
         private void Calle_Focused(object sender, FocusEventArgs e)
         {
             if (string.IsNullOrEmpty(txtCalle.Text))
@@ -155,28 +161,56 @@ namespace SmartTrade.Views
             if (!string.IsNullOrEmpty(txtNumero.Text)) { txtNumero.TextColor = Color.Black; }
         }
 
+        //Manejadores del Campo IBAN (Cuenta bancaria)
+        private void IBAN_Focused(object sender, FocusEventArgs e)
+        {
+            if (string.IsNullOrEmpty(IBAN.Text))
+            {
+                IBAN.TextColor = Color.Gray;
+            }
+        }
 
+        public Boolean IsValidoIBAN(string IBAN)
+        {
 
+            if (string.IsNullOrEmpty(IBAN) || IBAN.Length < 6|| !IBAN.StartsWith("ES")) return false;
+            else return true;
+        }
+        private void IBAN_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(IBAN.Text)) { IBAN.TextColor = Color.Black; }
+        }
 
-        //cambiar la pagina a InicioSesion cuando esté
-        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private void IBAN_Unfocused(object sender, FocusEventArgs e)
+        {
+            string texto = IBAN.Text;
+            if (IsValidoIBAN(texto) == false) IbanNoValido.IsVisible = true;
+            else IbanNoValido.IsVisible = false;
+        }
+
+        //cambiar la pagina a InicioSesion si no se está registrado
+        private async void IniciarSesion_Tapped(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
-                LoginPage inicioSesion = new LoginPage(service);
+            LoginPage inicioSesion = new LoginPage(service);
             await Navigation.PushAsync(inicioSesion);
         }
 
+       
 
+
+
+        //Si todos los campos están correctamente completados se registrará el usuario
         private async void Registrarse_Clicked(object sender, EventArgs e)
         {
-
+            
             if (string.IsNullOrWhiteSpace(Nombre.Text) || string.IsNullOrWhiteSpace(txtCalle.Text) || string.IsNullOrWhiteSpace(txtNumero.Text) || pickerPais.SelectedItem == null || pickerCiudad.SelectedItem == null || string.IsNullOrWhiteSpace(NombreUser.Text))
             {
                 await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
                 return;
             }
-
-
+            
+            
 
             // Validar el formato del correo electrónico
             if (!IsValidoCorreo(Correo.Text))
@@ -184,18 +218,23 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Por favor, introduzca un correo electrónico válido.", "Aceptar");
                 return;
             }
+            if (!IsValidoIBAN(IBAN.Text))
+            {
+                await DisplayAlert("Error", "Por favor, introduzca un IBAN válido.", "Aceptar");
+                return;
+            }
             if (!IsValidaContraseña(Contraseña.Text))
             {
                 await DisplayAlert("Error", "Por favor, introduzca una contraseña válida.", "Aceptar");
                 return;
             }
-            if (service.MayorDe18(fecha_nacimiento.Date) == false)
+            if (service.MayorDe18(fecha_nacimiento.Date) == false) 
             {
                 await DisplayAlert("Error", "Debes ser mayor de 18 años", "Aceptar");
                 return;
             }
             if (!txtNumero.Text.All(char.IsDigit))
-                {
+            {
                 await DisplayAlert("Error", "Introduce un número de calle válido", "Aceptar");
                 return;
             }
@@ -204,13 +243,11 @@ namespace SmartTrade.Views
                     string paisSeleccionado = pickerPais.SelectedItem.ToString();
                     string ciudadSeleccionada = pickerCiudad.SelectedItem.ToString();
                     string Direccion = txtCalle.Text + "," + txtNumero.Text + "," + ciudadSeleccionada + "," + paisSeleccionado;
-                    Usuario compradorNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion, Correo.Text, fecha_nacimiento.Date, false);
-                    compradorNuevo.AddDatosComprador();
-                    //Usuario user = new Usuario("h", "h","hnosnid123", "abcd", "ab@gmail.com", DateTime.Now);
-                    await service.AddUser(compradorNuevo);
-                    //await service.AddUser(user);   
-                    //Comprador compradorNuevo = new Comprador(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date, 0);
-                    //await service.AddUserComprador(compradorNuevo); 
+                    Usuario usuarioNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion, Correo.Text, fecha_nacimiento.Date, true);
+                    usuarioNuevo.AddDatosVendedor(IBAN.Text);
+                    await service.AddUser(usuarioNuevo);
+
+
                     await Navigation.PopAsync();
                     ProductPage paginaPrincipal = new ProductPage(service);
                     await Navigation.PushAsync(paginaPrincipal);
@@ -229,5 +266,7 @@ namespace SmartTrade.Views
                     await DisplayAlert("Error", ex.Message, "Aceptar");
                 }
         }
+
+        
     }
 }

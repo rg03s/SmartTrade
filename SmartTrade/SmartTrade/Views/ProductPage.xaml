@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.ProductPage">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Barra de navegación -->
+            <StackLayout Orientation="Horizontal" Margin="10,10,5,0" Grid.Row="0">
+                <Button 
+                    Text="&#xf053;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnAtras_click"
+                />
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf07a;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnCarrito_click"
+                />
+                <Button HorizontalOptions="End"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
+            </StackLayout>
+
+            <!-- Contenido principal -->
+            <ScrollView Grid.Row="1">
+                <StackLayout Padding="20">
+
+                    <Grid RowSpacing="0">
+                        <!-- Row -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Column -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- boton modelo3d y valoracion -->
+                        <StackLayout Orientation="Horizontal" Grid.Row="1" Margin="-10,0,0,0">
+                            <Button Text="&#xe049;" 
+                               FontFamily="{StaticResource FontAwesomeBrands}"
+                               FontSize="20"
+                               TextColor="Black"
+                               BackgroundColor="Transparent"
+                               HorizontalOptions="Start"
+                               HeightRequest="40"
+                               WidthRequest="50"
+                               Clicked="BtnModelo3d_click"
+                            />
+                            <Button Text="modelo 3D" TextColor="Black" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center" Margin="-20,0,0,0" BackgroundColor="Transparent" HeightRequest="40" Clicked="BtnModelo3d_click"/>
+                        </StackLayout>
+
+                        <Label Text="44 Valoraciones" Margin="0,0,0,-8" TextColor="Gray" Grid.Row="0" Grid.Column="1" HorizontalOptions="EndAndExpand"/>
+                        <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="EndAndExpand">
+                            <Label Text="4.7" TextColor="Goldenrod" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <!-- Stars -->
+                            <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                            <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                            <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                            <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                            <Label Text="&#xf5c0;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                        </StackLayout>
+
+
+                    </Grid>
+                    <!-- Imagen del producto -->
+                    <Image Aspect="AspectFit" HeightRequest="250" WidthRequest="300" x:Name="imagen_producto" />
+
+                    <!-- Información del producto -->
+                    <StackLayout Orientation="Horizontal">
+                        <Label VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Vendido por " FontSize="13" TextColor="Black" x:Name="vendido_por"/>
+                                    <Span Text="UPVShop" TextColor="Blue" FontSize="13" FontAttributes="Bold" x:Name="vendedor"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button 
+                            HorizontalOptions="EndAndExpand" 
+                            BackgroundColor="Transparent"    
+                            Text="ver comentarios"
+                            TextColor="Blue"
+                            FontSize="13"
+                            VerticalOptions="Center"
+                            TextTransform="Lowercase"
+                            HeightRequest="40"
+                            Clicked="BtnVerComentarios_click"
+                        />
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Camiseta Valencia CF" FontAttributes="Bold" FontSize="24" Margin="0,0,0,0" TextColor="Black" x:Name="titulo_producto"/>
+                        <Label HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf577; " FontAttributes="Bold" TextColor="Green" FontFamily="{StaticResource FontAwesomeSolid}"/>
+                                    <Span Text="20%" FontAttributes="Bold" TextColor="Green" x:Name="huella_eco"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+
+                    <Label 
+                        Text="Esta es la primera equipación para niños que llevará el Valencia Club de Fútbol para la temporada 2023/2024. Tanto si quieres animar al equipo desde las gradas como durante el día a día esta camiseta es perfecta para ello. Se ha fabricado con al menos un 20% de material reciclado. ¡Llévala con orgullo!" 
+                        TextColor="Black"
+                        Margin="0,10,0,0"
+                        x:Name="producto_descripcion"
+                    />
+
+                    <!-- Especificaciones del producto -->
+                    <Label Text="Especificaciones del producto" TextColor="Black" FontAttributes="Bold" FontSize="Subtitle" Margin="0,20,0,0"/>
+                    <BoxView HeightRequest=".5" BackgroundColor="Black" HorizontalOptions="FillAndExpand" Margin="0,2,0,0"/>
+
+
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- ATRIBUTOS ROPA -->
+                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_talla_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf545; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Talla S" TextColor="Black" x:Name="talla_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="0" Grid.Row="1" IsVisible="false" x:Name="label_tipoPrenda_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf553; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Talla S" TextColor="Black" x:Name="tipoPrenda_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="1" Grid.Row="0" Margin="-70,0,0,0" IsVisible="false" x:Name="label_color_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf111; " FontFamily="{StaticResource FontAwesomeRegular}" TextColor="Black"/>
+                                    <Span Text="Color blanco" TextColor="Black" x:Name="color_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="1" Grid.Row="1" Margin="-70,0,0,0" IsVisible="false" x:Name="label_marca_ropa">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf54e; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Color blanco" TextColor="Black" x:Name="marca_ropa"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        
+                        <!-- FIN ATRIBUTOS ROPA -->
+                        
+                        
+                        
+                        <!-- ATRIBUTOS TECNOLOGIA -->
+                        <!-- ... -->
+                        <!-- FIN ATRIBUTOS TECNOLOGIA -->
+                        
+                        
+                        <!-- LOS OTROS... -->
+                        
+                    </Grid>
+
+
+
+                    <!-- Precio -->
+                    <Label Text="69.99€" FontAttributes="Bold" FontSize="24" Margin="0,20,0,0" TextColor="Black" x:Name="precio_producto"/>
+                </StackLayout>
+            </ScrollView>
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">
+                <Button
+                    Text="&#xf217;"
+                    TextColor="White"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    BackgroundColor="Black"
+                    FontSize="22"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"   
+                    AbsoluteLayout.LayoutBounds=".92, .98, -1, -1"
+                    Clicked="BtnAgregarCarrito_click"
+                />
+
+            </AbsoluteLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

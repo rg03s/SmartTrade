@@ -35,11 +35,11 @@ namespace SmartTrade.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
+                //var items = await DataStore.GetItemsAsync(true);
+               // foreach (var item in items)
+                //{
+                 //   Items.Add(item);
+                //}
             }
             catch (Exception ex)
             {

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.SeleccionRegistro">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="40" >
+                <StackLayout VerticalOptions="Start" HorizontalOptions="CenterAndExpand" Margin="0,-40,0,20">
+                    <Label Text="¡Bienvenido a SmartTrade!" 
+                        FontSize="40" 
+                        Padding="20"
+                        FontAttributes="Bold"
+                        TextColor="HotPink"
+                        HorizontalOptions="CenterAndExpand"
+                        FontFamily="Arial"
+                        Margin="0,0,0,40"
+                    />
+                </StackLayout>
+            <Grid HorizontalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+               
+                <Button
+                    Grid.Row="0"
+                    VerticalOptions="Center"
+                    Text="Registrarse como vendedor"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    BorderColor="HotPink"
+                    BorderWidth="1.5"
+                    CornerRadius="50" 
+                    Clicked="RegistroVendedor"
+                ></Button>
+                <Button
+                    Grid.Row="1"
+                     VerticalOptions="Center"
+                     Text="Registrarse como comprador"
+                     TextColor="Black"
+                     BackgroundColor="Transparent"
+                     BorderColor="HotPink"
+                     BorderWidth="1.5"
+                     CornerRadius="50" 
+                    Clicked="RegistroComprador"
+                ></Button>
+            </Grid>
+
+
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="¿Ya tienes una cuenta?" />
+                        <Span Text="Inicia sesión" TextColor="Blue">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
