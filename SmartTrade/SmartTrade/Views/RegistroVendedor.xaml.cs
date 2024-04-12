@@ -233,17 +233,20 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Debes ser mayor de 18 años", "Aceptar");
                 return;
             }
+            if (!txtNumero.Text.All(char.IsDigit))
+            {
+                await DisplayAlert("Error", "Introduce un número de calle válido", "Aceptar");
+                return;
+            }
             else try
                 {
                     string paisSeleccionado = pickerPais.SelectedItem.ToString();
                     string ciudadSeleccionada = pickerCiudad.SelectedItem.ToString();
                     string Direccion = txtCalle.Text + "," + txtNumero.Text + "," + ciudadSeleccionada + "," + paisSeleccionado;
                     Usuario usuarioNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion, Correo.Text, fecha_nacimiento.Date, true);
-                    //     Vendedor vendedorNuevo = new Vendedor(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date, IBAN.Text);
                     usuarioNuevo.AddDatosVendedor(IBAN.Text);
                     await service.AddUser(usuarioNuevo);
 
-                    //    await service.AddUserVendedor(vendedorNuevo); 
 
                     await Navigation.PopAsync();
                     ProductPage paginaPrincipal = new ProductPage(service);
