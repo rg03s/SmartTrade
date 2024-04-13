@@ -132,6 +132,5 @@ namespace SmartTrade.Persistencia.Services
             }
 
         }
-
     }
 }
