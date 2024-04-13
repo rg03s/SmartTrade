@@ -24,7 +24,7 @@ namespace SmartTrade.Views
             this.service = service;
 
             //test
-            Dictionary<string, object> atributosDeporte = new Dictionary<string, object>
+            Dictionary<string, object> atributosRopa = new Dictionary<string, object>
             {
                 {"talla", "Talla S"}, 
                 {"color", "blanco"},
@@ -32,14 +32,31 @@ namespace SmartTrade.Views
                 {"tipoPrenda", "Camiseta"}
             };
 
+            Dictionary<string, object> atributosTecnologia = new Dictionary<string, object>
+            {
+                {"dispositivo", "Ipad"},
+                {"marca", "Apple"},
+                {"modelo", "Air 5"},
+            };
+
+            Dictionary<string, object> atributosDeporte = new Dictionary<string, object>
+            {
+                {"tipo", "tenis"}
+            };
+
+            Dictionary<string, object> atributosPapeleria = new Dictionary<string, object>
+            {
+                {"material", "papel"}
+            };
+
             //producto de prueba. Debe ser el que se pase por el constructor
             IFabrica fabrica = new Fabrica();
             Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
-            Categoria categoria = new Categoria("ropa");
-            Producto producto = fabrica.CrearProducto("Camiseta VCF titulo", "10%", 
-                "https://images.footballfanatics.com/valencia-cf/valencia-puma-home-shirt-2023-24_ss5_p-13384602+pv-2+u-am5bcywj7qnu89ui9y5w+v-svw30hfxj2yzagdknjx7.jpg?_hv=2&w=900", 
-                "modelo3d", "Esto es la descripcion de la camiseta VCF", 
-                10, vendedor, categoria, 10, 69.99, atributosDeporte);
+            Categoria categoria = new Categoria("papeleria");
+            Producto producto = fabrica.CrearProducto("Paquete de folios A3", "35%",
+                "https://m.media-amazon.com/images/I/71EQOfPQ+nL._AC_SY300_SX300_.jpg", 
+                "modelo3d", "Esto es la descripcion del paquete de folios A3", 
+                10, vendedor, categoria, 10, 700, atributosPapeleria);
 
             //TODO
             //cambiar informacion por la del producto que se tiene que recibir en el constructor
@@ -88,16 +105,42 @@ namespace SmartTrade.Views
                 label_marca_ropa.IsVisible = true;
                 label_tipoPrenda_ropa.IsVisible = true;
 
-            } else if (producto is Papeleria)
+            } else if (producto is Tecnologia prod_tec)
             {
                 //TODO
-                //agregar en el xaml los label correspondientes, setear el texto y hacerlo visible. Como el caso anterior
-            } else if (producto is Deporte)
+                Span dispositivo = (Span)FindByName("dispositivo_tec");
+                dispositivo.Text = prod_tec.Dispositivo;
+
+                Span marca = (Span)FindByName("marca_tec");
+                marca.Text = "Marca: " + prod_tec.Marca;
+
+                Span modelo = (Span)FindByName("modelo_tec");
+                modelo.Text = "Modelo: " + prod_tec.Modelo;
+
+                Label label_dispositivo_tec = (Label)FindByName("label_dispositivo_tec");
+                Label label_marca_tec = (Label)FindByName("label_marca_tec");
+                Label label_modelo_tec = (Label)FindByName("label_modelo_tec");
+
+                label_dispositivo_tec.IsVisible = true;
+                label_marca_tec.IsVisible = true;
+                label_modelo_tec.IsVisible = true;
+
+            } else if (producto is Deporte prod_dep)
             {
-                //TODO
-            } else if (producto is Tecnologia)
+                Span tipo = (Span)FindByName("tipo_dep");
+                tipo.Text = "Tipo: " + prod_dep.Tipo;
+
+                Label label_tipo_dep = (Label)FindByName("label_tipo_dep");
+                label_tipo_dep.IsVisible = true;
+
+            }
+            else if (producto is Papeleria prod_papeleria)
             {
-                //TODO
+                Span material_papeleria = (Span)FindByName("material_papeleria");
+                material_papeleria.Text = "Tipo: " + prod_papeleria.Material;
+
+                Label label_material_papeleria = (Label)FindByName("label_material_papeleria");
+                label_material_papeleria.IsVisible = true;
             }
 
 
