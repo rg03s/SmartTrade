@@ -45,6 +45,7 @@ namespace SmartTrade.Views
                     {
                         correo.Text = string.Empty;
                         contraseña.Text = string.Empty;
+                        await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         //await Navigation.PopAsync();
                         productPage = new ProductPage(service);
                         await Navigation.PushAsync(productPage);
