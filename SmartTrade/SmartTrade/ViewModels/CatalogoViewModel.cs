@@ -4,16 +4,34 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using SmartTrade.Entities;
+using Microsoft.EntityFrameworkCore;
+using SmartTrade.Persistencia.Services;
+using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace SmartTrade.ViewModels
 {
     public class CatalogoViewModel : BaseViewModel
-    { 
-        public IEnumerable<Producto> ProductosDestacados = [new Producto("amongus", "50%", new Image(), "asf")];
-        public IEnumerable<Producto> CatalogoProductos = new List<Producto>();
+    {
+        private STService service;
 
-        public CatalogoViewModel()
+        public ObservableCollection<Producto> ProductosDestacados { get; set; }
+        public ObservableCollection<Producto> CatalogoProductos { get; set; }
+
+        public CatalogoViewModel(STService service) 
         {
+            this.service = service;
+            try
+            {
+                foreach (Producto pd in service.GetProductosDestacados())
+                {
+                    ProductosDestacados.Add(pd);
+                }
+                foreach (Producto p in service.GetAllProducts())
+                {
+                    CatalogoProductos.Add(p);
+                }
+            } catch (Exception ex) { }
         }
     }
 }

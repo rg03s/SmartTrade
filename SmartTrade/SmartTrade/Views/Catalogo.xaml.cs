@@ -5,9 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SmartTrade.Entities;
+using Supabase;
+using SmartTrade.Views;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SmartTrade.Entities;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace SmartTrade.Views
 {
@@ -19,7 +24,7 @@ namespace SmartTrade.Views
         {
             InitializeComponent();
             this.service = service;
-            this.BindingContext = new CatalogoViewModel();
+            this.BindingContext = new CatalogoViewModel(service);
         }
     }
 }

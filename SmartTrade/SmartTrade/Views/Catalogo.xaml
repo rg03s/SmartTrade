@@ -5,45 +5,86 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:SmartTrade.ViewModels" x:DataType="viewmodels:CatalogoViewModel"
              mc:Ignorable="d"
              x:Class="SmartTrade.Views.Catalogo"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
     <StackLayout>
-        <Label Text="SmartTrade" HorizontalOptions="Start" TextColor="Navy" FontSize="Large" />
-
-        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-            <Button Text="Lista de deseos" />
-            <Button Text="Carrito de compra" />
-            <Button Text="Perfil" />
-        </StackLayout>
-
-        <SearchBar Placeholder="Buscar productos..." />
-
-        <Label Text="Productos destacados" FontSize="Medium" />
-        <CarouselView ItemsSource="{Binding ProductosDestacados}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Image Source />
-                        <Label Text="{Binding Nombre}" />
-                        <Label Text="{Binding Precio, StringFormat='Precio: {0:C}'}" />
-                        <Label Text="{Binding Huella_eco, StringFormat='Huella ecológica: {0:P}'}" TextColor="ForestGreen" />
-                    </StackLayout>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
-
-        <BoxView HeightRequest="1" BackgroundColor="LightGray" />
-
-        <CollectionView ItemsSource="{Binding CatalogoProductos}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Image Source="{Binding Imagen}" />
-                        <Label Text="{Binding Nombre}" />
-                        <Label Text="{Binding Precio}" StringFormat="Precio: {0:C}" />
-                        <Label Text="{Binding HuellaEcologica}" StringFormat="Huella ecológica: {0:P}" TextColor="ForestGreen" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <Grid RowDefinitions="50,30">
+            <StackLayout Orientation="Horizontal"
+                         Grid.Row="0">
+                <Label Text="SmartTrade"
+                       VerticalOptions="Center"
+                       FontSize="24"
+                       TextColor="RoyalBlue"
+                       Margin="15,15,0,0"
+                       FontAttributes="Bold"
+                       FontFamily="Comfortaa"/>
+                <Image Source="https://i.ibb.co/YcD5rHp/Regalo.png"
+                       HeightRequest="28"
+                       Margin="15,15,0,0"
+                       HorizontalOptions="EndAndExpand"/>
+                <Image Source="https://i.ibb.co/6mJ4hCX/Carrito.png"
+                       HeightRequest="28"
+                       Margin="15,15,0,0"
+                       HorizontalOptions="End"/>
+                <Image Source="https://i.ibb.co/FJBrtHx/Usuario.png"
+                       HeightRequest="28"
+                       Margin="15,15,15,0"
+                       HorizontalOptions="End"/>
+            </StackLayout>
+            <Grid ColumnDefinitions="*,175"
+                  Grid.Row="1">
+                <SearchBar Grid.Column="1"
+                       Placeholder="Buscar..."
+                       PlaceholderColor="LightGray"
+                       FontSize="14"
+                       CancelButtonColor="RoyalBlue"/>
+            </Grid>
+        </Grid>
+        <Grid Margin="0,15,0,0">
+            <StackLayout>
+                <Label Text="Productos destacados"
+                       TextColor="SlateGray"
+                       FontSize="18"
+                       FontFamily="Comfortaa"
+                       HorizontalOptions="Center"
+                       CharacterSpacing="2"/>
+                <Grid ColumnDefinitions="*,*"
+                      Margin="15,0,15,0">
+                    <Frame HeightRequest="180"
+                           Margin="0,0,5,0"
+                           CornerRadius="10"
+                           BackgroundColor="White"
+                           Padding="10"
+                           Grid.Column="0">
+                        <StackLayout>
+                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120"/>
+                            <Label Text="No Product" FontAttributes="Bold" TextColor="DimGray"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="50" TextColor="ForestGreen"/>
+                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" HeightRequest="20" HorizontalOptions="Start"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame HeightRequest="180"
+                           WidthRequest="100"
+                           Margin="5,0,0,0"
+                           CornerRadius="10"
+                           BackgroundColor="White"
+                           Padding="10"
+                           Grid.Column="1">
+                        <StackLayout>
+                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120"/>
+                            <Label Text="No Product" FontAttributes="Bold" TextColor="DimGray"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="50" TextColor="ForestGreen"/>
+                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" HeightRequest="20" HorizontalOptions="Start"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+        </Grid>
+        <BoxView HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Center" Margin="0,10,0,0"/>
     </StackLayout>
 </ContentPage>
+   

@@ -20,6 +20,7 @@ namespace SmartTrade.Persistencia.Services
         private readonly IDAL<Vendedor> dalVendedor;
         private readonly IDAL<Comprador> dalComprador;
         private readonly IDAL<Tarjeta> dalTarjeta;
+        private readonly IDAL<Producto> dalProducto;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -131,6 +132,23 @@ namespace SmartTrade.Persistencia.Services
                 return true;
             }
 
+        }
+
+        public List<Producto> GetAllProducts() 
+        {
+            try
+            {
+                return dalProducto.GetAll().Result.ToList();
+            }
+            catch (NullReferenceException e) { return null; }
+        }
+
+        public List<Producto> GetProductosDestacados()
+        {
+            try
+            {
+                return dalProducto.GetAll().Result.OrderByDescending(p => p.Huella_eco).Take(3).ToList();
+            } catch (NullReferenceException e) { return null; }
         }
 
     }

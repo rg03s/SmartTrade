@@ -13,6 +13,17 @@ namespace SmartTrade.ViewModels
 
         public INavigation Navigation;
 
+        private ImageSource image;
+        public ImageSource Image
+        {
+            get { return image; }
+            set
+            {
+                image = value;
+                OnPropertyChanged();
+            }
+        }
+
       //  public IDataStore<Item> DataStore => DependencyService.Get<IDataStore< Item>>();
 
         bool isBusy = false;
