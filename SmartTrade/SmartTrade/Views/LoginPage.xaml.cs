@@ -45,7 +45,7 @@ namespace SmartTrade.Views
                     {
                         correo.Text = string.Empty;
                         contraseña.Text = string.Empty;
-                        await Navigation.PopAsync();
+                        //await Navigation.PopAsync();
                         productPage = new ProductPage(service);
                         await Navigation.PushAsync(productPage);
                     }
@@ -100,8 +100,8 @@ namespace SmartTrade.Views
         }
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
-            Registro registro = new Registro(service);
+            //await Navigation.
+            SeleccionRegistro registro = new SeleccionRegistro(service);
             await Navigation.PushAsync(registro);
         }
     }

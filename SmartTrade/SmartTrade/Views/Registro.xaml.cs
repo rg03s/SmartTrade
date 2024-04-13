@@ -206,12 +206,9 @@ namespace SmartTrade.Views
                     string Direccion = txtCalle.Text + "," + txtNumero.Text + "," + ciudadSeleccionada + "," + paisSeleccionado;
                     Usuario compradorNuevo = new Usuario(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion, Correo.Text, fecha_nacimiento.Date, false);
                     compradorNuevo.AddDatosComprador();
-                    //Usuario user = new Usuario("h", "h","hnosnid123", "abcd", "ab@gmail.com", DateTime.Now);
                     await service.AddUser(compradorNuevo);
-                    //await service.AddUser(user);   
-                    //Comprador compradorNuevo = new Comprador(NombreUser.Text, Nombre.Text, Contraseña.Text, Direccion.Text, Correo.Text, datePicker.Date, 0);
-                    //await service.AddUserComprador(compradorNuevo); 
-                    await Navigation.PopAsync();
+                     
+                   // await Navigation.PopAsync();
                     ProductPage paginaPrincipal = new ProductPage(service);
                     await Navigation.PushAsync(paginaPrincipal);
                 }

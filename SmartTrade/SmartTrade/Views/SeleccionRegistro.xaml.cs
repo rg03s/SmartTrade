@@ -24,21 +24,21 @@ namespace SmartTrade.Views
 
         private async void RegistroVendedor(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            //await Navigation.PopAsync();
             RegistroVendedor registroVendedor = new RegistroVendedor(service);
             await Navigation.PushAsync(registroVendedor);
         }
 
         private async void RegistroComprador(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            //await Navigation.PopAsync();
             Registro registroComprador = new Registro(service);
             await Navigation.PushAsync(registroComprador);
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+           // await Navigation.PopAsync();
             LoginPage inicioSesion = new LoginPage(service);
             await Navigation.PushAsync(inicioSesion);
         }

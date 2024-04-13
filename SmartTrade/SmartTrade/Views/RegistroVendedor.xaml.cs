@@ -191,7 +191,7 @@ namespace SmartTrade.Views
         //cambiar la pagina a InicioSesion si no se está registrado
         private async void IniciarSesion_Tapped(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            //await Navigation.PopAsync();
             LoginPage inicioSesion = new LoginPage(service);
             await Navigation.PushAsync(inicioSesion);
         }
@@ -248,7 +248,7 @@ namespace SmartTrade.Views
                     await service.AddUser(usuarioNuevo);
 
 
-                    await Navigation.PopAsync();
+                    //await Navigation.PopAsync();
                     ProductPage paginaPrincipal = new ProductPage(service);
                     await Navigation.PushAsync(paginaPrincipal);
                 }
