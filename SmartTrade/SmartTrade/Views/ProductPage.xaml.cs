@@ -61,7 +61,7 @@ namespace SmartTrade.Views
             //TODO
             //cambiar informacion por la del producto que se tiene que recibir en el constructor
             Span span_vendedor = (Span)FindByName("vendedor");
-            //span_vendedor.Text = producto.Producto_vendedores.First().Vendedor.Nombre; no funciona
+            //span_vendedor.Text = producto.Producto_vendedores.First().nicknameVendedor; no funciona
             span_vendedor.Text = "UPVShop";
 
             Image imagen_producto = (Image)FindByName("imagen_producto");
@@ -77,7 +77,7 @@ namespace SmartTrade.Views
             prod_desc.Text = producto.Descripcion;
 
             Label precio_producto = (Label)FindByName("precio_producto");
-            //precio_producto.Text = producto.Producto_vendedores.First().Precio.ToString(); no funciona
+            //precio_producto.Text = producto.Producto_vendedores.First().Precio.ToString();
             precio_producto.Text = "69.99" + " €";
             
             if(producto is Ropa prod_ropa)
@@ -107,7 +107,6 @@ namespace SmartTrade.Views
 
             } else if (producto is Tecnologia prod_tec)
             {
-                //TODO
                 Span dispositivo = (Span)FindByName("dispositivo_tec");
                 dispositivo.Text = prod_tec.Dispositivo;
 
