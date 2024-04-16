@@ -14,8 +14,8 @@ namespace SmartTrade.Entities
             this.Fecha = fecha;
             this.Nota = nota;
             this.Comentario = comentario;
-            this.Comprador.Nickname = comprador;
-            this.Producto.Id = producto;
+            this.nickComprador = comprador;
+            this.Producto = producto;
         }
     }
 }

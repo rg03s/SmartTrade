@@ -28,9 +28,13 @@ namespace SmartTrade.Entities
         public string Descripcion { get; set; }
         [Column("puntos")]
         public int Puntos { get; set; }
-        [Column("producto_vendedores")]
-        public ICollection<Producto_vendedor> Producto_vendedores { get; set; }
+        [Column("stock")]
+        public int Stock {  get; set; }
         [NotMapped]
-        public Categoria Categoria { get; set; }
+        public ICollection<Producto_vendedor> Producto_vendedores { get; set; }
+       
+
+        [Column("categoria")]
+        public string IdCategoria{ get; set; }
     }
 }

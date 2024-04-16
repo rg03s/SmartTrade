@@ -16,9 +16,9 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private ISTService service;
+        private STService service;
 
-        public ProductPage(ISTService service)
+        public  ProductPage(STService service)
         {
             InitializeComponent();
             this.service = service;
@@ -36,10 +36,13 @@ namespace SmartTrade.Views
             IFabrica fabrica = new Fabrica();
             Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
             Categoria categoria = new Categoria("ropa");
+            Producto p = ObtenerPrimerProducto().First();
+            Console.WriteLine(p.Nombre + p.Descripcion);
             Producto producto = fabrica.CrearProducto("Camiseta VCF titulo", "10%", 
                 "https://images.footballfanatics.com/valencia-cf/valencia-puma-home-shirt-2023-24_ss5_p-13384602+pv-2+u-am5bcywj7qnu89ui9y5w+v-svw30hfxj2yzagdknjx7.jpg?_hv=2&w=900", 
                 "modelo3d", "Esto es la descripcion de la camiseta VCF", 
-                10, vendedor, categoria, 10, 69.99, atributosDeporte);
+                10, categoria.Nombre, atributosDeporte);
+           
 
             //TODO
             //cambiar informacion por la del producto que se tiene que recibir en el constructor
@@ -104,6 +107,23 @@ namespace SmartTrade.Views
 
         }
 
+       
+
+        public List<Producto> ObtenerPrimerProducto()
+        {
+            List<Producto> pr = null;
+
+            // Declarar una tarea para obtener los productos de forma asíncrona
+            Task<List<Producto>> tarea = service.GetAllProductsAsync();
+
+            // Esperar a que la tarea se complete de forma síncrona
+            tarea.Wait();
+
+            // Obtener el resultado de la tarea
+            pr = tarea.Result;
+
+            return pr;
+        }
         private void BtnAtras_click(object sender, EventArgs e)
         {
             //TODO
