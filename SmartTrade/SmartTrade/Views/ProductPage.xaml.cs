@@ -56,7 +56,7 @@ namespace SmartTrade.Views
             Producto producto = fabrica.CrearProducto("Paquete de folios A3", "35%",
                 "https://m.media-amazon.com/images/I/71EQOfPQ+nL._AC_SY300_SX300_.jpg", 
                 "modelo3d", "Esto es la descripcion del paquete de folios A3", 
-                10, vendedor, categoria, 10, 700, atributosPapeleria);
+                10, categoria, atributosPapeleria);
 
             //TODO
             //cambiar informacion por la del producto que se tiene que recibir en el constructor
