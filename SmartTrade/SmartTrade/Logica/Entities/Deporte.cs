@@ -9,15 +9,15 @@ namespace SmartTrade.Entities
     {
         public Deporte() { }
         
-        public Deporte(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, double precio, string tipo)
-            :base(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio)
+        public Deporte(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Categoria cat, string tipo)
+            :base(nombre, huella, imagen, modelo3d, desc, puntos, cat)
         {
             this.Tipo = tipo;
         }
 
-        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Vendedor vend, Categoria cat, int stock, double precio, string tipo)
+        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Categoria cat, string tipo)
         {
-            return new Deporte(nombre, huella, imagen, modelo3d, desc, puntos, vend, cat, stock, precio, tipo);
+            return new Deporte(nombre, huella, imagen, modelo3d, desc, puntos, cat, tipo);
         }
     }
 }
