@@ -17,17 +17,26 @@ namespace SmartTrade.ViewModels
 
         public ObservableCollection<Producto> ProductosDestacados { get; set; }
         public ObservableCollection<Producto> CatalogoProductos { get; set; }
+        public ObservableCollection<string> ImagenDestacados { get; set; }
+        public ObservableCollection<string> NombreDestacados { get; set; }
+        public ObservableCollection<string> HuellaDestacados { get; set; }
+        public string NombreDestacado1 { get; set; }
 
         public CatalogoViewModel(STService service) 
         {
             this.service = service;
             try
             {
-                foreach (Producto pd in service.GetProductosDestacados())
+                ProductosDestacados = new ObservableCollection<Producto>();
+                CatalogoProductos = new ObservableCollection<Producto>();
+                foreach (Producto pd in service.GetProductosDestacadosAsync().Result)
                 {
                     ProductosDestacados.Add(pd);
+                    ImagenDestacados.Add(pd.Imagen);
+                    NombreDestacados.Add(pd.Nombre);
+                    HuellaDestacados.Add(pd.Huella_eco);
                 }
-                foreach (Producto p in service.GetAllProducts())
+                foreach (Producto p in service.GetAllProductsAsync().Result)
                 {
                     CatalogoProductos.Add(p);
                 }

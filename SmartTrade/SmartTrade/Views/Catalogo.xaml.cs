@@ -13,6 +13,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System.Diagnostics;
 
 namespace SmartTrade.Views
 {

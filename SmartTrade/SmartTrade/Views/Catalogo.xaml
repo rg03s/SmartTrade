@@ -47,7 +47,8 @@
                        FontSize="18"
                        FontFamily="Comfortaa"
                        HorizontalOptions="Center"
-                       CharacterSpacing="2"/>
+                       CharacterSpacing="2"
+                       x:Name="destacadosLabel"/>
                 <Grid ColumnDefinitions="*,*"
                       Margin="15,0,15,0">
                     <Frame HeightRequest="180"
@@ -56,14 +57,17 @@
                            BackgroundColor="White"
                            Padding="10"
                            Grid.Column="0">
-                        <StackLayout>
-                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120"/>
-                            <Label Text="No Product" FontAttributes="Bold" TextColor="DimGray"/>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="50" TextColor="ForestGreen"/>
-                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" HeightRequest="20" HorizontalOptions="Start"/>
-                            </StackLayout>
-                        </StackLayout>
+                        <CollectionView ItemsSource="{Binding ProductosDestacados}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                        <Image Source="{Binding ImagenDestacados}" Aspect="AspectFill" HeightRequest="100" />
+                                        <Label Text="{Binding NombreDestacados}" FontAttributes="Bold" />
+                                        <Label Text="{Binding HuellaDestacados, StringFormat='{0:P}'}" TextColor="ForestGreen" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </Frame>
                     <Frame HeightRequest="180"
                            WidthRequest="100"
@@ -73,8 +77,8 @@
                            Padding="10"
                            Grid.Column="1">
                         <StackLayout>
-                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120"/>
-                            <Label Text="No Product" FontAttributes="Bold" TextColor="DimGray"/>
+                            <Image Source="{Binding ImagenDestacados}" Aspect="AspectFill" HeightRequest="120"/>
+                            <Label Text="{Binding NombreDestacados}" FontAttributes="Bold" TextColor="DimGray"/>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="50" TextColor="ForestGreen"/>
                                 <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" HeightRequest="20" HorizontalOptions="Start"/>

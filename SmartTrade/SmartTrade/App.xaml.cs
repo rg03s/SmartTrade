@@ -1,6 +1,7 @@
 ﻿using SmartTrade.Persistencia.Services;
 using SmartTrade.Views;
 using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,8 +16,8 @@ namespace SmartTrade
             InitializeComponent();
             STService service = STService.Instance;
             // DependencyService.Register<MockDataStore>();
-           MainPage = new NavigationPage(new Catalogo(service));
-            
+            MainPage = new NavigationPage(new Catalogo(service));
+
            // MainPage = new ProductPage(service);
         }
 

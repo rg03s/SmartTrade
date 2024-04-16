@@ -28,7 +28,7 @@ namespace SmartTrade.Persistencia.Services
         public STService()
         {
             dalUsuario = new STDAL<Usuario>(supabaseContext);
-
+            dalProducto = new STDAL<Producto>(supabaseContext);
         }
         public static STService Instance
         {
@@ -134,21 +134,17 @@ namespace SmartTrade.Persistencia.Services
 
         }
 
-        public List<Producto> GetAllProducts() 
+        public async Task<List<Producto>> GetAllProductsAsync()
         {
-            try
-            {
-                return dalProducto.GetAll().Result.ToList();
-            }
-            catch (NullReferenceException e) { return null; }
+            var productos = await dalProducto.GetAll();
+            return productos.ToList();
         }
 
-        public List<Producto> GetProductosDestacados()
+        public async Task<List<Producto>> GetProductosDestacadosAsync()
         {
-            try
-            {
-                return dalProducto.GetAll().Result.OrderByDescending(p => p.Huella_eco).Take(3).ToList();
-            } catch (NullReferenceException e) { return null; }
+            var productosOrdenados = await dalProducto.GetAll();
+            var productosTop = productosOrdenados.OrderByDescending(p => p.Huella_eco).Take(2);
+            return productosTop.ToList();
         }
 
     }
