@@ -31,6 +31,9 @@ namespace SmartTrade.Entities
         [Column("fecha_nac")]
         public DateTime Fecha_nac { get; set; }
 
+        [Column ("isVendedor")]
+        public bool IsVendedor { get; set; }
+
         [Column("cuenta_bancaria")]
         public string Cuenta_bancaria { get; set; }
 
