@@ -109,16 +109,17 @@
                     <Image Aspect="AspectFit" HeightRequest="250" WidthRequest="300" x:Name="imagen_producto" />
 
                     <!-- Información del producto -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label VerticalOptions="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Vendido por " FontSize="13" TextColor="Black" x:Name="vendido_por"/>
-                                    <Span Text="UPVShop" TextColor="Blue" FontSize="13" FontAttributes="Bold" x:Name="vendedor"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Vendedor: " FontAttributes="Bold" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"/>
+                        <Picker x:Name="vendedorPicker" Title="Selecciona un vendedor" FontSize="13" FontAttributes="Bold" TextColor="Blue" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" />
+                    </Grid>
 
 
                     <StackLayout Orientation="Horizontal">

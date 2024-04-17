@@ -47,7 +47,8 @@ namespace SmartTrade.Views
                         contraseña.Text = string.Empty;
                         await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         //await Navigation.PopAsync();
-                        productPage = new ProductPage(service);
+                        //TODO: CAMBIAR A CATÁLOGO
+                        productPage = new ProductPage(service, null);
                         await Navigation.PushAsync(productPage);
                     }
                     else

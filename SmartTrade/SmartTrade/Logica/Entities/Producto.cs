@@ -7,7 +7,9 @@ namespace SmartTrade.Entities
 {
     public partial class Producto
     {
-        public Producto() { }
+        public Producto() {
+            Producto_Vendedor = new List<Producto_vendedor>();
+        }
         public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Categoria cat)
         {
             this.Nombre = nombre;
