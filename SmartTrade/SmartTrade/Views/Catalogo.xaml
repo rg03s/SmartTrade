@@ -57,17 +57,11 @@
                            BackgroundColor="White"
                            Padding="10"
                            Grid.Column="0">
-                        <CollectionView ItemsSource="{Binding ProductosDestacados}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout>
-                                        <Image Source="{Binding ImagenDestacados}" Aspect="AspectFill" HeightRequest="100" />
-                                        <Label Text="{Binding NombreDestacados}" FontAttributes="Bold" />
-                                        <Label Text="{Binding HuellaDestacados, StringFormat='{0:P}'}" TextColor="ForestGreen" />
-                                    </StackLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                            <StackLayout>
+                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="100" />
+                                <Label Text="NoImage" FontAttributes="Bold" />
+                                <Label Text="0" TextColor="ForestGreen" />
+                            </StackLayout>
                     </Frame>
                     <Frame HeightRequest="180"
                            WidthRequest="100"
@@ -77,12 +71,9 @@
                            Padding="10"
                            Grid.Column="1">
                         <StackLayout>
-                            <Image Source="{Binding ImagenDestacados}" Aspect="AspectFill" HeightRequest="120"/>
-                            <Label Text="{Binding NombreDestacados}" FontAttributes="Bold" TextColor="DimGray"/>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="50" TextColor="ForestGreen"/>
-                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" HeightRequest="20" HorizontalOptions="Start"/>
-                            </StackLayout>
+                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="100" />
+                            <Label Text="NoImage" FontAttributes="Bold" />
+                            <Label Text="0" TextColor="ForestGreen" />
                         </StackLayout>
                     </Frame>
                 </Grid>

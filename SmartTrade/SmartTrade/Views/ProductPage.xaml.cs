@@ -18,7 +18,7 @@ namespace SmartTrade.Views
 
         private STService service;
 
-        public ProductPage(ISTService service, Producto producto)
+        public ProductPage(STService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;

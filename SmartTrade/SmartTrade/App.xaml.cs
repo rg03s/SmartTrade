@@ -19,7 +19,7 @@ namespace SmartTrade
             // DependencyService.Register<MockDataStore>();
            // MainPage = new NavigationPage(new Catalogo(service));
 
-           MainPage = new ProductPage(service);
+           MainPage = new Catalogo(service);
         }
 
         protected override void OnStart()
