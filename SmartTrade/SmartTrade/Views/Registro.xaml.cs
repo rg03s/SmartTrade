@@ -209,8 +209,8 @@ namespace SmartTrade.Views
                     await service.AddUser(compradorNuevo);
                      
                    // await Navigation.PopAsync();
-                    Catalogo paginaPrincipal = new Catalogo(service);
-                    await Navigation.PushAsync(paginaPrincipal);
+                    LoginPage login = new LoginPage(service);
+                    await Navigation.PushAsync(login);
                 }
                 catch (EmailYaRegistradoException ex)
                 {

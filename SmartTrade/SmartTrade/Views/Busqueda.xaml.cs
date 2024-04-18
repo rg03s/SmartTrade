@@ -1,4 +1,4 @@
-﻿using SmartTrade.Persistencia.Services;
+﻿using SmartTrade.Logica.Services;
 using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;
