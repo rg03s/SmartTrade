@@ -39,17 +39,20 @@ namespace SmartTrade.Persistencia.Services
 
         // public DbSet<Entities.Comprador> Comprador { get; set; }
         public DbSet<Producto_vendedor> Producto_Vendedor { get; set; }
-        /*
         public DbSet<Categoria> Categoria { get; set; }
-        public DbSet<Pedido> Pedido { get; set; }
         public DbSet<Producto> Producto { get; set; }
-        
-        public DbSet<Valoracion> Valoracion { get; set; }
         public DbSet<Deporte> Deporte { get; set; }
         public DbSet<Papeleria> Papeleria { get; set; }
         public DbSet<Ropa> Ropa { get; set; }
-        
+
         public DbSet<Tecnologia> Tecnologia { get; set; }
+        /*
+       
+        public DbSet<Pedido> Pedido { get; set; }
+        
+        
+        public DbSet<Valoracion> Valoracion { get; set; }
+       
         */
 
     }

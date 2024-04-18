@@ -249,7 +249,8 @@ namespace SmartTrade.Views
 
 
                     //await Navigation.PopAsync();
-                    ProductPage paginaPrincipal = new ProductPage(service);
+                    //TODO: CAMBIAR A CATÁLOGO
+                    ProductPage paginaPrincipal = new ProductPage(service, null);
                     await Navigation.PushAsync(paginaPrincipal);
                 }
                 catch (EmailYaRegistradoException ex)

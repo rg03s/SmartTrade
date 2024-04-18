@@ -1,4 +1,6 @@
-﻿using Postgrest.Attributes;
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Postgrest.Models;
 using System;
 using System.Collections.Generic;
@@ -7,9 +9,11 @@ using Xamarin.Forms;
 
 namespace SmartTrade.Entities
 {
+    [Table("Producto")]
     public partial class Producto
     {
-        [PrimaryKey("id")]
+        [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("nombre")]
@@ -25,7 +29,7 @@ namespace SmartTrade.Entities
         [Column("puntos")]
         public int Puntos { get; set; }
         [Column("producto_vendedores")]
-        public ICollection<Producto_vendedor> Producto_vendedores { get; set; }
+        public virtual ICollection<Producto_vendedor> Producto_Vendedor { get; set; }
         public Categoria Categoria { get; set; }
     }
 }

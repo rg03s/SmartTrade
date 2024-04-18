@@ -16,14 +16,16 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private ISTService service;
+        private STService service;
 
-        public ProductPage(ISTService service)
+        public ProductPage(STService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;
 
+            #region TEST
             //test
+            /*
             Dictionary<string, object> atributosRopa = new Dictionary<string, object>
             {
                 {"talla", "Talla S"}, 
@@ -47,22 +49,17 @@ namespace SmartTrade.Views
             Dictionary<string, object> atributosPapeleria = new Dictionary<string, object>
             {
                 {"material", "papel"}
-            };
+            };*/
 
             //producto de prueba. Debe ser el que se pase por el constructor
-            IFabrica fabrica = new Fabrica();
-            Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
-            Categoria categoria = new Categoria("papeleria");
-            Producto producto = fabrica.CrearProducto("Paquete de folios A3", "35%",
-                "https://m.media-amazon.com/images/I/71EQOfPQ+nL._AC_SY300_SX300_.jpg", 
-                "modelo3d", "Esto es la descripcion del paquete de folios A3", 
-                10, vendedor, categoria, 10, 700, atributosPapeleria);
-
-            //TODO
-            //cambiar informacion por la del producto que se tiene que recibir en el constructor
-            Span span_vendedor = (Span)FindByName("vendedor");
-            //span_vendedor.Text = producto.Producto_vendedores.First().nicknameVendedor; no funciona
-            span_vendedor.Text = "UPVShop";
+            //IFabrica fabrica = new Fabrica();
+            //Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
+            //Categoria categoria = new Categoria("papeleria");
+            //Producto producto = fabrica.CrearProducto("Paquete de folios A3", "35%",
+            // "https://m.media-amazon.com/images/I/71EQOfPQ+nL._AC_SY300_SX300_.jpg", 
+            //"modelo3d", "Esto es la descripcion del paquete de folios A3", 
+            //10, categoria, atributosPapeleria);
+            #endregion
 
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
@@ -77,8 +74,21 @@ namespace SmartTrade.Views
             prod_desc.Text = producto.Descripcion;
 
             Label precio_producto = (Label)FindByName("precio_producto");
-            //precio_producto.Text = producto.Producto_vendedores.First().Precio.ToString();
-            precio_producto.Text = "69.99" + " €";
+            precio_producto.Text = producto.Producto_Vendedor.First().Precio.ToString() + "€";
+            
+            Picker picker = (Picker)FindByName("vendedorPicker");
+            foreach (Producto_vendedor pv in producto.Producto_Vendedor)
+            {
+                picker.Items.Add(pv.nicknameVendedor);
+            }
+            picker.SelectedItem = picker.Items[0];
+
+            //on change picker selected item change precio_producto
+            picker.SelectedIndexChanged += (sender, args) =>
+            {
+                string selected = picker.Items[picker.SelectedIndex];
+                precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.nicknameVendedor == selected).First().Precio.ToString() + "€";
+            };
             
             if(producto is Ropa prod_ropa)
             {
@@ -141,17 +151,14 @@ namespace SmartTrade.Views
                 Label label_material_papeleria = (Label)FindByName("label_material_papeleria");
                 label_material_papeleria.IsVisible = true;
             }
-
-
-
         }
 
+       
         private void BtnAtras_click(object sender, EventArgs e)
         {
             //TODO
-            //cambiar de vista a catalogo. Pongo a login temporalmente
-            Console.WriteLine("Atras");
-
+            Catalogo catalogo = new Catalogo(service);
+            Navigation.PushAsync(catalogo);
         }
 
         private void BtnCarrito_click(object sender, EventArgs e)
