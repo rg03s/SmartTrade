@@ -157,9 +157,8 @@ namespace SmartTrade.Views
         private void BtnAtras_click(object sender, EventArgs e)
         {
             //TODO
-            //cambiar de vista a catalogo. Pongo a login temporalmente
-            Console.WriteLine("Atras");
-
+            Catalogo catalogo = new Catalogo(service);
+            Navigation.PushAsync(catalogo);
         }
 
         private void BtnCarrito_click(object sender, EventArgs e)
