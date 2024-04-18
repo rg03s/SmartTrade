@@ -16,11 +16,8 @@ namespace SmartTrade.Views
     public partial class LoginPage : ContentPage
     {
         private STService service;
-        //private string username;
-        //private string password;
-        private ProductPage productPage;
-        //private Registro registro;
-        //private LoginPage loginPage;
+        private Catalogo catalogo;
+
 
         public LoginPage(STService service)
         {
@@ -47,9 +44,8 @@ namespace SmartTrade.Views
                         contraseña.Text = string.Empty;
                         await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         //await Navigation.PopAsync();
-                        //TODO: CAMBIAR A CATÁLOGO
-                        productPage = new ProductPage(service, null);
-                        await Navigation.PushAsync(productPage);
+                        catalogo = new Catalogo(service);
+                        await Navigation.PushAsync(catalogo);
                     }
                     else
                     {
