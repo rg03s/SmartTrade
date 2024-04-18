@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Persistencia.DataAccess
 {
     public interface IDAL<T> where T : class
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Logica.Services
 {
 
 
@@ -28,7 +28,7 @@ namespace SmartTrade.Persistencia.Services
         public UserNotFoundException(string message, Exception inner) : base(message, inner) { }
     }
 
-   
+
     public class IncorrectPasswordException : ServiceException
     {
         public IncorrectPasswordException() : base("Contraseña incorrecta, inténtelo de nuevo") { }

@@ -6,7 +6,7 @@ using SmartTrade.Entities;
 using Supabase.Gotrue;
 using System.Security.Cryptography;
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Persistencia.DataAccess
 {
     public class SupabaseContext : DbContext
     {
@@ -32,9 +32,9 @@ namespace SmartTrade.Persistencia.Services
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("User Id=postgres.apjeqdhvkthosokvpvma;Password=zGvvULbrYK4XeQe2;Server=aws-0-eu-west-2.pooler.supabase.com;Port=5432;Database=postgres");
 
-        public DbSet<Entities.Usuario> Usuario { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Tarjeta> Tarjeta { get; set; }
-      //  public DbSet<Entities.Vendedor> Vendedor { get; set; }
+        //  public DbSet<Entities.Vendedor> Vendedor { get; set; }
         //        
 
         // public DbSet<Entities.Comprador> Comprador { get; set; }

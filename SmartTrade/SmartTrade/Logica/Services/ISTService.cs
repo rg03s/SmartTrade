@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Logica.Services
 {
     public partial interface ISTService
     {
@@ -15,5 +15,5 @@ namespace SmartTrade.Persistencia.Services
         void GetUsuarios();
         */
         Task<bool> Login(string nickname, string password);
-    }  
+    }
 }

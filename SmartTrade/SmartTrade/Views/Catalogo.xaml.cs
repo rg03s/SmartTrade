@@ -1,5 +1,4 @@
-﻿using SmartTrade.Persistencia.Services;
-using SmartTrade.ViewModels;
+﻿using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +14,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using SmartTrade.Logica.Services;
 
 namespace SmartTrade.Views
 {

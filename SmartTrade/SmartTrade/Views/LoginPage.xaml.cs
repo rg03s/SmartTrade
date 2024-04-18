@@ -1,5 +1,5 @@
 ﻿using SmartTrade.Entities;
-using SmartTrade.Persistencia.Services;
+using SmartTrade.Logica.Services;
 using SmartTrade.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,11 @@ namespace SmartTrade.Views
     public partial class LoginPage : ContentPage
     {
         private STService service;
-        private Catalogo catalogo;
-
+        //private string username;
+        //private string password;
+        private ProductPage productPage;
+        //private Registro registro;
+        //private LoginPage loginPage;
 
         public LoginPage(STService service)
         {
@@ -44,8 +47,8 @@ namespace SmartTrade.Views
                         contraseña.Text = string.Empty;
                         await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         //await Navigation.PopAsync();
-                        catalogo = new Catalogo(service);
-                        await Navigation.PushAsync(catalogo);
+                        Catalogo paginaPrincipal = new Catalogo(service);
+                        await Navigation.PushAsync(paginaPrincipal);
                     }
                     else
                     {

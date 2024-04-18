@@ -12,7 +12,7 @@ using SkiaSharp;
 using Supabase.Interfaces;
 
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Persistencia.DataAccess
 {
     public partial class STDAL<T> : IDAL<T> where T : class
     {
@@ -58,14 +58,15 @@ namespace SmartTrade.Persistencia.Services
 
         public async Task<T> GetById(string id)
         {
-            try {
+            try
+            {
                 return await table.FindAsync(id);
             }
             catch (Exception)
             {
                 return null;
             }
-           
+
         }
 
         public async Task Add(T entity)

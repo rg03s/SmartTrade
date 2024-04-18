@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SmartTrade.Persistencia.Services;
+using SmartTrade.Logica.Services;
 using SmartTrade.Views;
 using Supabase;
 using System;

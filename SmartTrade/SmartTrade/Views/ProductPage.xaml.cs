@@ -1,6 +1,6 @@
 ﻿using SmartTrade.Entities;
 using SmartTrade.Logica.Entities;
-using SmartTrade.Persistencia.Services;
+using SmartTrade.Logica.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

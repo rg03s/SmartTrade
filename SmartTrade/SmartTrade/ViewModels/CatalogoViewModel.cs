@@ -5,10 +5,10 @@ using System.Text;
 using Xamarin.Forms;
 using SmartTrade.Entities;
 using Microsoft.EntityFrameworkCore;
-using SmartTrade.Persistencia.Services;
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using SmartTrade.Fabrica;
+using SmartTrade.Logica.Services;
 
 namespace SmartTrade.ViewModels
 {

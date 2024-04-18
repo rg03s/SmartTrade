@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using Postgrest;
 using SmartTrade.Entities;
-using SmartTrade.Persistencia;
+using SmartTrade.Persistencia.DataAccess;
 using Supabase.Gotrue;
 using Xamarin.Essentials;
 
-namespace SmartTrade.Persistencia.Services
+namespace SmartTrade.Logica.Services
 {
     public class STService : ISTService
     {
@@ -34,7 +34,7 @@ namespace SmartTrade.Persistencia.Services
         {
             get
             {
-                return STService.instance;
+                return instance;
             }
         }
 
@@ -48,14 +48,15 @@ namespace SmartTrade.Persistencia.Services
             {
                 throw new NickYaRegistradoException();
             }
-            else {
+            else
+            {
                 if (usuario.Email.Contains("@"))
                 {
                     if (usuario.Email.StartsWith("@"))
                         throw new EmailFormatoIncorrectoException();
                     if (usuario.Email.EndsWith(".com") || usuario.Email.EndsWith(".es"))
                     {
-                       await dalUsuario.Add(usuario);
+                        await dalUsuario.Add(usuario);
                     }
                     else throw new EmailFormatoIncorrectoException();
                 }
@@ -63,17 +64,17 @@ namespace SmartTrade.Persistencia.Services
             }
         }
 
-        public Boolean MayorDe18(DateTime fecha_nac) 
+        public bool MayorDe18(DateTime fecha_nac)
         {
-           TimeSpan edad = DateTime.Now - fecha_nac;
+            TimeSpan edad = DateTime.Now - fecha_nac;
             if ((int)(edad.TotalDays / 365.25) >= 18) return true;
             else return false;
         }
 
         public async Task AddUserVendedor(Vendedor vendedor)
         {
-              
-              await dalVendedor.Add(vendedor);
+
+            await dalVendedor.Add(vendedor);
         }
 
         public async Task AddUserComprador(Comprador comprador)
@@ -81,7 +82,7 @@ namespace SmartTrade.Persistencia.Services
             await dalComprador.Add(comprador);
         }
 
-        public async Task AddTarjeta(Tarjeta tarjeta) 
+        public async Task AddTarjeta(Tarjeta tarjeta)
         {
             await dalTarjeta.Add(tarjeta);
         }

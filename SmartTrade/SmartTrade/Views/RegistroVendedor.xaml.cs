@@ -1,5 +1,5 @@
 ﻿using SmartTrade.Entities;
-using SmartTrade.Persistencia.Services;
+using SmartTrade.Logica.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -249,8 +249,7 @@ namespace SmartTrade.Views
 
 
                     //await Navigation.PopAsync();
-                    //TODO: CAMBIAR A CATÁLOGO
-                    ProductPage paginaPrincipal = new ProductPage(service, null);
+                    Catalogo paginaPrincipal = new Catalogo(service);
                     await Navigation.PushAsync(paginaPrincipal);
                 }
                 catch (EmailYaRegistradoException ex)

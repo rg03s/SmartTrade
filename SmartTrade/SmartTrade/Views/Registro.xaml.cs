@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SmartTrade.Entities;
-using SmartTrade.Persistencia.Services;
 using Supabase;
 using SmartTrade.Views;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SmartTrade.Logica.Services;
 
 namespace SmartTrade.Views
 {
@@ -209,8 +209,7 @@ namespace SmartTrade.Views
                     await service.AddUser(compradorNuevo);
                      
                    // await Navigation.PopAsync();
-                   //CAMBIAR A CATÁLOGO
-                    ProductPage paginaPrincipal = new ProductPage(service, null);
+                    Catalogo paginaPrincipal = new Catalogo(service);
                     await Navigation.PushAsync(paginaPrincipal);
                 }
                 catch (EmailYaRegistradoException ex)
