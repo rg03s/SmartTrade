@@ -163,5 +163,11 @@ namespace SmartTrade.Persistencia.Services
                 return false;
             }
         }
+
+        public async Task<List<Producto>> GetAllProductsAsync()
+        {
+            var productos = await dalProducto.GetAll();
+            return productos.ToList();
+        }
     }
 }
