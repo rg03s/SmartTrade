@@ -9,9 +9,9 @@ namespace SmartTrade.Logica.Entities
 {
     public class Fabrica : IFabrica
     {
-        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, Dictionary<string, object> atributosEspecificos)
+        public Producto CrearProducto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Categoria cat, Dictionary<string, object> atributosEspecificos)
         {
-            switch (cat)
+            switch (cat.Nombre.ToLower())
             {
                 case "deporte":
                     string tipo = atributosEspecificos["tipo"] as string;

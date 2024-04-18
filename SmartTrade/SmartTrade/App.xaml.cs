@@ -1,4 +1,5 @@
-﻿using SmartTrade.Persistencia.Services;
+﻿using SmartTrade.Entities;
+using SmartTrade.Persistencia.Services;
 using SmartTrade.Views;
 using System;
 using System.Diagnostics;

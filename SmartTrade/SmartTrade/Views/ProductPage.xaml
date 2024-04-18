@@ -10,6 +10,22 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">
+                <Button
+                    Text="&#xf217;"
+                    TextColor="White"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    BackgroundColor="Black"
+                    FontSize="22"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"   
+                    AbsoluteLayout.LayoutBounds=".92, .98, -1, -1"
+                    Clicked="BtnAgregarCarrito_click"
+                />
+            </AbsoluteLayout>
+
             <!-- Barra de navegación -->
             <StackLayout Orientation="Horizontal" Margin="10,10,5,0" Grid.Row="0">
                 <Button 
@@ -45,7 +61,7 @@
             </StackLayout>
 
             <!-- Contenido principal -->
-            <ScrollView Grid.Row="1">
+            <ScrollView Grid.Row="1" VerticalOptions="FillAndExpand">
                 <StackLayout Padding="20">
 
                     <Grid RowSpacing="0">
@@ -54,13 +70,13 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
+
                         <!-- Column -->
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <!-- boton modelo3d y valoracion -->
                         <StackLayout Orientation="Horizontal" Grid.Row="1" Margin="-10,0,0,0">
                             <Button Text="&#xe049;" 
@@ -93,27 +109,17 @@
                     <Image Aspect="AspectFit" HeightRequest="250" WidthRequest="300" x:Name="imagen_producto" />
 
                     <!-- Información del producto -->
-                    <StackLayout Orientation="Horizontal">
-                        <Label VerticalOptions="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Vendido por " FontSize="13" TextColor="Black" x:Name="vendido_por"/>
-                                    <Span Text="UPVShop" TextColor="Blue" FontSize="13" FontAttributes="Bold" x:Name="vendedor"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Button 
-                            HorizontalOptions="EndAndExpand" 
-                            BackgroundColor="Transparent"    
-                            Text="ver comentarios"
-                            TextColor="Blue"
-                            FontSize="13"
-                            VerticalOptions="Center"
-                            TextTransform="Lowercase"
-                            HeightRequest="40"
-                            Clicked="BtnVerComentarios_click"
-                        />
-                    </StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Vendedor: " FontAttributes="Bold" FontSize="16" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"/>
+                        <Picker x:Name="vendedorPicker" Title="Selecciona un vendedor" FontSize="13" FontAttributes="Bold" TextColor="Blue" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" />
+                    </Grid>
 
 
                     <StackLayout Orientation="Horizontal">
@@ -151,7 +157,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- ATRIBUTOS ROPA -->
+                        <!-- ATRIBUTOS ROPA-->
                         <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_talla_ropa">
                             <Label.FormattedText>
                                 <FormattedString>
@@ -170,7 +176,7 @@
                             </Label.FormattedText>
                         </Label>
 
-                        <Label Grid.Column="1" Grid.Row="0" Margin="-70,0,0,0" IsVisible="false" x:Name="label_color_ropa">
+                        <Label Grid.Column="1" Grid.Row="0" Margin="0,0,0,0" IsVisible="false" x:Name="label_color_ropa">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="&#xf111; " FontFamily="{StaticResource FontAwesomeRegular}" TextColor="Black"/>
@@ -179,7 +185,7 @@
                             </Label.FormattedText>
                         </Label>
 
-                        <Label Grid.Column="1" Grid.Row="1" Margin="-70,0,0,0" IsVisible="false" x:Name="label_marca_ropa">
+                        <Label Grid.Column="1" Grid.Row="1" Margin="0,0,0,0" IsVisible="false" x:Name="label_marca_ropa">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="&#xf54e; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
@@ -187,43 +193,118 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        
-                        <!-- FIN ATRIBUTOS ROPA -->
-                        
-                        
-                        
-                        <!-- ATRIBUTOS TECNOLOGIA -->
-                        <!-- ... -->
-                        <!-- FIN ATRIBUTOS TECNOLOGIA -->
-                        
-                        
-                        <!-- LOS OTROS... -->
-                        
-                    </Grid>
 
+                        <!-- REGION FIN ATRIBUTOS ROPA -->
+
+
+                        <!-- ATRIBUTOS TECNOLOGIA -->
+
+                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_dispositivo_tec">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf2db; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Dispositivo" TextColor="Black" x:Name="dispositivo_tec"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="0" Grid.Row="1" IsVisible="false" x:Name="label_marca_tec">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf05a; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Marca" TextColor="Black" x:Name="marca_tec"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Grid.Column="1" Grid.Row="0" Margin="-70,0,0,0" IsVisible="false" x:Name="label_modelo_tec">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf05a; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Modelo" TextColor="Black" x:Name="modelo_tec"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+
+                        <!-- FIN ATRIBUTOS TECNOLOGIA -->
+
+
+                        <!-- ATRIBUTOS DEPORTE -->
+
+                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_tipo_dep">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf05a; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Tipo: " TextColor="Black" x:Name="tipo_dep"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <!-- FIN ATRIBUTOS DEPORTE -->
+
+                        <!-- ATRIBUTOS PAPELERIA -->
+
+                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_material_papeleria">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf1b8; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
+                                    <Span Text="Material: " TextColor="Black" x:Name="material_papeleria"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <!-- FIN ATRIBUTOS PAPELERIA -->
+
+                    </Grid>
 
 
                     <!-- Precio -->
                     <Label Text="69.99€" FontAttributes="Bold" FontSize="24" Margin="0,20,0,0" TextColor="Black" x:Name="precio_producto"/>
+
+                    <!-- comentarios -->
+                    <Label Text="Comentarios" TextColor="Black" FontAttributes="Bold" FontSize="Subtitle" Margin="0,20,0,0"/>
+                    <BoxView HeightRequest=".5" BackgroundColor="Black" HorizontalOptions="FillAndExpand" Margin="0,2,0,0"/>
+
+                    <StackLayout x:Name="comentario" Margin="0,10,0,0" Orientation="Vertical">
+
+                        <StackLayout Orientation="Horizontal">
+
+                            <!-- imagen usuario -->
+                            <Image Aspect="AspectFit" 
+                                       HeightRequest="50" 
+                                       WidthRequest="50" 
+                                       Source="https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
+                                       />
+
+                            <StackLayout Orientation="Vertical">
+
+                                <!-- Comentario de ejemplo -->
+                                <StackLayout Orientation="Horizontal">
+
+                                    <Label Text=" Leo Messi" FontAttributes="Bold" FontSize="16" TextColor="Black"/>
+                                </StackLayout>
+
+                                <!-- Estrellas -->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="4.7" TextColor="Goldenrod" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                                    <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                                    <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                                    <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                                    <Label Text="&#xf005;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                                    <Label Text="&#xf5c0;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="Goldenrod" FontSize="14" VerticalOptions="Center"/>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </StackLayout>
+
+                        <!-- comentario -->
+                        <Label Text="Comentario de ejemplo" TextColor="Black" FontSize="14" Margin="5, 0, 0, 0"/>
+
+                    </StackLayout>
+
                 </StackLayout>
             </ScrollView>
-            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">
-                <Button
-                    Text="&#xf217;"
-                    TextColor="White"
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    BackgroundColor="Black"
-                    FontSize="22"
-                    CornerRadius="25"
-                    HeightRequest="50"
-                    WidthRequest="50"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"   
-                    AbsoluteLayout.LayoutBounds=".92, .98, -1, -1"
-                    Clicked="BtnAgregarCarrito_click"
-                />
-
-            </AbsoluteLayout>
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

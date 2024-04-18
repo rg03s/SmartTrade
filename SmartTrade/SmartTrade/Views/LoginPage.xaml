@@ -27,7 +27,7 @@
             <Button
                 VerticalOptions="Center"
                 Text="Login"
-                TextColor="White"
+                TextColor="Black"
                 BackgroundColor="Transparent"
                 BorderColor="HotPink"
                 BorderWidth="1.5"

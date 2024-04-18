@@ -110,7 +110,7 @@ namespace SmartTrade.Persistencia.Services
         */
 
 
-        public async Task<bool> Login(string nickname, string password)
+        /*public async Task<bool> Login(string nickname, string password)
         {
             Usuario usuario = await dalUsuario.GetById(nickname);
             Usuario correo = dalUsuario.GetByEmail(usuario.Email);
@@ -132,20 +132,36 @@ namespace SmartTrade.Persistencia.Services
                 return true;
             }
 
-        }
+        }*/
 
-        public async Task<List<Producto>> GetAllProductsAsync()
+        public async Task<bool> Login(string identifier, string password)
         {
-            var productos = await dalProducto.GetAll();
-            return productos.ToList();
-        }
+            try
+            {
+                Usuario usuario = await dalUsuario.GetById(identifier);
+                if (usuario == null)
+                {
+                    usuario = dalUsuario.GetByEmail(identifier);
+                    if (usuario == null)
+                    {
+                        return false; // El usuario no está registrado ni por nickname ni por correo
+                    }
+                }
 
-        public async Task<List<Producto>> GetProductosDestacadosAsync()
-        {
-            var productosOrdenados = await dalProducto.GetAll();
-            var productosTop = productosOrdenados.OrderByDescending(p => p.Huella_eco).Take(2);
-            return productosTop.ToList();
-        }
+                if (usuario.Password != password)
+                {
+                    return false; // La contraseña no coincide
+                }
 
+                // Inicio de sesión exitoso
+                loggedUser = usuario;
+                return true;
+            }
+            catch (Exception)
+            {
+                // Manejar la excepción adecuadamente, por ejemplo, registrándola o notificando al usuario
+                return false;
+            }
+        }
     }
 }
