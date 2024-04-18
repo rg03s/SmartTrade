@@ -61,9 +61,6 @@ namespace SmartTrade.Views
             //10, categoria, atributosPapeleria);
             #endregion
 
-            //Span span_vendedor = (Span)FindByName("vendedor");
-            //span_vendedor.Text = producto.Producto_Vendedor.First().nicknameVendedor;
-
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 
@@ -157,22 +154,6 @@ namespace SmartTrade.Views
         }
 
        
-
-        public List<Producto> ObtenerPrimerProducto()
-        {
-            List<Producto> pr = null;
-
-            // Declarar una tarea para obtener los productos de forma asíncrona
-            Task<List<Producto>> tarea = service.GetAllProductsAsync();
-
-            // Esperar a que la tarea se complete de forma síncrona
-            tarea.Wait();
-
-            // Obtener el resultado de la tarea
-            pr = tarea.Result;
-
-            return pr;
-        }
         private void BtnAtras_click(object sender, EventArgs e)
         {
             //TODO
