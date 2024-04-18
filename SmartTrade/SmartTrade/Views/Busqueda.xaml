@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:SmartTrade.ViewModels" x:DataType="viewmodels:BusquedaViewModel"
+             mc:Ignorable="d"
+             x:Class="SmartTrade.Views.Busqueda"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+    <Grid RowDefinitions="50,50,10,*">
+        <StackLayout Orientation="Horizontal"
+                 Grid.Row="0">
+            <Label Text="SmartTrade"
+               VerticalOptions="Center"
+               FontSize="24"
+               TextColor="RoyalBlue"
+               Margin="15,15,0,0"
+               FontAttributes="Bold"
+               FontFamily="Comfortaa"/>
+            <Image Source="https://i.ibb.co/YcD5rHp/Regalo.png"
+               HeightRequest="28"
+               Margin="15,15,0,0"
+               HorizontalOptions="EndAndExpand"/>
+            <Image Source="https://i.ibb.co/6mJ4hCX/Carrito.png"
+               HeightRequest="28"
+               Margin="15,15,0,0"
+               HorizontalOptions="End"/>
+            <Image Source="https://i.ibb.co/FJBrtHx/Usuario.png"
+               HeightRequest="28"
+               Margin="15,15,15,0"
+               HorizontalOptions="End"/>
+        </StackLayout>
+        <SearchBar Grid.Row="1"
+            Text="{Binding busqueda}"
+            PlaceholderColor="LightGray"
+            FontSize="20"
+            CancelButtonColor="RoyalBlue"
+            Margin="0,0,15,0"/>
+            
+        <BoxView Grid.Row="2" HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Start" Margin="0,0,0,0"/>
+
+        <CollectionView x:Name="ProductosCollectionView"
+                ItemsLayout="HorizontalList"
+                Grid.Row="3">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame HeightRequest="180"
+                   Margin="0,0,5,0"
+                   CornerRadius="10"
+                   BackgroundColor="White"
+                   Padding="10">
+                        <StackLayout>
+                           <Image Source="{Binding Imagen}"
+                           Aspect="AspectFill"
+                           HeightRequest="120"/>
+                            <Label Text="{Binding Nombre}"
+                           FontAttributes="Bold"
+                           TextColor="Gray"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Huella_eco}"
+                               TextColor="ForestGreen" />
+                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png"
+                               Aspect="AspectFill"
+                               HeightRequest="15"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+    </ContentPage>
+   

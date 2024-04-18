@@ -22,11 +22,13 @@ namespace SmartTrade.Views
     public partial class Catalogo : ContentPage
     {
         private STService service;
+        private List<Producto> catalogoProductos;
         public Catalogo(STService service)
         {
             InitializeComponent();
             this.service = service;
-            this.BindingContext = new CatalogoViewModel(service);
+            catalogoProductos = crearProductos();
+            this.BindingContext = new CatalogoViewModel(service, catalogoProductos);
         }
         private async void onCamisetaTapped(object sender, EventArgs e)
         {
@@ -56,8 +58,10 @@ namespace SmartTrade.Views
             await Navigation.PushAsync(new NavigationPage(paginaProducto));
         }
 
-        private void crearProductos()
+        private List<Producto> crearProductos()
         {
+            List<Producto> productos = new List<Producto>();
+            
             Ropa p1 = new Ropa("Camiseta Valencia CF", "30%", "https://i.ibb.co/d7vYJM6/Camiseta-Valencia.jpg", "",
                                             "Camiseta del Valencia CF en muy buen estado de segunda mano.\n\nTalla M.", 10, new Categoria("Ropa"), "M",
                                                 "Blanca", "Deporte", "Camiseta");
@@ -76,6 +80,13 @@ namespace SmartTrade.Views
             p2.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(11, "Lebron James", 1, 4.99) };
             p3.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(12, "PickMeGirl", 50, 12.99) };
             p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
+
+            productos.Add(p1);
+            productos.Add(p2);
+            productos.Add(p3);
+            productos.Add(p4);
+
+            return productos;
         }
 
         private Producto crearCamiseta()
@@ -118,6 +129,21 @@ namespace SmartTrade.Views
             p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
 
             return p4;
+        }
+
+        private async void onBusqueda(object sender, EventArgs e)
+        {
+            var searchBar = (SearchBar)sender;
+            List<Producto> productosBuscados = new List<Producto>();
+            foreach(Producto p in catalogoProductos)
+            {
+                if (p.Nombre.ToLower().Contains(searchBar.Text.ToLower()))
+                {
+                    productosBuscados.Add(p);
+                }
+            }
+            Busqueda busqueda = new Busqueda(service, searchBar.Text, productosBuscados);
+            await Navigation.PushAsync(new NavigationPage(busqueda));
         }
     }
 }
