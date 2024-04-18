@@ -41,4 +41,10 @@
   <ItemGroup>
     <Folder Include="Views\Images\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Busqueda.xaml.cs">
+      <DependentUpon>Busqueda.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

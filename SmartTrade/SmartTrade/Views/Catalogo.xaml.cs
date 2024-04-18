@@ -22,11 +22,18 @@ namespace SmartTrade.Views
     public partial class Catalogo : ContentPage
     {
         private STService service;
+        private List<Producto> catalogoProductos;
+
         public Catalogo(STService service)
         {
             InitializeComponent();
             this.service = service;
-            this.BindingContext = new CatalogoViewModel(service);
+
+            SearchBar searchBar = (SearchBar)FindByName("searchBar");
+            searchBar.TextChanged += onBusqueda;
+
+            catalogoProductos = crearProductos();
+            mostrarProductos(catalogoProductos);
         }
         private async void onCamisetaTapped(object sender, EventArgs e)
         {
@@ -56,8 +63,10 @@ namespace SmartTrade.Views
             await Navigation.PushAsync(paginaProducto);
         }
 
-        private void crearProductos()
+        private List<Producto> crearProductos()
         {
+            List<Producto> productos = new List<Producto>();
+            
             Ropa p1 = new Ropa("Camiseta Valencia CF", "30%", "https://i.ibb.co/d7vYJM6/Camiseta-Valencia.jpg", "",
                                             "Camiseta del Valencia CF en muy buen estado de segunda mano.\n\nTalla M.", 10, new Categoria("Ropa"), "M",
                                                 "Blanca", "Deporte", "Camiseta");
@@ -76,6 +85,13 @@ namespace SmartTrade.Views
             p2.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(11, "Lebron James", 1, 4.99) };
             p3.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(12, "PickMeGirl", 50, 12.99) };
             p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
+
+            productos.Add(p1);
+            productos.Add(p2);
+            productos.Add(p3);
+            productos.Add(p4);
+
+            return productos;
         }
 
         private Producto crearCamiseta()
@@ -118,6 +134,144 @@ namespace SmartTrade.Views
             p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
 
             return p4;
+        }
+
+        private async void onBusqueda(object sender, EventArgs e)
+        {
+
+            SearchBar searchBar = (SearchBar)FindByName("searchBar");
+            string busqueda = searchBar.Text.ToLower();
+
+
+            Grid grid_productos = (Grid)FindByName("grid_productos");
+            grid_productos.Children.Clear();
+
+            catalogoProductos = crearProductos();
+
+            List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Nombre.ToLower().Contains(busqueda)).ToList();
+
+            if (busqueda == "")
+            {
+                productosFiltrados = catalogoProductos;
+                grid_productosDestacados.IsVisible = true;
+            }
+            else
+            {
+                grid_productosDestacados.IsVisible = false;
+            }
+
+            mostrarProductos(productosFiltrados);
+        }
+
+        private void mostrarProductos(List<Producto> productos)
+        {
+
+            int columnasPorFila = 2;
+            int filaActual = 0;
+            int columnaActual = 0;
+
+            Grid grid_productosDestacados = (Grid)FindByName("grid_productosDestacados");
+
+            grid_productos.Children.Clear();
+            grid_productos.RowDefinitions.Clear();
+
+
+            if (productos.Count == 0)
+            {
+                grid_productosDestacados.IsVisible = false;
+                grid_productos.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                Label label = new Label { Text = "No se han encontrado productos", FontSize = 20, TextColor = Color.Black };
+                grid_productos.Children.Add(label);
+                return;
+            }
+
+            for (int i = 0; i < Math.Ceiling((double)productos.Count / columnasPorFila); i++)
+            {
+                grid_productos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            }
+
+
+            foreach (Producto producto in productos)
+            {
+
+                Producto_vendedor producto_vendedor = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
+
+                Frame frame = new Frame
+                {
+                    HeightRequest = 180,
+                    Margin = new Thickness(0, 0, 5, 0),
+                    CornerRadius = 10,
+                    BackgroundColor = Color.White,
+                    Padding = 10
+                };
+
+                grid_productos.Children.Add(frame, columnaActual, filaActual);
+                columnaActual++;
+                if (columnaActual >= columnasPorFila)
+                {
+                    columnaActual = 0;
+                    filaActual++;
+                    // Añade una nueva definición de fila si es necesario
+                    grid_productos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                }
+
+                TapGestureRecognizer tap = new TapGestureRecognizer();
+                tap.Tapped += (s, ev) => {
+                    ProductPage productPage = new ProductPage(service, producto);
+                    Navigation.PushAsync(productPage);
+                };
+
+                frame.GestureRecognizers.Add(tap);
+
+                StackLayout stackLayout = new StackLayout
+                {
+                    Children =
+                        {
+                            new Image
+                            {
+                                Source = new UriImageSource { Uri = new Uri(producto.Imagen) },
+                                Aspect = Aspect.AspectFill,
+                                HeightRequest = 120
+                            },
+                            new Label
+                            {
+                                Text = producto.Nombre,
+                                FontAttributes = FontAttributes.Bold,
+                                TextColor = Color.Black
+                            },
+                            new StackLayout
+                            {
+                                Orientation = StackOrientation.Horizontal,
+                                Children =
+                                {
+
+                                    new Label
+                                    {
+                                        Text = producto.Huella_eco,
+                                        FontAttributes = FontAttributes.Bold,
+                                        TextColor = Color.Green
+                                    },
+                                    new Image
+                                    {
+                                        Source = new UriImageSource { Uri = new Uri("https://i.ibb.co/NZ99Tp4/Huella-Eco.png") },
+                                        Aspect = Aspect.AspectFill,
+                                        HeightRequest = 15
+                                    },
+                                    new Label
+                                    {
+                                        Text = "Desde " + producto_vendedor.Precio.ToString() + "€",
+                                        FontAttributes = FontAttributes.Bold,
+                                        TextColor = Color.Black,
+                                        HorizontalOptions = LayoutOptions.EndAndExpand
+                                    }
+                                }
+                            }
+                        }
+                };
+
+                frame.Content = stackLayout;
+
+            }
         }
     }
 }

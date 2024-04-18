@@ -156,7 +156,6 @@ namespace SmartTrade.Views
        
         private void BtnAtras_click(object sender, EventArgs e)
         {
-            //TODO
             Catalogo catalogo = new Catalogo(service);
             Navigation.PushAsync(catalogo);
         }
