@@ -16,9 +16,9 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private ISTService service;
+        private STService service;
 
-        public ProductPage(ISTService service, Producto producto)
+        public ProductPage(STService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;
@@ -156,6 +156,23 @@ namespace SmartTrade.Views
             }
         }
 
+       
+
+        public List<Producto> ObtenerPrimerProducto()
+        {
+            List<Producto> pr = null;
+
+            // Declarar una tarea para obtener los productos de forma asíncrona
+            Task<List<Producto>> tarea = service.GetAllProductsAsync();
+
+            // Esperar a que la tarea se complete de forma síncrona
+            tarea.Wait();
+
+            // Obtener el resultado de la tarea
+            pr = tarea.Result;
+
+            return pr;
+        }
         private void BtnAtras_click(object sender, EventArgs e)
         {
             //TODO

@@ -20,6 +20,7 @@ namespace SmartTrade.Persistencia.Services
         private readonly IDAL<Vendedor> dalVendedor;
         private readonly IDAL<Comprador> dalComprador;
         private readonly IDAL<Tarjeta> dalTarjeta;
+        private readonly IDAL<Producto> dalProducto;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -27,7 +28,7 @@ namespace SmartTrade.Persistencia.Services
         public STService()
         {
             dalUsuario = new STDAL<Usuario>(supabaseContext);
-
+            dalProducto = new STDAL<Producto>(supabaseContext);
         }
         public static STService Instance
         {
@@ -161,6 +162,12 @@ namespace SmartTrade.Persistencia.Services
                 // Manejar la excepción adecuadamente, por ejemplo, registrándola o notificando al usuario
                 return false;
             }
+        }
+
+        public async Task<List<Producto>> GetAllProductsAsync()
+        {
+            var productos = await dalProducto.GetAll();
+            return productos.ToList();
         }
     }
 }
