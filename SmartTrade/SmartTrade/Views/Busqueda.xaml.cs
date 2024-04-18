@@ -30,6 +30,7 @@ namespace SmartTrade.Views
             this.service = service;
             this.productosBuscados = productosB;
             this.busqueda = busqueda;
+            Console.WriteLine("Busqueda: " + busqueda);
             this.BindingContext = new BusquedaViewModel(service, busqueda, productosBuscados);
             ProductosCollectionView.ItemsSource = productosBuscados;
             OnPropertyChanged(nameof(BindingContext));
