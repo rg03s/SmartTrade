@@ -39,28 +39,28 @@ namespace SmartTrade.Views
         {
             Producto camiseta = crearCamiseta();
             ProductPage paginaProducto = new ProductPage(service, camiseta);
-            await Navigation.PushAsync(new NavigationPage(paginaProducto));
+            await Navigation.PushAsync(paginaProducto);
         }
 
         private async void onPelotaTapped(object sender, EventArgs e)
         {
             Producto pelota = crearPelota();
             ProductPage paginaProducto = new ProductPage(service, pelota);
-            await Navigation.PushAsync(new NavigationPage(paginaProducto));
+            await Navigation.PushAsync(paginaProducto);
         }
 
         private async void onCuadernoTapped(object sender, EventArgs e)
         {
             Producto cuaderno = crearCuadernos();
             ProductPage paginaProducto = new ProductPage(service, cuaderno);
-            await Navigation.PushAsync(new NavigationPage(paginaProducto));
+            await Navigation.PushAsync(paginaProducto);
         }
 
         private async void onGBCTapped(object sender, EventArgs e)
         {
             Producto gbc = crearGBC();
             ProductPage paginaProducto = new ProductPage(service, gbc);
-            await Navigation.PushAsync(new NavigationPage(paginaProducto));
+            await Navigation.PushAsync(paginaProducto);
         }
 
         private List<Producto> crearProductos()
