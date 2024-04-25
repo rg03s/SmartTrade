@@ -23,44 +23,6 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = service;
 
-            #region TEST
-            //test
-            /*
-            Dictionary<string, object> atributosRopa = new Dictionary<string, object>
-            {
-                {"talla", "Talla S"}, 
-                {"color", "blanco"},
-                {"marca", "Adidas"},
-                {"tipoPrenda", "Camiseta"}
-            };
-
-            Dictionary<string, object> atributosTecnologia = new Dictionary<string, object>
-            {
-                {"dispositivo", "Ipad"},
-                {"marca", "Apple"},
-                {"modelo", "Air 5"},
-            };
-
-            Dictionary<string, object> atributosDeporte = new Dictionary<string, object>
-            {
-                {"tipo", "tenis"}
-            };
-
-            Dictionary<string, object> atributosPapeleria = new Dictionary<string, object>
-            {
-                {"material", "papel"}
-            };*/
-
-            //producto de prueba. Debe ser el que se pase por el constructor
-            //IFabrica fabrica = new Fabrica();
-            //Vendedor vendedor = new Vendedor("test", "test", "test", "test", "test@test.com", DateTime.Now, "test");
-            //Categoria categoria = new Categoria("papeleria");
-            //Producto producto = fabrica.CrearProducto("Paquete de folios A3", "35%",
-            // "https://m.media-amazon.com/images/I/71EQOfPQ+nL._AC_SY300_SX300_.jpg", 
-            //"modelo3d", "Esto es la descripcion del paquete de folios A3", 
-            //10, categoria, atributosPapeleria);
-            #endregion
-
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 
@@ -74,19 +36,19 @@ namespace SmartTrade.Views
             prod_desc.Text = producto.Descripcion;
 
             Label precio_producto = (Label)FindByName("precio_producto");
-            precio_producto.Text = producto.Producto_Vendedor.First().Precio.ToString() + "€";
+            precio_producto.Text = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio.ToString() + "€";
             
             Picker picker = (Picker)FindByName("vendedorPicker");
             foreach (Producto_vendedor pv in producto.Producto_Vendedor)
             {
-                picker.Items.Add(pv.nicknameVendedor);
+                picker.Items.Add(pv.nicknameVendedor + " - " + pv.Precio + "€");
             }
-            picker.SelectedItem = picker.Items[0];
+            picker.SelectedItem = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().nicknameVendedor + " - " + producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio + "€";
 
-            //on change picker selected item change precio_producto
             picker.SelectedIndexChanged += (sender, args) =>
             {
                 string selected = picker.Items[picker.SelectedIndex];
+                selected = selected.Split('-')[0].Trim();
                 precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.nicknameVendedor == selected).First().Precio.ToString() + "€";
             };
             
