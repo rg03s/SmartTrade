@@ -42,6 +42,15 @@
                        x:Name="searchBar"
                 />
             </Grid>
+
+            <Picker Grid.Row="2"
+                x:Name="picker_categorias"
+                Title="Filtrar por categorías"
+                TitleColor="RoyalBlue"
+                ItemsSource="{Binding Categorias}" 
+                SelectedItem="{Binding CategoriaSeleccionada}"
+                Margin="15,10,15,0"/>
+            
         </Grid>
         <Grid Margin="0,15,0,0" IsVisible="true" x:Name="grid_productosDestacados">
             <StackLayout>

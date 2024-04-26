@@ -39,7 +39,14 @@
             
         <BoxView Grid.Row="2" HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Start" Margin="0,0,0,0"/>
 
-        <CollectionView x:Name="ProductosCollectionView"
+        <Picker Grid.Row="2"
+                Title="Filtrar por categorías"
+                TitleColor="Blue"
+                ItemsSource="{Binding Categorias}" 
+                SelectedItem="{Binding CategoriaSeleccionada}"
+                Margin="15,10,15,0"/>
+
+            <CollectionView x:Name="ProductosCollectionView"
                 ItemsLayout="HorizontalList"
                 Grid.Row="3">
             <CollectionView.ItemTemplate>

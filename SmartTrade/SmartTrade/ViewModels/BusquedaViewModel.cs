@@ -30,7 +30,5 @@ namespace SmartTrade.ViewModels
             this.productosBuscados = productosB;
             this.busqueda = busqueda;
         }
-
-
     }
 }
