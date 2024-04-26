@@ -30,16 +30,5 @@ namespace SmartTrade.ViewModels
             this.productosBuscados = productosB;
             this.busqueda = busqueda;
         }
-
-        public ObservableCollection<string> Categorias { get; set; } = new ObservableCollection<string>
-        {
-            "Deportes",
-            "Tecnología",
-            "Papelería",
-            "Ropa"
-        };
-
-        // Propiedad para la categoría seleccionada
-        public string CategoriaSeleccionada { get; set; }
     }
 }
