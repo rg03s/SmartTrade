@@ -9,6 +9,7 @@ namespace SmartTrade.Entities
     [Table("Deporte")]
     public partial class Deporte : Producto
     {
+
         [Column("tipo")]
         public string Tipo { get; set; }
     }

@@ -21,6 +21,7 @@ namespace SmartTrade.Logica.Services
         private readonly IDAL<Comprador> dalComprador;
         private readonly IDAL<Tarjeta> dalTarjeta;
         private readonly IDAL<Producto> dalProducto;
+        private readonly IDAL<Deporte> dalDeporte;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -169,6 +170,12 @@ namespace SmartTrade.Logica.Services
         {
             var productos = await dalProducto.GetAll();
             return productos.ToList();
+        }
+
+        public async Task<List<Deporte>> GetAllDeporte()
+        {
+            var d = await dalDeporte.GetAll();
+            return d.ToList();
         }
     }
 }

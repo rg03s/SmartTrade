@@ -11,7 +11,7 @@ namespace SmartTrade.Entities
     {
 
         [Key]
-        [Column("id")]
+        [Column("nombre")]
         public string Nombre { get; set; }
 
     }

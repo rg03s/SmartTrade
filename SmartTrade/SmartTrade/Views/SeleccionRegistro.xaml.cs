@@ -22,13 +22,12 @@ namespace SmartTrade.Views
             this.service = service;
         }
 
-        private void RegistroVendedor(object sender, EventArgs e)
+        private  void RegistroVendedor(object sender, EventArgs e)
         {
             //await Navigation.PopAsync();
             RegistroVendedor registroVendedor = new RegistroVendedor(service);
             Navigation.PushAsync(registroVendedor);
         }
-
         private void RegistroComprador(object sender, EventArgs e)
         {
             //await Navigation.PopAsync();

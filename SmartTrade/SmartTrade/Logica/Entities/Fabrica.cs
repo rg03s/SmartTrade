@@ -15,21 +15,21 @@ namespace SmartTrade.Logica.Entities
             {
                 case "deporte":
                     string tipo = atributosEspecificos["tipo"] as string;
-                    return new Deporte(nombre, huella, imagen, modelo3d, desc, puntos, cat, tipo);
+                    return new Deporte(nombre, huella, imagen, modelo3d, desc, puntos, cat.Nombre, tipo);
                 case "ropa":
                     string talla = atributosEspecificos["talla"] as string;
                     string color = atributosEspecificos["color"] as string;
                     string marca = atributosEspecificos["marca"] as string;
                     string tipoPrenda = atributosEspecificos["tipoPrenda"] as string;
-                    return new Ropa(nombre, huella, imagen, modelo3d, desc, puntos, cat, talla, color, marca, tipoPrenda);
+                    return new Ropa(nombre, huella, imagen, modelo3d, desc, puntos, cat.Nombre, talla, color, marca, tipoPrenda);
                 case "papeleria":
                     string material = atributosEspecificos["material"] as string;
-                    return new Papeleria(nombre, huella, imagen, modelo3d, desc, puntos, cat, material);
+                    return new Papeleria(nombre, huella, imagen, modelo3d, desc, puntos, cat.Nombre, material);
                 case "tecnologia":
                     string dispositivo = atributosEspecificos["dispositivo"] as string;
                     string marca_dispo = atributosEspecificos["marca"] as string;
                     string modelo = atributosEspecificos["modelo"] as string;
-                    return new Tecnologia(nombre, huella, imagen, modelo3d, desc, puntos, cat, dispositivo, marca_dispo, modelo);
+                    return new Tecnologia(nombre, huella, imagen, modelo3d, desc, puntos, cat.Nombre, dispositivo, marca_dispo, modelo);
                 default:
                     throw new ArgumentException("Categoría del producto desconocida o no disponible");
             }
