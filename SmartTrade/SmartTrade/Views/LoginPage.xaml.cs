@@ -100,11 +100,11 @@ namespace SmartTrade.Views
                 contraseña.TextColor = Color.Black; 
             }
         }
-        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             //await Navigation.
             SeleccionRegistro registro = new SeleccionRegistro(service);
-            await Navigation.PushAsync(registro);
+            Navigation.PushAsync(registro);
         }
     }
 }

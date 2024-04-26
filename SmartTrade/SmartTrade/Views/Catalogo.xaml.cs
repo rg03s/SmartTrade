@@ -29,12 +29,37 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = service;
 
+            configurarPickerFiltrado();
+
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
             searchBar.TextChanged += onBusqueda;
 
             catalogoProductos = crearProductos();
             mostrarProductos(catalogoProductos);
         }
+
+        private void configurarPickerFiltrado()
+        {
+            try
+            {
+                Picker picker = (Picker)FindByName("picker_categorias");
+                picker.Items.Add("Ropa");
+                picker.Items.Add("Deporte");
+                picker.Items.Add("Papeleria");
+                picker.Items.Add("Tecnologia");
+                picker.SelectedIndexChanged += (s, e) =>
+                {
+                    string categoria = picker.Items[picker.SelectedIndex];
+                    List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Categoria == categoria).ToList();
+                    mostrarProductos(productosFiltrados);
+                };
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+        }
+
         private async void onCamisetaTapped(object sender, EventArgs e)
         {
             Producto camiseta = crearCamiseta();
