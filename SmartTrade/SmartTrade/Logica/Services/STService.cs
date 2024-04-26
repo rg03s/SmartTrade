@@ -177,5 +177,13 @@ namespace SmartTrade.Logica.Services
             var d = await dalDeporte.GetAll();
             return d.ToList();
         }
+
+        // metodo para ordenar los productos por categorías
+        public async Task<List<Producto>> GetProductosPorCategoria(string categoria)
+        {
+            var productos = await dalProducto.GetAll();
+            var productosPorCategoria = productos.Where(p => p.Categoria == categoria);
+            return productosPorCategoria.ToList();
+        }
     }
 }

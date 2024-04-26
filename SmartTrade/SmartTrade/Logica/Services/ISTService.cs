@@ -15,5 +15,7 @@ namespace SmartTrade.Logica.Services
         void GetUsuarios();
         */
         Task<bool> Login(string nickname, string password);
+
+        Task<List<Producto>> GetProductosPorCategoria(string categoria);
     }
 }
