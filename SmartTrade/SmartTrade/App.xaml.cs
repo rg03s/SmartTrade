@@ -1,5 +1,5 @@
 ﻿using SmartTrade.Entities;
-using SmartTrade.Persistencia.Services;
+using SmartTrade.Logica.Services;
 using SmartTrade.Views;
 using System;
 using System.Collections.Generic;
