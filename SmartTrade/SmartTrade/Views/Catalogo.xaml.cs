@@ -36,6 +36,7 @@ namespace SmartTrade.Views
 
             catalogoProductos = crearProductos();
             mostrarProductos(catalogoProductos);
+
         }
 
         private void configurarPickerFiltrado()
