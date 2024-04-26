@@ -81,7 +81,11 @@ namespace SmartTrade.Views
                                             "GameBoy Color muy antigua. Funciona más o menos pero un pokemon te echas tranquilamente.", 1, new Categoria("Tecnologia").Nombre,
                                                   "Consola", "Nintendo", "GameBoy Color");
 
-            p1.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(10, "ValenciaFan", 10, 79.99) };
+            p1.Producto_Vendedor = new List<Producto_vendedor> { 
+                new Producto_vendedor(10, "ValenciaFan", 10, 79.99),
+                new Producto_vendedor(11, "ValenciaOutlet", 1, 34.99),
+                new Producto_vendedor(12, "UPVShop", 1, 69.99)
+            };
             p2.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(11, "Lebron James", 1, 4.99) };
             p3.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(12, "PickMeGirl", 50, 12.99) };
             p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
