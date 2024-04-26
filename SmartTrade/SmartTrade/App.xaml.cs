@@ -1,8 +1,10 @@
 ﻿using SmartTrade.Entities;
-using SmartTrade.Logica.Services;
+using SmartTrade.Persistencia.Services;
 using SmartTrade.Views;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,10 +19,10 @@ namespace SmartTrade
             InitializeComponent();
             STService service = STService.Instance;
             // DependencyService.Register<MockDataStore>();
-
-            MainPage = new NavigationPage(new Carrito(service));
-
-            //MainPage = new NavigationPage(new SeleccionRegistro(service));
+            //MainPage = new NavigationPage(new Catalogo(service));
+            //obtener productos y guardarlos en una lista
+            _ = service.GetProductById(1);
+            MainPage = new ProductPage(service);
         }
 
         protected override void OnStart()
