@@ -10,7 +10,7 @@ namespace SmartTrade.Entities
         public Producto() {
             this.Producto_Vendedor = new List<Producto_vendedor>();
         }
-        public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, Categoria cat)
+        public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat)
         {
             this.Nombre = nombre;
             this.Huella_eco = huella;
@@ -19,6 +19,7 @@ namespace SmartTrade.Entities
             this.Descripcion = desc;
             this.Puntos = puntos;
             this.Categoria = cat;
+            
         }
     }
 }

@@ -28,8 +28,10 @@ namespace SmartTrade.Entities
         public string Descripcion { get; set; }
         [Column("puntos")]
         public int Puntos { get; set; }
-        [Column("producto_vendedores")]
+        [NotMapped]
         public virtual ICollection<Producto_vendedor> Producto_Vendedor { get; set; }
-        public Categoria Categoria { get; set; }
+        [Column("categoria")]
+        public string Categoria { get; set; }
+        
     }
 }
