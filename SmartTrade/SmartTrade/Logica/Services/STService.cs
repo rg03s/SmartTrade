@@ -21,6 +21,7 @@ namespace SmartTrade.Logica.Services
         private readonly IDAL<Producto> dalProducto;
         private readonly IDAL<Deporte> dalDeporte;
         private readonly IDAL<Producto_vendedor> dalProductoVendedor;
+        private readonly IDAL<ItemCarrito> dalCarrito;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -30,6 +31,7 @@ namespace SmartTrade.Logica.Services
             dalUsuario = new STDAL<Usuario>(supabaseContext);
             dalProducto = new STDAL<Producto>(supabaseContext);
             dalProductoVendedor = new STDAL<Producto_vendedor>(supabaseContext);
+            dalCarrito = new STDAL<ItemCarrito>(supabaseContext);
         }
         public static STService Instance
         {
@@ -197,9 +199,69 @@ namespace SmartTrade.Logica.Services
                 return productos;
             }
             catch (Exception e) { 
-                Console.WriteLine("Error en el Servicio: ", e.Message);
+                Console.WriteLine("Error al obtener los productos: ", e.Message);
                 return null; 
             }
+        }
+
+        public Producto GetProductoById(string id)
+        {
+            try
+            {
+                return dalProducto.GetById(id).Result;
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el producto: ", e.Message);
+                return null;
+            }
+        }
+
+        public Producto GetProductoByIdProductoVendedor(int idProductoVendedor)
+        {
+            try
+            {
+                //no funciona el metodo GetById de Producto_vendedor
+                //Producto_vendedor pv = dalProductoVendedor.GetById(idProductoVendedor.ToString()).Result;
+                Producto_vendedor pv = dalProductoVendedor.GetAll().Result.Where(aux => aux.Id == idProductoVendedor).FirstOrDefault();
+                if (pv == null)
+                {
+                    Console.WriteLine("Producto vendedor no encontrado");
+                    return null;
+                } else
+                {
+                    return dalProducto.GetById(pv.IdProducto.ToString()).Result;
+                }
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el producto: ", e.Message);
+                return null;
+            }
+        }  
+        
+        public Producto_vendedor GetProductoVendedorById(int id)
+        {
+            try
+            {
+                return dalProductoVendedor.GetById(id.ToString()).Result;
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el producto vendedor: ", e.Message);
+                return null;
+            }
+        }
+
+        public async Task<List<ItemCarrito>> GetCarrito()
+        {
+            try
+            {
+                List<ItemCarrito> productosCarrito = await dalCarrito.GetAll();
+                return productosCarrito.Where(p => p.NicknameUsuario == loggedUser.Nickname).ToList();
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el carrito: ", e.Message);
+                return null;
+            }
+
         }
     }
 }

@@ -1,19 +1,10 @@
-﻿using SmartTrade.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SmartTrade.Entities;
-using Supabase;
-using SmartTrade.Views;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Diagnostics;
-using System.Security.Cryptography;
 using SmartTrade.Logica.Services;
 
 namespace SmartTrade.Views
@@ -115,7 +106,6 @@ namespace SmartTrade.Views
         private void MostrarProductos(List<Producto> productos)
         {
 
-            Console.WriteLine("Mostrando productos: " + productos.Count);
             try
             {
                 int columnasPorFila = 2;
@@ -231,6 +221,17 @@ namespace SmartTrade.Views
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void BtnCarrito_click(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new Carrito(service));
+        }
+
+        public void BtnPerfil_click(object sender, EventArgs e)
+        {
+            //TODO
+            Console.WriteLine("Perfil");
         }
     }
 }

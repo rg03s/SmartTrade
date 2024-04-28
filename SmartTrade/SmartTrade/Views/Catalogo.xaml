@@ -15,21 +15,35 @@
                        VerticalOptions="Center"
                        FontSize="24"
                        TextColor="RoyalBlue"
-                       Margin="15,15,0,0"
+                       Margin="15,10,0,0"
                        FontAttributes="Bold"
                        FontFamily="Comfortaa"/>
-                <Image Source="https://i.ibb.co/YcD5rHp/Regalo.png"
+                <!--<Image Source="https://i.ibb.co/YcD5rHp/Regalo.png"
                        HeightRequest="28"
-                       Margin="15,15,0,0"
-                       HorizontalOptions="EndAndExpand"/>
-                <Image Source="https://i.ibb.co/6mJ4hCX/Carrito.png"
-                       HeightRequest="28"
-                       Margin="15,15,0,0"
-                       HorizontalOptions="End"/>
-                <Image Source="https://i.ibb.co/FJBrtHx/Usuario.png"
-                       HeightRequest="28"
-                       Margin="15,15,15,0"
-                       HorizontalOptions="End"/>
+                       Margin="15,10,0,0"
+                       HorizontalOptions="EndAndExpand"/>-->
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf07a;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Margin="15,10,0,0"
+                    Clicked="BtnCarrito_click"
+                />
+                <Button HorizontalOptions="End"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    Margin="0,10,0,0"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
             </StackLayout>
             <Grid ColumnDefinitions="*,175"
                   Grid.Row="1">

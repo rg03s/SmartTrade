@@ -124,9 +124,7 @@ namespace SmartTrade.Views
 
         private void BtnCarrito_click(object sender, EventArgs e)
         {
-            //TODO
-            //cambiar de vista a carrito
-            Console.WriteLine("Carrito");
+            Navigation.PushAsync(new Carrito(service));
         }
 
         private void BtnPerfil_click(object sender, EventArgs e)
@@ -137,7 +135,8 @@ namespace SmartTrade.Views
 
         private void BtnAgregarCarrito_click(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new Carrito(service));
+            //TODO
+            Console.WriteLine("Agregar al Carrito");
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {

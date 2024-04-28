@@ -42,9 +42,9 @@
 
             <!-- Contenido principal -->
             <ScrollView Grid.Row="2" Padding="20">
-                <StackLayout>
+                <StackLayout x:Name="listaItems">
                     <!-- Aquí puedes agregar los elementos de tu carrito de compras -->
-                    <Frame OutlineColor="LightGray" Padding="10" CornerRadius="10">
+                    <!--<Frame OutlineColor="LightGray" Padding="10" CornerRadius="10">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -91,7 +91,7 @@
 
 
                         </Grid>
-                    </Frame>
+                    </Frame>-->
 
                     <!-- Agrega más productos como este -->
                 </StackLayout>

@@ -17,5 +17,9 @@ namespace SmartTrade.Logica.Services
         Task<bool> Login(string nickname, string password);
 
         Task<List<Producto>> GetProductosPorCategoria(string categoria);
+        Task<List<ItemCarrito>> GetCarrito();
+        Producto GetProductoById(string idProducto);
+        Producto GetProductoByIdProductoVendedor(int idProductoVendedor);
+        Producto_vendedor GetProductoVendedorById(int idProductoVendedor);
     }
 }
