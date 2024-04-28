@@ -51,9 +51,16 @@ namespace SmartTrade.Persistencia.DataAccess
         }
 
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return await table.ToListAsync();
+            try
+            {
+                return await table.ToListAsync();
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public async Task<T> GetById(string id)
