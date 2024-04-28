@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using Postgrest;
 using SmartTrade.Entities;
 using SmartTrade.Persistencia.DataAccess;
-using Supabase.Gotrue;
 using Xamarin.Essentials;
 
 namespace SmartTrade.Logica.Services

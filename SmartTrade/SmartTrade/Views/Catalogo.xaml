@@ -38,7 +38,7 @@
                        PlaceholderColor="LightGray"
                        FontSize="14"
                        CancelButtonColor="RoyalBlue"
-                       SearchButtonPressed="onBusqueda"
+                       SearchButtonPressed="OnBusqueda"
                        x:Name="searchBar"
                 />
             </Grid>

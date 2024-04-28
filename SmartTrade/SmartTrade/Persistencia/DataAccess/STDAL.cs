@@ -8,8 +8,6 @@ using SmartTrade.Entities;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Postgrest;
-using SkiaSharp;
-using Supabase.Interfaces;
 
 
 namespace SmartTrade.Persistencia.DataAccess

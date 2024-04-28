@@ -11,7 +11,7 @@ namespace SmartTrade.Entities
         public Producto_vendedor(int idProducto, string vendedor, int stock, double precio)
         {
             this.IdProducto = idProducto;
-            this.nicknameVendedor = vendedor;
+            this.NicknameVendedor = vendedor;
             this.Stock = stock;
             this.Precio = precio;
         }

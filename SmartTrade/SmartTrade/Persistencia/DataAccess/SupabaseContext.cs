@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SmartTrade.Entities;
-using Supabase.Gotrue;
 using System.Security.Cryptography;
 
 namespace SmartTrade.Persistencia.DataAccess

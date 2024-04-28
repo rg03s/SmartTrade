@@ -41,15 +41,15 @@ namespace SmartTrade.Views
             Picker picker = (Picker)FindByName("vendedorPicker");
             foreach (Producto_vendedor pv in producto.Producto_Vendedor)
             {
-                picker.Items.Add(pv.nicknameVendedor + " - " + pv.Precio + "€");
+                picker.Items.Add(pv.NicknameVendedor + " - " + pv.Precio + "€");
             }
-            picker.SelectedItem = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().nicknameVendedor + " - " + producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio + "€";
+            picker.SelectedItem = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().NicknameVendedor + " - " + producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio + "€";
 
             picker.SelectedIndexChanged += (sender, args) =>
             {
                 string selected = picker.Items[picker.SelectedIndex];
                 selected = selected.Split('-')[0].Trim();
-                precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.nicknameVendedor == selected).First().Precio.ToString() + "€";
+                precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.NicknameVendedor == selected).First().Precio.ToString() + "€";
             };
             
             if(producto is Ropa prod_ropa)
@@ -137,8 +137,7 @@ namespace SmartTrade.Views
 
         private void BtnAgregarCarrito_click(object sender, EventArgs e)
         {
-            //TODO
-            Console.WriteLine("Carrito");
+            //Navigation.PushAsync(new Carrito(service));
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {

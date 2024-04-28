@@ -29,10 +29,10 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = service;
 
-            configurarPickerFiltrado();
+            ConfigurarPickerFiltrado();
 
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
-            searchBar.TextChanged += onBusqueda;
+            searchBar.TextChanged += OnBusqueda;
 
         }
 
@@ -48,7 +48,7 @@ namespace SmartTrade.Views
                 }
                 else
                 {
-                    mostrarProductos(catalogoProductos);
+                    MostrarProductos(catalogoProductos);
 
                 }
             }
@@ -64,7 +64,7 @@ namespace SmartTrade.Views
             CargarProductos();
         }
 
-        private void configurarPickerFiltrado()
+        private void ConfigurarPickerFiltrado()
         {
             try
             {
@@ -77,7 +77,7 @@ namespace SmartTrade.Views
                 {
                     string categoria = picker.Items[picker.SelectedIndex];
                     List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Categoria == categoria).ToList();
-                    mostrarProductos(productosFiltrados);
+                    MostrarProductos(productosFiltrados);
                 };
             }
             catch (Exception e)
@@ -87,7 +87,7 @@ namespace SmartTrade.Views
 
         }
 
-        private void onBusqueda(object sender, EventArgs e)
+        private void OnBusqueda(object sender, EventArgs e)
         {
 
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
@@ -109,10 +109,10 @@ namespace SmartTrade.Views
                 grid_productosDestacados.IsVisible = false;
             }
 
-            mostrarProductos(productosFiltrados);
+            MostrarProductos(productosFiltrados);
         }
 
-        private void mostrarProductos(List<Producto> productos)
+        private void MostrarProductos(List<Producto> productos)
         {
 
             Console.WriteLine("Mostrando productos: " + productos.Count);

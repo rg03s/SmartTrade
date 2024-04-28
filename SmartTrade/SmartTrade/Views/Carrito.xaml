@@ -21,7 +21,7 @@
                     BackgroundColor="Transparent"
                     WidthRequest="50"
                     HeightRequest="50"
-                    Clicked="btnAtras_click"
+                    Clicked="BtnAtras_click"
                 />
                 <Button HorizontalOptions="EndAndExpand"
                     Text="&#xf007;" 
@@ -71,7 +71,7 @@
                                     <Frame Grid.Column="1" WidthRequest="20" HeightRequest="20" CornerRadius="5" BackgroundColor="#f0f0f0" Padding="0">
                                         <Label Text="-" HorizontalOptions="Center" VerticalOptions="Center"/>
                                         <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="btnRestar_click" NumberOfTapsRequired="1" />
+                                            <TapGestureRecognizer Tapped="BtnRestar_click" NumberOfTapsRequired="1" />
                                         </Frame.GestureRecognizers>
                                     </Frame>
 
@@ -80,7 +80,7 @@
                                     <Frame Grid.Column="3" WidthRequest="20" HeightRequest="20" CornerRadius="5" BackgroundColor="#f0f0f0" Padding="0">
                                         <Label Text="+" HorizontalOptions="Center" VerticalOptions="Center" />
                                         <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="btnSumar_click" NumberOfTapsRequired="1" />
+                                            <TapGestureRecognizer Tapped="BtnSumar_click" NumberOfTapsRequired="1" />
                                         </Frame.GestureRecognizers>
                                     </Frame>
                                 </Grid>
@@ -101,7 +101,7 @@
             <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand">
                 <Label Text="Puntos obtenidos: 140" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Fill" />
                 <Label Text="Coste total: 139.98€" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Fill" TextColor="Black"/>
-                <Button Text="Finalizar compra" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="btnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
+                <Button Text="Finalizar compra" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
             </StackLayout>
 
 

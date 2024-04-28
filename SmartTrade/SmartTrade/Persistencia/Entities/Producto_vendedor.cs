@@ -20,7 +20,7 @@ namespace SmartTrade.Entities
         public int Stock { get; set; }
 
         [Column("vendedor")]
-        public string nicknameVendedor { get; set; }
+        public string NicknameVendedor { get; set; }
 
         [Column("producto")]
         public int IdProducto{ get; set; }

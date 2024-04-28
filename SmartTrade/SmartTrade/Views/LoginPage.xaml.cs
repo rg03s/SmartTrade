@@ -18,7 +18,6 @@ namespace SmartTrade.Views
         private STService service;
         //private string username;
         //private string password;
-        private ProductPage productPage;
         //private Registro registro;
         //private LoginPage loginPage;
 

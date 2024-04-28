@@ -21,14 +21,14 @@ namespace SmartTrade.ViewModels
         {
             Title = "Browse";
             Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
 
             ItemTapped = new Command<Item>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        void ExecuteLoadItemsCommand()
         {
             IsBusy = true;
 
@@ -36,9 +36,9 @@ namespace SmartTrade.ViewModels
             {
                 Items.Clear();
                 //var items = await DataStore.GetItemsAsync(true);
-               // foreach (var item in items)
+                // foreach (var item in items)
                 //{
-                 //   Items.Add(item);
+                //   Items.Add(item);
                 //}
             }
             catch (Exception ex)

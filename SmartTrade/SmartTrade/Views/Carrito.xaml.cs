@@ -24,7 +24,7 @@ namespace SmartTrade.Views
 
         }
 
-        private void btnAtras_click(object sender, EventArgs e)
+        private void BtnAtras_click(object sender, EventArgs e)
         {
             Navigation.PopAsync();
         }
@@ -35,19 +35,19 @@ namespace SmartTrade.Views
             Console.WriteLine("Perfil");
         }
 
-        private void btnFinalizarCompra_click(object sender, EventArgs e)
+        private void BtnFinalizarCompra_click(object sender, EventArgs e)
         {
             //TODO
             Console.WriteLine("Finalizar Compra");
         }
 
-        private void btnSumar_click(object sender, EventArgs e)
+        private void BtnSumar_click(object sender, EventArgs e)
         {
             //TODO
             Console.WriteLine("Increase Quantity");
         }
 
-        private void btnRestar_click(object sender, EventArgs e)
+        private void BtnRestar_click(object sender, EventArgs e)
         {
             //TODO
             Console.WriteLine("Decrease Quantity");
