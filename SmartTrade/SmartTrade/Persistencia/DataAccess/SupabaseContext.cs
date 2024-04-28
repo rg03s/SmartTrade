@@ -55,6 +55,17 @@ namespace SmartTrade.Persistencia.DataAccess
        
         */
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Producto>()
+                .HasDiscriminator(p => p.Categoria)
+                .HasValue<Papeleria>("Papeleria")
+                .HasValue<Ropa>("Ropa")
+                .HasValue<Tecnologia>("Tecnologia")
+                .HasValue<Deporte>("Deporte");
+
+        }
+
     }
 }
 
