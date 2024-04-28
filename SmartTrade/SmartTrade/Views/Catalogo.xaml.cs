@@ -22,7 +22,7 @@ namespace SmartTrade.Views
     public partial class Catalogo : ContentPage
     {
         private STService service;
-        private List<Producto> catalogoProductos;
+        private List<Producto> catalogoProductos = new List<Producto>();
 
         public Catalogo(STService service)
         {
@@ -34,9 +34,34 @@ namespace SmartTrade.Views
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
             searchBar.TextChanged += onBusqueda;
 
-            catalogoProductos = crearProductos();
-            mostrarProductos(catalogoProductos);
+        }
 
+        private async void CargarProductos()
+        {
+            try
+            {
+                List<Producto> catalogoProductos = await service.GetAllProductos();
+                this.catalogoProductos = catalogoProductos;
+                if (catalogoProductos.Count == 0)
+                {
+                    Debug.WriteLine("No se han encontrado productos");
+                }
+                else
+                {
+                    mostrarProductos(catalogoProductos);
+
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error al cargar los productos: {e.Message}");
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            CargarProductos();
         }
 
         private void configurarPickerFiltrado()
@@ -54,119 +79,15 @@ namespace SmartTrade.Views
                     List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Categoria == categoria).ToList();
                     mostrarProductos(productosFiltrados);
                 };
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
 
         }
 
-        private async void onCamisetaTapped(object sender, EventArgs e)
-        {
-            Producto camiseta = crearCamiseta();
-            ProductPage paginaProducto = new ProductPage(service, camiseta);
-            await Navigation.PushAsync(paginaProducto);
-        }
-
-        private async void onPelotaTapped(object sender, EventArgs e)
-        {
-            Producto pelota = crearPelota();
-            ProductPage paginaProducto = new ProductPage(service, pelota);
-            await Navigation.PushAsync(paginaProducto);
-        }
-
-        private async void onCuadernoTapped(object sender, EventArgs e)
-        {
-            Producto cuaderno = crearCuadernos();
-            ProductPage paginaProducto = new ProductPage(service, cuaderno);
-            await Navigation.PushAsync(paginaProducto);
-        }
-
-        private async void onGBCTapped(object sender, EventArgs e)
-        {
-            Producto gbc = crearGBC();
-            ProductPage paginaProducto = new ProductPage(service, gbc);
-            await Navigation.PushAsync(paginaProducto);
-        }
-
-        private List<Producto> crearProductos()
-        {
-            List<Producto> productos = new List<Producto>();
-            
-            Ropa p1 = new Ropa("Camiseta Valencia CF", "30%", "https://i.ibb.co/d7vYJM6/Camiseta-Valencia.jpg", "",
-                                            "Camiseta del Valencia CF en muy buen estado de segunda mano.\n\nTalla M.", 10, new Categoria("Ropa").Nombre, "M",
-                                                "Blanca", "Deporte", "Camiseta");
-
-            Deporte p2 = new Deporte("Pelota Baloncesto", "50%", "https://i.ibb.co/LNSNFFf/Pelota-Baloncesto.png", "",
-                                        "Pelota de Baloncesto de mi hijo. Le gustaba mucho pero se murió. La vendo barata.", 20, new Categoria("Deporte").Nombre, "Pelota");
-
-            Papeleria p3 = new Papeleria("Cuaderno de colores", "75%", "https://i.ibb.co/qkQKMpc/Cuaderno-Colores.png", "",
-                                            "Cuadernos muy bonitos del color que elijas. Muy buena calidad.", 20, new Categoria("Papeleria").Nombre, "Plástico");
-
-            Tecnologia p4 = new Tecnologia("GameBoy Color", "20%", "https://i.ibb.co/sC5pJzS/GBC.png", "",
-                                            "GameBoy Color muy antigua. Funciona más o menos pero un pokemon te echas tranquilamente.", 1, new Categoria("Tecnologia").Nombre,
-                                                  "Consola", "Nintendo", "GameBoy Color");
-
-            p1.Producto_Vendedor = new List<Producto_vendedor> { 
-                new Producto_vendedor(10, "ValenciaFan", 10, 79.99),
-                new Producto_vendedor(11, "ValenciaOutlet", 1, 34.99),
-                new Producto_vendedor(12, "UPVShop", 1, 69.99)
-            };
-            p2.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(11, "Lebron James", 1, 4.99) };
-            p3.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(12, "PickMeGirl", 50, 12.99) };
-            p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
-
-            productos.Add(p1);
-            productos.Add(p2);
-            productos.Add(p3);
-            productos.Add(p4);
-
-            return productos;
-        }
-
-        private Producto crearCamiseta()
-        {
-            Ropa p1 = new Ropa("Camiseta Valencia CF", "30%", "https://i.ibb.co/d7vYJM6/Camiseta-Valencia.jpg", "",
-                                            "Camiseta del Valencia CF en muy buen estado de segunda mano.\n\nTalla M.", 10, new Categoria("Ropa").Nombre, "M",
-                                                "Blanca", "Deporte", "Camiseta");
-
-            p1.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(10, "ValenciaFan", 10, 79.99) };
-
-            return p1;
-        }
-
-        private Producto crearPelota()
-        {
-            Deporte p2 = new Deporte("Pelota Baloncesto", "50%", "https://i.ibb.co/LNSNFFf/Pelota-Baloncesto.png", "",
-                                        "Pelota de Baloncesto de mi hijo. Le gustaba mucho pero se murió. La vendo barata.", 20, new Categoria("Deporte").Nombre, "Pelota");
-
-            p2.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(11, "Lebron James", 1, 4.99) };
-
-            return p2;
-        }
-
-        private Producto crearCuadernos()
-        {
-            Papeleria p3 = new Papeleria("Cuaderno de colores", "75%", "https://i.ibb.co/qkQKMpc/Cuaderno-Colores.png", "",
-                                            "Cuadernos muy bonitos del color que elijas. Muy buena calidad.", 20, new Categoria("Papeleria").Nombre, "Plástico");
-            
-            p3.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(12, "PickMeGirl", 50, 12.99) };
-
-            return p3;
-        }
-
-        private Producto crearGBC()
-        {
-            Tecnologia p4 = new Tecnologia("GameBoy Color", "20%", "https://i.ibb.co/sC5pJzS/GBC.png", "",
-                                            "GameBoy Color muy antigua. Funciona más o menos pero un pokemon te echas tranquilamente.", 1, new Categoria("Tecnologia").Nombre,
-                                                  "Consola", "Nintendo", "GameBoy Color");
-
-            p4.Producto_Vendedor = new List<Producto_vendedor> { new Producto_vendedor(13, "UltraNerd69", 1, 19.99) };
-
-            return p4;
-        }
-
-        private async void onBusqueda(object sender, EventArgs e)
+        private void onBusqueda(object sender, EventArgs e)
         {
 
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
@@ -175,8 +96,6 @@ namespace SmartTrade.Views
 
             Grid grid_productos = (Grid)FindByName("grid_productos");
             grid_productos.Children.Clear();
-
-            catalogoProductos = crearProductos();
 
             List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Nombre.ToLower().Contains(busqueda)).ToList();
 
@@ -196,66 +115,70 @@ namespace SmartTrade.Views
         private void mostrarProductos(List<Producto> productos)
         {
 
-            int columnasPorFila = 2;
-            int filaActual = 0;
-            int columnaActual = 0;
-
-            Grid grid_productosDestacados = (Grid)FindByName("grid_productosDestacados");
-
-            grid_productos.Children.Clear();
-            grid_productos.RowDefinitions.Clear();
-
-
-            if (productos.Count == 0)
+            Console.WriteLine("Mostrando productos: " + productos.Count);
+            try
             {
-                grid_productosDestacados.IsVisible = false;
-                grid_productos.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                Label label = new Label { Text = "No se han encontrado productos", FontSize = 20, TextColor = Color.Black };
-                grid_productos.Children.Add(label);
-                return;
-            }
+                int columnasPorFila = 2;
+                int filaActual = 0;
+                int columnaActual = 0;
 
-            for (int i = 0; i < Math.Ceiling((double)productos.Count / columnasPorFila); i++)
-            {
-                grid_productos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            }
+                Grid grid_productosDestacados = (Grid)FindByName("grid_productosDestacados");
+
+                grid_productos.Children.Clear();
+                grid_productos.RowDefinitions.Clear();
 
 
-            foreach (Producto producto in productos)
-            {
-
-                Producto_vendedor producto_vendedor = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
-
-                Frame frame = new Frame
+                if (productos.Count == 0)
                 {
-                    HeightRequest = 180,
-                    Margin = new Thickness(0, 0, 5, 0),
-                    CornerRadius = 10,
-                    BackgroundColor = Color.White,
-                    Padding = 10
-                };
+                    grid_productosDestacados.IsVisible = false;
+                    grid_productos.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Label label = new Label { Text = "No se han encontrado productos", FontSize = 20, TextColor = Color.Black };
+                    grid_productos.Children.Add(label);
+                    return;
+                }
 
-                grid_productos.Children.Add(frame, columnaActual, filaActual);
-                columnaActual++;
-                if (columnaActual >= columnasPorFila)
+                for (int i = 0; i < Math.Ceiling((double)productos.Count / columnasPorFila); i++)
                 {
-                    columnaActual = 0;
-                    filaActual++;
-                    // Añade una nueva definición de fila si es necesario
                     grid_productos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
 
-                TapGestureRecognizer tap = new TapGestureRecognizer();
-                tap.Tapped += (s, ev) => {
-                    ProductPage productPage = new ProductPage(service, producto);
-                    Navigation.PushAsync(productPage);
-                };
 
-                frame.GestureRecognizers.Add(tap);
-
-                StackLayout stackLayout = new StackLayout
+                foreach (Producto producto in productos)
                 {
-                    Children =
+
+                    Producto_vendedor producto_vendedor = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
+
+                    Frame frame = new Frame
+                    {
+                        HeightRequest = 180,
+                        Margin = new Thickness(0, 0, 5, 0),
+                        CornerRadius = 10,
+                        BackgroundColor = Color.White,
+                        Padding = 10
+                    };
+
+                    grid_productos.Children.Add(frame, columnaActual, filaActual);
+                    columnaActual++;
+                    if (columnaActual >= columnasPorFila)
+                    {
+                        columnaActual = 0;
+                        filaActual++;
+                        // Añade una nueva definición de fila si es necesario
+                        grid_productos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    }
+
+                    TapGestureRecognizer tap = new TapGestureRecognizer();
+                    tap.Tapped += (s, ev) =>
+                    {
+                        ProductPage productPage = new ProductPage(service, producto);
+                        Navigation.PushAsync(productPage);
+                    };
+
+                    frame.GestureRecognizers.Add(tap);
+
+                    StackLayout stackLayout = new StackLayout
+                    {
+                        Children =
                         {
                             new Image
                             {
@@ -297,10 +220,16 @@ namespace SmartTrade.Views
                                 }
                             }
                         }
-                };
+                    };
 
-                frame.Content = stackLayout;
+                    frame.Content = stackLayout;
 
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
