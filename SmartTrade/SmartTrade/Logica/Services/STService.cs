@@ -22,6 +22,7 @@ namespace SmartTrade.Logica.Services
         private readonly IDAL<Tarjeta> dalTarjeta;
         private readonly IDAL<Producto> dalProducto;
         private readonly IDAL<Deporte> dalDeporte;
+        private readonly IDAL<Producto_vendedor> dalProductoVendedor;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService();
         private Usuario loggedUser;
@@ -30,6 +31,7 @@ namespace SmartTrade.Logica.Services
         {
             dalUsuario = new STDAL<Usuario>(supabaseContext);
             dalProducto = new STDAL<Producto>(supabaseContext);
+            dalProductoVendedor = new STDAL<Producto_vendedor>(supabaseContext);
         }
         public static STService Instance
         {
@@ -184,6 +186,22 @@ namespace SmartTrade.Logica.Services
             var productos = await dalProducto.GetAll();
             var productosPorCategoria = productos.Where(p => p.Categoria == categoria);
             return productosPorCategoria.ToList();
+        }
+
+        public async Task<List<Producto>> GetAllProductos()
+        {
+            try {
+                List<Producto> productos = await dalProducto.GetAll();
+                
+                List<Producto_vendedor> productoVendedor = await dalProductoVendedor.GetAll();
+                productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
+
+                return productos;
+            }
+            catch (Exception e) { 
+                Console.WriteLine("Error en el Servicio: ", e.Message);
+                return null; 
+            }
         }
     }
 }
