@@ -53,7 +53,7 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Puntos obtenidos: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
-                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="label_puntosObtenidos"/>
+                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_puntosObtenidos"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -61,7 +61,7 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
-                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="label_costeTotal"/>
+                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_costeTotal"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

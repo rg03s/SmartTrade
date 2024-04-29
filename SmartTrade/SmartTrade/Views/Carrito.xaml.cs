@@ -50,12 +50,12 @@ namespace SmartTrade.Views
             }
         }
 
-        private async void MostrarProductosCarrito(List<ItemCarrito> carrito)
+        private void MostrarProductosCarrito(List<ItemCarrito> carrito)
         {
 
             StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
-            Label lbl_costeTotal = this.FindByName<Label>("label_costeTotal");
-            Label lbl_puntosObtenidos = this.FindByName<Label>("label_puntosObtenidos");
+            Span span_costeTotal = this.FindByName<Span>("span_costeTotal");
+            Span span_puntosObtenidos = this.FindByName<Span>("span_puntosObtenidos");
 
             //eliminar los elementos del stacklayout para evitar duplicados
             stackLayout.Children.Clear();
@@ -65,8 +65,8 @@ namespace SmartTrade.Views
                 crearTarjeta(item, stackLayout);
             }
 
-            lbl_costeTotal.Text = "Coste total: " + costeTotal + "€";
-            lbl_puntosObtenidos.Text = "Puntos obtenidos: " + puntosObtenidos;
+            span_costeTotal.Text = "Coste total: " + costeTotal + "€";
+            span_puntosObtenidos.Text = "Puntos obtenidos: " + puntosObtenidos;
 
         }
 
