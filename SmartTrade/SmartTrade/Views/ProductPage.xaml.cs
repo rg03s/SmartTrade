@@ -16,9 +16,9 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private STService service;
+        private ISTService service;
 
-        public ProductPage(STService service, Producto producto)
+        public ProductPage(ISTService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;
@@ -118,8 +118,7 @@ namespace SmartTrade.Views
        
         private void BtnAtras_click(object sender, EventArgs e)
         {
-            Catalogo catalogo = new Catalogo(service);
-            Navigation.PushAsync(catalogo);
+            Navigation.PopAsync();
         }
 
         private void BtnCarrito_click(object sender, EventArgs e)
