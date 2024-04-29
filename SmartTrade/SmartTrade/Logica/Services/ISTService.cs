@@ -19,7 +19,7 @@ namespace SmartTrade.Logica.Services
         Task<List<Producto>> GetProductosPorCategoria(string categoria);
         Task<List<ItemCarrito>> GetCarrito();
         Producto GetProductoById(string idProducto);
-        Producto GetProductoByIdProductoVendedor(int idProductoVendedor);
+        Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor);
         Producto_vendedor GetProductoVendedorById(int idProductoVendedor);
     }
 }

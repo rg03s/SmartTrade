@@ -216,28 +216,32 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public Producto GetProductoByIdProductoVendedor(int idProductoVendedor)
+        public async Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor)
         {
             try
             {
-                //no funciona el metodo GetById de Producto_vendedor
-                //Producto_vendedor pv = dalProductoVendedor.GetById(idProductoVendedor.ToString()).Result;
-                Producto_vendedor pv = dalProductoVendedor.GetAll().Result.Where(aux => aux.Id == idProductoVendedor).FirstOrDefault();
+                List<Producto_vendedor> productoVendedorList = await dalProductoVendedor.GetAll();
+                Producto_vendedor pv = productoVendedorList.Where(aux => aux.Id == idProductoVendedor).FirstOrDefault();
+
                 if (pv == null)
                 {
                     Console.WriteLine("Producto vendedor no encontrado");
                     return null;
-                } else
-                {
-                    return dalProducto.GetById(pv.IdProducto.ToString()).Result;
                 }
-            } catch (Exception e)
-            {
-                Console.WriteLine("Error al obtener el producto: ", e.Message);
-                return null;
+                else
+                {
+                    //No funciona el getById del DAL
+                    List<Producto> productos = await dalProducto.GetAll();
+                    return productos.Where(p => p.Id == pv.IdProducto).FirstOrDefault();
+                }
             }
-        }  
-        
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener el producto: {ex.Message}");
+                throw new Exception("Error al obtener el producto", ex);
+            }
+        }
+
         public Producto_vendedor GetProductoVendedorById(int id)
         {
             try

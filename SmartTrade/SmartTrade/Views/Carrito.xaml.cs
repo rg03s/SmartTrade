@@ -49,89 +49,109 @@ namespace SmartTrade.Views
             }
         }
 
-        private void MostrarProductosCarrito(List<ItemCarrito> carrito)
+        private async void MostrarProductosCarrito(List<ItemCarrito> carrito)
         {
 
             StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
 
             foreach (ItemCarrito item in carrito)
             {
-                Producto producto = service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
-                Producto_vendedor productoVendedor = producto.Producto_Vendedor.Where(pv => pv.Id == item.idProductoVendedor).First();
+                try
+                {
+                    Producto producto = await service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
+                    Producto_vendedor productoVendedor = producto.Producto_Vendedor.Where(pv => pv.Id == item.idProductoVendedor).FirstOrDefault();
 
-                // Crear el Frame del producto
-                var productFrame = new Frame
-                {
-                    OutlineColor = Color.LightGray,
-                    Padding = new Thickness(10),
-                    CornerRadius = 10,
-                    Content = new Grid
+
+                    Frame frame = new Frame
                     {
-                        ColumnDefinitions = new ColumnDefinitionCollection
-                {
-                    new ColumnDefinition { Width = GridLength.Auto },
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                    new ColumnDefinition { Width = GridLength.Auto }
-                },
-                        Children =
-                {
-                    new Image { Source = producto.Imagen, HeightRequest = 100, WidthRequest = 100 },
-                    new StackLayout
+                        BorderColor = Color.LightGray,
+                        CornerRadius = 10,
+                        Padding = 10,
+                        BackgroundColor = Color.Black
+                    };
+
+                    Grid grid = new Grid
                     {
-                        Spacing = 15,
-                        Children =
-                        {
-                            new Label { Text = producto.Nombre, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black },
-                            new Label { Text = producto.Descripcion },
-                            new Label { Text = "Características: --" },
-                            new Grid
-                            {
-                                ColumnDefinitions = new ColumnDefinitionCollection
-                                {
-                                    new ColumnDefinition { Width = GridLength.Auto },
-                                    new ColumnDefinition { Width = GridLength.Auto },
-                                    new ColumnDefinition { Width = GridLength.Auto },
-                                    new ColumnDefinition { Width = GridLength.Auto }
-                                },
-                                Children =
-                                {
-                                    new Label { Text = "Cantidad:", TextColor = Color.Black, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center },
-                                    new Frame
-                                    {
-                                        WidthRequest = 20,
-                                        HeightRequest = 20,
-                                        CornerRadius = 5,
-                                        BackgroundColor = Color.FromHex("#f0f0f0"),
-                                        Padding = 0,
-                                        Content = new Label { Text = "-", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
-                                    },
-                                    new Label { Text = item.Cantidad.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center },
-                                    new Frame
-                                    {
-                                        WidthRequest = 20,
-                                        HeightRequest = 20,
-                                        CornerRadius = 5,
-                                        BackgroundColor = Color.FromHex("#f0f0f0"),
-                                        Padding = 0,
-                                        Content = new Label { Text = "+", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
-                                    }
-                                }
-                            },
-                            new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black }
-                        }
+                        RowDefinitions =
+                    {
+                        new RowDefinition { Height = GridLength.Auto },
+                        new RowDefinition { Height = GridLength.Auto }
+                    },
+                        ColumnDefinitions =
+                    {
+                        new ColumnDefinition { Width = GridLength.Auto },
+                        new ColumnDefinition { Width = GridLength.Auto },
+                        new ColumnDefinition { Width = GridLength.Auto }
                     }
+                    };
+
+                    Image image = new Image
+                    {
+                        Source = producto.Imagen,
+                        Aspect = Aspect.AspectFit
+                    };
+
+                    Label nombre = new Label
+                    {
+                        Text = producto.Nombre,
+                        FontSize = 20,
+                        FontAttributes = FontAttributes.Bold
+                    };
+
+                    Label precio = new Label
+                    {
+                        Text = productoVendedor.Precio.ToString(),
+                        FontSize = 20,
+                        FontAttributes = FontAttributes.Bold
+                    };
+
+                    Button btnSumar = new Button
+                    {
+                        Text = "+",
+                        BackgroundColor = Color.LightGray,
+                        TextColor = Color.Black
+                    };
+
+                    Button btnRestar = new Button
+                    {
+                        Text = "-",
+                        BackgroundColor = Color.LightGray,
+                        TextColor = Color.Black
+                    };
+
+                    Label cantidad = new Label
+                    {
+                        Text = item.Cantidad.ToString(),
+                        FontSize = 20,
+                        FontAttributes = FontAttributes.Bold
+                    };
+
+                    btnSumar.Clicked += BtnSumar_click;
+                    btnRestar.Clicked += BtnRestar_click;
+
+                    grid.Children.Add(image, 0, 0);
+                    grid.Children.Add(nombre, 1, 0);
+                    grid.Children.Add(precio, 2, 0);
+                    grid.Children.Add(btnSumar, 0, 1);
+                    grid.Children.Add(cantidad, 1, 1);
+                    grid.Children.Add(btnRestar, 2, 1);
+
+                    frame.Content = grid;
+                    stackLayout.Children.Add(frame);
+
                 }
-                    }
-                };
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error al obtener el producto: {e.Message}");
+                }
 
-                // Agregar el Frame al StackLayout
-                stackLayout.Children.Add(productFrame);
             }
 
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
         {
+            Console.WriteLine("Atras");
             Navigation.PopAsync();
         }
 
