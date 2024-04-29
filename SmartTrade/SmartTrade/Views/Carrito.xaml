@@ -43,64 +43,28 @@
             <!-- Contenido principal -->
             <ScrollView Grid.Row="2" Padding="20">
                 <StackLayout x:Name="listaItems">
-                    <!-- Aquí puedes agregar los elementos de tu carrito de compras -->
-                    <!--<Frame OutlineColor="LightGray" Padding="10" CornerRadius="10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="0" Source="https://i.ibb.co/d7vYJM6/Camiseta-Valencia.jpg" HeightRequest="100" WidthRequest="100" />
-
-                            <StackLayout Grid.Column="1" Spacing="15">
-                                <Label Text="Camiseta Valencia CF" FontSize="Large" TextColor="Black" />
-                                <Label Text="Camiseta del Valencia CF en muy buen estado de segunda mano." />
-                                <Label Text="Características: Talla M" />
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Label Grid.Column="0" Text="Cantidad:" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" />
-
-                                    <Frame Grid.Column="1" WidthRequest="20" HeightRequest="20" CornerRadius="5" BackgroundColor="#f0f0f0" Padding="0">
-                                        <Label Text="-" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="BtnRestar_click" NumberOfTapsRequired="1" />
-                                        </Frame.GestureRecognizers>
-                                    </Frame>
-
-                                    <Label Grid.Column="2" Text="2" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/>
-
-                                    <Frame Grid.Column="3" WidthRequest="20" HeightRequest="20" CornerRadius="5" BackgroundColor="#f0f0f0" Padding="0">
-                                        <Label Text="+" HorizontalOptions="Center" VerticalOptions="Center" />
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="BtnSumar_click" NumberOfTapsRequired="1" />
-                                        </Frame.GestureRecognizers>
-                                    </Frame>
-                                </Grid>
-
-                                <Label Text="69.99€" FontAttributes="Bold" FontSize="Medium" TextColor="Black" />
-                            </StackLayout>
-
-
-
-                        </Grid>
-                    </Frame>-->
-
-                    <!-- Agrega más productos como este -->
+                    <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
                 </StackLayout>
             </ScrollView>
 
             <!-- Resumen de la compra y Botón de finalizar compra -->
             <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand">
-                <Label Text="Puntos obtenidos: 140" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Fill" />
-                <Label Text="Coste total: 139.98€" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Fill" TextColor="Black"/>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Puntos obtenidos: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="label_puntosObtenidos"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="label_costeTotal"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Button Text="Finalizar compra" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
             </StackLayout>
 

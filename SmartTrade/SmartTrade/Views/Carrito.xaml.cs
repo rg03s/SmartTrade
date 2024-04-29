@@ -16,6 +16,7 @@ namespace SmartTrade.Views
     {
 
         ISTService service;
+        double costeTotal = 0, puntosObtenidos = 0;
 
         public Carrito(ISTService service)
         {
@@ -53,100 +54,150 @@ namespace SmartTrade.Views
         {
 
             StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
+            Label lbl_costeTotal = this.FindByName<Label>("label_costeTotal");
+            Label lbl_puntosObtenidos = this.FindByName<Label>("label_puntosObtenidos");
+
+            //eliminar los elementos del stacklayout para evitar duplicados
+            stackLayout.Children.Clear();
 
             foreach (ItemCarrito item in carrito)
             {
-                try
-                {
-                    Producto producto = await service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
-                    Producto_vendedor productoVendedor = producto.Producto_Vendedor.Where(pv => pv.Id == item.idProductoVendedor).FirstOrDefault();
-
-
-                    Frame frame = new Frame
-                    {
-                        BorderColor = Color.LightGray,
-                        CornerRadius = 10,
-                        Padding = 10,
-                        BackgroundColor = Color.Black
-                    };
-
-                    Grid grid = new Grid
-                    {
-                        RowDefinitions =
-                    {
-                        new RowDefinition { Height = GridLength.Auto },
-                        new RowDefinition { Height = GridLength.Auto }
-                    },
-                        ColumnDefinitions =
-                    {
-                        new ColumnDefinition { Width = GridLength.Auto },
-                        new ColumnDefinition { Width = GridLength.Auto },
-                        new ColumnDefinition { Width = GridLength.Auto }
-                    }
-                    };
-
-                    Image image = new Image
-                    {
-                        Source = producto.Imagen,
-                        Aspect = Aspect.AspectFit
-                    };
-
-                    Label nombre = new Label
-                    {
-                        Text = producto.Nombre,
-                        FontSize = 20,
-                        FontAttributes = FontAttributes.Bold
-                    };
-
-                    Label precio = new Label
-                    {
-                        Text = productoVendedor.Precio.ToString(),
-                        FontSize = 20,
-                        FontAttributes = FontAttributes.Bold
-                    };
-
-                    Button btnSumar = new Button
-                    {
-                        Text = "+",
-                        BackgroundColor = Color.LightGray,
-                        TextColor = Color.Black
-                    };
-
-                    Button btnRestar = new Button
-                    {
-                        Text = "-",
-                        BackgroundColor = Color.LightGray,
-                        TextColor = Color.Black
-                    };
-
-                    Label cantidad = new Label
-                    {
-                        Text = item.Cantidad.ToString(),
-                        FontSize = 20,
-                        FontAttributes = FontAttributes.Bold
-                    };
-
-                    btnSumar.Clicked += BtnSumar_click;
-                    btnRestar.Clicked += BtnRestar_click;
-
-                    grid.Children.Add(image, 0, 0);
-                    grid.Children.Add(nombre, 1, 0);
-                    grid.Children.Add(precio, 2, 0);
-                    grid.Children.Add(btnSumar, 0, 1);
-                    grid.Children.Add(cantidad, 1, 1);
-                    grid.Children.Add(btnRestar, 2, 1);
-
-                    frame.Content = grid;
-                    stackLayout.Children.Add(frame);
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error al obtener el producto: {e.Message}");
-                }
-
+                crearTarjeta(item, stackLayout);
             }
 
+            lbl_costeTotal.Text = "Coste total: " + costeTotal + "€";
+            lbl_puntosObtenidos.Text = "Puntos obtenidos: " + puntosObtenidos;
+
+        }
+
+        private async void crearTarjeta(ItemCarrito item, StackLayout stackLayout)
+        {
+            try
+            {
+                Producto producto = await service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
+                Producto_vendedor productoVendedor = producto.Producto_Vendedor.FirstOrDefault(pv => pv.Id == item.idProductoVendedor);
+
+                costeTotal += productoVendedor.Precio * item.Cantidad;
+                puntosObtenidos += producto.Puntos * item.Cantidad;
+
+                // Crear botón redondeado personalizado para sumar la cantidad
+                var roundedButtonPlus = new Button
+                {
+                    Text = "+",
+                    TextColor = Color.Black,
+                    WidthRequest = 30,
+                    HeightRequest = 30,
+                    BackgroundColor = Color.FromHex("#f0f0f0"),
+                    CornerRadius = 5,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                };
+
+                // Crear etiqueta para mostrar la cantidad
+                Label cantidadLabel = new Label { Text = item.Cantidad.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
+
+                // Añadir gesto de tap para sumar la cantidad al hacer clic
+                roundedButtonPlus.Clicked += (sender, args) =>
+                {
+                    // Sumar la cantidad al hacer clic en el botón de sumar
+                    item.Cantidad++;
+                    cantidadLabel.Text = item.Cantidad.ToString();
+                };
+
+                // Crear botón redondeado personalizado para restar la cantidad
+                var roundedButtonMinus = new Button
+                {
+                    Text = "-",
+                    TextColor = Color.Black,
+                    WidthRequest = 30,
+                    HeightRequest = 30,
+                    BackgroundColor = Color.FromHex("#f0f0f0"),
+                    CornerRadius = 5,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                };
+
+                // Añadir gesto de tap para restar la cantidad al hacer clic
+                roundedButtonMinus.Clicked += (sender, args) =>
+                {
+                    // Restar la cantidad al hacer clic en el botón de restar
+                    if (item.Cantidad > 0)
+                    {
+                        item.Cantidad--;
+                        cantidadLabel.Text = item.Cantidad.ToString();
+                    }
+                };
+
+                // Crear el StackLayout para los botones de cantidad
+                var quantityButtonsLayout = new StackLayout
+                {
+                    Orientation = StackOrientation.Horizontal,
+                    Spacing = 10,
+                    Children =
+                    {
+                        new Label { Text = "Cantidad:", TextColor = Color.Black, VerticalOptions = LayoutOptions.Center },
+                        roundedButtonMinus,
+                        cantidadLabel,
+                        roundedButtonPlus
+                    }
+                };
+
+                // Crear la tarjeta del producto con botones redondeados y lógica de cantidad
+                var productCard = new Frame
+                {
+                    BackgroundColor = Color.White,
+                    CornerRadius = 10,
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    HasShadow = true,
+                    Content = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                            {
+                                new Image
+                                {
+                                    Source = producto.Imagen,
+                                    HeightRequest = 100,
+                                    WidthRequest = 100,
+                                    Aspect = Aspect.AspectFit,
+                                    GestureRecognizers =
+                                    {
+                                        new TapGestureRecognizer
+                                        {
+                                            Command = new Command(async () =>
+                                            {
+                                                // Navegar a la página de información del producto
+                                                await Navigation.PushAsync(new ProductPage(service, producto));
+                                            })
+                                        }
+                                    }
+                                },
+                                new StackLayout
+                                {
+                                    VerticalOptions = LayoutOptions.Center,
+                                    Spacing = 5,
+                                    Children =
+                                    {
+                                        new Label { Text = producto.Nombre, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
+                                        new Label { Text = producto.Descripcion, TextColor = Color.Gray },
+                                        new Label { Text = "Características: --", TextColor = Color.Gray },
+                                        quantityButtonsLayout, // Añadir el StackLayout de los botones de cantidad
+                                        new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black }
+                                    }
+                                }
+                            }
+                    }
+                };
+
+                // Agregar la tarjeta del producto al StackLayout principal
+                stackLayout.Children.Add(productCard);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al obtener el producto: {e.Message}");
+            }
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
