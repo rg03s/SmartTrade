@@ -12,10 +12,10 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Catalogo : ContentPage
     {
-        private STService service;
+        private ISTService service;
         private List<Producto> catalogoProductos = new List<Producto>();
 
-        public Catalogo(STService service)
+        public Catalogo(ISTService service)
         {
             InitializeComponent();
             this.service = service;
