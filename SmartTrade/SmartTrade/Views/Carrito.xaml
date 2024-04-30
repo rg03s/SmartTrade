@@ -48,7 +48,7 @@
             </ScrollView>
 
             <!-- Resumen de la compra y Botón de finalizar compra -->
-            <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand">
+            <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_Resumen">
                 <Label>
                     <Label.FormattedText>
                         <FormattedString>

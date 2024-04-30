@@ -16,12 +16,16 @@ namespace SmartTrade.Logica.Services
         */
         Task<bool> Login(string nickname, string password);
 
+        Usuario GetUsuarioLogueado();
         Task<List<Producto>> GetProductosPorCategoria(string categoria);
         Task<List<ItemCarrito>> GetCarrito();
         Producto GetProductoById(string idProducto);
         Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor);
         Producto_vendedor GetProductoVendedorById(int idProductoVendedor);
         Task<List<Producto>> GetAllProductos();
+        Task<bool> ActualizarItemCarrito(ItemCarrito itemCarrito);
+        Task<bool> EliminarItemCarrito(ItemCarrito itemCarrito);
 
+        Task<bool> AgregarItemCarrito(ItemCarrito itemCarrito);
     }
 }

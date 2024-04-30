@@ -17,6 +17,7 @@ namespace SmartTrade.Views
     {
 
         private ISTService service;
+        private Producto_vendedor productoVendedor_seleccionado;
 
         public ProductPage(ISTService service, Producto producto)
         {
@@ -44,12 +45,14 @@ namespace SmartTrade.Views
                 picker.Items.Add(pv.NicknameVendedor + " - " + pv.Precio + "€");
             }
             picker.SelectedItem = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().NicknameVendedor + " - " + producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio + "€";
+            productoVendedor_seleccionado = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
 
             picker.SelectedIndexChanged += (sender, args) =>
             {
                 string selected = picker.Items[picker.SelectedIndex];
                 selected = selected.Split('-')[0].Trim();
-                precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.NicknameVendedor == selected).First().Precio.ToString() + "€";
+                productoVendedor_seleccionado = producto.Producto_Vendedor.Where(pv => pv.NicknameVendedor == selected).First();
+                precio_producto.Text = productoVendedor_seleccionado.Precio.ToString() + "€";
             };
             
             if(producto is Ropa prod_ropa)
@@ -132,10 +135,14 @@ namespace SmartTrade.Views
             Console.WriteLine("Perfil");
         }
 
-        private void BtnAgregarCarrito_click(object sender, EventArgs e)
+        private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
-            //TODO
-            Console.WriteLine("Agregar al Carrito");
+            Console.WriteLine("Añadir al carrito");
+            ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado());
+            if (await service.AgregarItemCarrito(item))
+            {
+                await DisplayAlert("Añadido al carrito", "El producto ha sido añadido al carrito", "OK");
+            }
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {

@@ -267,5 +267,49 @@ namespace SmartTrade.Logica.Services
             }
 
         }
+
+        public async Task<bool> ActualizarItemCarrito(ItemCarrito item)
+        {
+            try
+            {
+                await dalCarrito.Update(item);
+                return true;
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al actualizar el item del carrito: ", e.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> EliminarItemCarrito(ItemCarrito item)
+        {
+            try
+            {
+                await dalCarrito.Delete(item);
+                return true;
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al eliminar el item del carrito: ", e.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> AgregarItemCarrito(ItemCarrito item)
+        {
+            try
+            {
+                await dalCarrito.Add(item);
+                return true;
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al añadir el item al carrito: ", e.Message);
+                return false;
+            }
+        }
+
+        public Usuario GetUsuarioLogueado()
+        {
+            return loggedUser;
+        }
     }
 }
