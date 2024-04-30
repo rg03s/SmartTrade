@@ -58,8 +58,10 @@ namespace SmartTrade.Views
             if(producto is Ropa prod_ropa)
             {
 
-                Span talla_ropa = (Span)FindByName("talla_ropa");
-                talla_ropa.Text = prod_ropa.Talla;
+                //Span talla_ropa = (Span)FindByName("talla_ropa");
+                //talla_ropa.Text = prod_ropa.Talla;
+
+                configurarPicker();
 
                 Span color_ropa = (Span)FindByName("color_ropa");
                 color_ropa.Text = prod_ropa.Color;
@@ -71,11 +73,11 @@ namespace SmartTrade.Views
                 tipoPrenda_ropa.Text = prod_ropa.TipoPrenda;
 
                 Label label_marca_ropa = (Label)FindByName("label_marca_ropa");
-                Label label_talla_ropa = (Label)FindByName("label_talla_ropa");
+                //Label label_talla_ropa = (Label)FindByName("label_talla_ropa");
                 Label label_color_ropa = (Label)FindByName("label_color_ropa");
                 Label label_tipoPrenda_ropa = (Label)FindByName("label_tipoPrenda_ropa");
 
-                label_talla_ropa.IsVisible = true;
+                //label_talla_ropa.IsVisible = true;
                 label_color_ropa.IsVisible = true;
                 label_marca_ropa.IsVisible = true;
                 label_tipoPrenda_ropa.IsVisible = true;
@@ -118,6 +120,21 @@ namespace SmartTrade.Views
             }
         }
 
+        private void configurarPicker()
+        {
+            Picker picker = (Picker)FindByName("tallaPicker");
+            picker.Items.Add("XS");
+            picker.Items.Add("S");
+            picker.Items.Add("M");
+            picker.Items.Add("L");
+            picker.Items.Add("XL");
+            picker.Items.Add("XXL");
+            picker.SelectedIndex = 0;
+            picker.SelectedIndexChanged += (sender, args) =>
+            {
+                string talla = picker.Items[picker.SelectedIndex];          
+            };
+        }
        
         private void BtnAtras_click(object sender, EventArgs e)
         {

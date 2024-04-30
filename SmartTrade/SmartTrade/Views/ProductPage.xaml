@@ -159,14 +159,8 @@
                         </Grid.RowDefinitions>
 
                         <!-- ATRIBUTOS ROPA-->
-                        <Label Grid.Column="0" Grid.Row="0" IsVisible="false" x:Name="label_talla_ropa">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="&#xf545; " FontFamily="{StaticResource FontAwesomeSolid}" TextColor="DimGray"/>
-                                    <Span Text="Talla S" TextColor="Black" x:Name="talla_ropa"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
+
+                        <Picker x:Name="tallaPicker" Title="Selecciona talla" FontSize="13" FontAttributes="Bold" TextColor="Blue" VerticalOptions="Center" Grid.Column="0" Grid.Row="0" />
 
                         <Label Grid.Column="0" Grid.Row="1" IsVisible="false" x:Name="label_tipoPrenda_ropa">
                             <Label.FormattedText>
