@@ -41,32 +41,26 @@
             </StackLayout>
 
             <!-- Contenido principal -->
-            <ScrollView Grid.Row="2" Padding="20">
-                <StackLayout x:Name="listaItems">
-                    <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
+            <ScrollView Grid.Row="2" Padding="20" Orientation="Vertical">
+                <StackLayout Orientation="Vertical">
+                    <StackLayout x:Name="listaItems">
+                        <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
+                    </StackLayout>
+                    <!-- Resumen de la compra y Botón de finalizar compra -->
+                    <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_Resumen">
+                        <Frame BorderColor="LightGray" BackgroundColor="#f0f0f0" CornerRadius="10">
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="Puntos obtenidos: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_puntosObtenidos" />
+                                <Label Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_costeTotal" />
+                                <Button Text="Finalizar compra" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
                 </StackLayout>
             </ScrollView>
-
-            <!-- Resumen de la compra y Botón de finalizar compra -->
-            <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_Resumen">
-                <Label>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Puntos obtenidos: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
-                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_puntosObtenidos"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
-                            <Span Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_costeTotal"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Button Text="Finalizar compra" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
-            </StackLayout>
 
 
         </Grid>

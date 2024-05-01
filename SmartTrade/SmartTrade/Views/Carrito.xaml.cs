@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Acr.UserDialogs;
+using SmartTrade.Entities;
 using SmartTrade.Logica.Services;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,9 @@ namespace SmartTrade.Views
         override protected void OnAppearing()
         {
             base.OnAppearing();
+            UserDialogs.Instance.ShowLoading("Cargando productos...");
             CargarProductosCarrito();
+            UserDialogs.Instance.HideLoading();
         }
 
         private async void CargarProductosCarrito()
@@ -125,8 +128,12 @@ namespace SmartTrade.Views
                     // Sumar la cantidad al hacer clic en el botón de sumar
                     item.Cantidad++;
                     cantidadLabel.Text = item.Cantidad.ToString();
+                    costeTotal += productoVendedor.Precio;
+                    puntosObtenidos += producto.Puntos;
                     //actualizar en la base de datos
                     service.ActualizarItemCarrito(item);
+                    ActualizarResumen();
+                    UserDialogs.Instance.Toast("Cantidad del producto actualizada", TimeSpan.FromSeconds(3));
                 };
 
                 var roundedButtonMinus = new Button
@@ -148,8 +155,29 @@ namespace SmartTrade.Views
                     {
                         item.Cantidad--;
                         cantidadLabel.Text = item.Cantidad.ToString();
+                        costeTotal -= productoVendedor.Precio;
+                        puntosObtenidos -= producto.Puntos;
                         //actualizar en la base de datos
                         service.ActualizarItemCarrito(item);
+                        ActualizarResumen();
+                        UserDialogs.Instance.Toast("Cantidad del producto actualizada", TimeSpan.FromSeconds(3));
+                    }
+                    else if (item.Cantidad == 1)
+                    {
+                        UserDialogs.Instance.Confirm(new ConfirmConfig
+                        {
+                            Message = "¿Desea eliminar el producto del carrito?",
+                            OkText = "Sí",
+                            CancelText = "No",
+                            OnAction = async (result) =>
+                            {
+                                if (result)
+                                {
+                                    await service.EliminarItemCarrito(item);
+                                    CargarProductosCarrito();
+                                }
+                            }
+                        });
                     }
                 };
 
@@ -203,19 +231,20 @@ namespace SmartTrade.Views
                                 Children =
                                 {
                                     new Label { Text = producto.Nombre, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
-                                    new Label { Text = producto.Descripcion, TextColor = Color.Gray },
+                                    new Label { Text = producto.Descripcion.Substring(0, 50) + "...", TextColor = Color.Gray },
                                     new Label { Text = "Características: --", TextColor = Color.Gray },
                                     quantityButtonsLayout,
                                     new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black },
-                                    new Button
-                                    {
-                                        Text = "Eliminar",
-                                        Command = new Command(async () =>
-                                        {
-                                            await service.EliminarItemCarrito(item);
-                                            CargarProductosCarrito();
-                                        })
-                                    }
+                                    //new Button
+                                    //{
+                                    //    Text = "Eliminar",
+                                    //    CornerRadius = 10,
+                                    //    Command = new Command(async () =>
+                                    //    {
+                                    //        await service.EliminarItemCarrito(item);
+                                    //        CargarProductosCarrito();
+                                    //    })
+                                    //}
                                 }
                             }
                         }
@@ -228,6 +257,12 @@ namespace SmartTrade.Views
             {
                 Console.WriteLine($"Error al obtener el producto: {e.Message}");
             }
+        }
+
+        private void ActualizarResumen()
+        {
+            span_costeTotal.Text = costeTotal.ToString() + "€";
+            span_puntosObtenidos.Text = puntosObtenidos.ToString();
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
@@ -248,16 +283,5 @@ namespace SmartTrade.Views
             Console.WriteLine("Finalizar Compra");
         }
 
-        private void BtnSumar_click(object sender, EventArgs e)
-        {
-            //TODO
-            Console.WriteLine("Increase Quantity");
-        }
-
-        private void BtnRestar_click(object sender, EventArgs e)
-        {
-            //TODO
-            Console.WriteLine("Decrease Quantity");
-        }
     }
 }
