@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Acr.UserDialogs;
+using SmartTrade.Entities;
 using SmartTrade.Logica.Entities;
 using SmartTrade.Logica.Services;
 using System;
@@ -24,6 +25,7 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = service;
 
+            
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 
@@ -123,12 +125,13 @@ namespace SmartTrade.Views
         private void configurarPicker()
         {
             Picker picker = (Picker)FindByName("tallaPicker");
-            picker.Items.Add("XS");
-            picker.Items.Add("S");
-            picker.Items.Add("M");
-            picker.Items.Add("L");
-            picker.Items.Add("XL");
-            picker.Items.Add("XXL");
+            picker.IsVisible = true;
+            picker.Items.Add("Talla XS");
+            picker.Items.Add("Talla S");
+            picker.Items.Add("Talla M");
+            picker.Items.Add("Talla L");
+            picker.Items.Add("Talla XL");
+            picker.Items.Add("Talla XXL");
             picker.SelectedIndex = 0;
             picker.SelectedIndexChanged += (sender, args) =>
             {
@@ -154,11 +157,10 @@ namespace SmartTrade.Views
 
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
-            Console.WriteLine("Añadir al carrito");
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado());
             if (await service.AgregarItemCarrito(item))
             {
-                await DisplayAlert("Añadido al carrito", "El producto ha sido añadido al carrito", "OK");
+                UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
             }
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
