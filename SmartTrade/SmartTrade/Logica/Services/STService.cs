@@ -298,8 +298,20 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                await dalCarrito.Add(item);
-                return true;
+                //get if the item is already in the cart
+                List<ItemCarrito> items = await GetCarrito();
+                ItemCarrito itemCarrito = items.Where(i => i.idProductoVendedor == item.idProductoVendedor).FirstOrDefault();
+                if (itemCarrito != null)
+                {
+                    itemCarrito.Cantidad += item.Cantidad;
+                    await dalCarrito.Update(itemCarrito);
+                    return true;
+                }
+                else
+                {
+                    await dalCarrito.Add(item);
+                    return true;
+                }
             } catch (Exception e)
             {
                 Console.WriteLine("Error al añadir el item al carrito: ", e.Message);
