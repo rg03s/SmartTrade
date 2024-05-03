@@ -34,6 +34,11 @@ namespace SmartTrade.Views
             {
                 UserDialogs.Instance.ShowLoading("Cargando productos...");
                 List<Producto> catalogoProductos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
+                Console.WriteLine("Productos cargados : " + catalogoProductos.Count);
+                foreach (Producto producto in catalogoProductos)
+                {
+                    Console.WriteLine(producto.Nombre);
+                }
                 UserDialogs.Instance.HideLoading();
                 this.productosVendedor = catalogoProductos;
                 if (productosVendedor.Count == 0)
