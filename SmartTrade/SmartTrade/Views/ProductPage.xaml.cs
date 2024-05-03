@@ -159,7 +159,6 @@ namespace SmartTrade.Views
 
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
-            Console.WriteLine("Añadir al carrito:: " + tallaSeleccionada);
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
             if (await service.AgregarItemCarrito(item))
             {

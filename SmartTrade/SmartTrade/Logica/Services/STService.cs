@@ -195,6 +195,7 @@ namespace SmartTrade.Logica.Services
                 
                 List<Producto_vendedor> productoVendedor = await dalProductoVendedor.GetAll();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
+                productos.OrderBy(p => p.Categoria);
 
                 return productos;
             }
@@ -300,7 +301,7 @@ namespace SmartTrade.Logica.Services
             {
                 //get if the item is already in the cart
                 List<ItemCarrito> items = await GetCarrito();
-                ItemCarrito itemCarrito = items.Where(i => i.idProductoVendedor == item.idProductoVendedor).FirstOrDefault();
+                ItemCarrito itemCarrito = items.Where(i => i.idProductoVendedor == item.idProductoVendedor && item.Caracteristica == i.Caracteristica).FirstOrDefault();
                 if (itemCarrito != null)
                 {
                     itemCarrito.Cantidad += item.Cantidad;
