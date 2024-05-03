@@ -55,7 +55,8 @@ namespace SmartTrade.Views
                     }
                     else
                     {
-                        await DisplayAlert("Error", "Correo o contraseña incorrectos", "OK");
+                        UserDialogs.Instance.HideLoading();
+                        UserDialogs.Instance.Alert("Correo o contraseña incorrectos", "Error", "OK");
                     }
                 }
             }  

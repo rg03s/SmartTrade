@@ -21,6 +21,8 @@ namespace SmartTrade.Entities
         [Required]
         [Column("cantidad")]
         public int Cantidad { get; set; }
+        [Column("caracteristica")]
+        public string Caracteristica { get; set; }
         [Required]
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

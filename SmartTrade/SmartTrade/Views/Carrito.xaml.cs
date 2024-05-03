@@ -109,6 +109,12 @@ namespace SmartTrade.Views
                 span_costeTotal.Text = costeTotal.ToString() + "€";
                 span_puntosObtenidos.Text = puntosObtenidos.ToString();
 
+                string caracteristicas = "";
+                if (item.Caracteristica != null)
+                {
+                    caracteristicas = "Características: " + item.Caracteristica;
+                }
+
                 var roundedButtonPlus = new Button
                 {
                     Text = "+",
@@ -232,7 +238,7 @@ namespace SmartTrade.Views
                                 {
                                     new Label { Text = producto.Nombre, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
                                     new Label { Text = producto.Descripcion.Substring(0, 50) + "...", TextColor = Color.Gray },
-                                    new Label { Text = "Características: --", TextColor = Color.Gray },
+                                    new Label { Text = caracteristicas, TextColor = Color.Gray } ,
                                     quantityButtonsLayout,
                                     new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black },
                                     //new Button

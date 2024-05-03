@@ -19,6 +19,7 @@ namespace SmartTrade.Views
 
         private ISTService service;
         private Producto_vendedor productoVendedor_seleccionado;
+        private string tallaSeleccionada;
 
         public ProductPage(ISTService service, Producto producto)
         {
@@ -133,9 +134,10 @@ namespace SmartTrade.Views
             picker.Items.Add("Talla XL");
             picker.Items.Add("Talla XXL");
             picker.SelectedIndex = 0;
+            tallaSeleccionada = picker.Items[picker.SelectedIndex];
             picker.SelectedIndexChanged += (sender, args) =>
             {
-                string talla = picker.Items[picker.SelectedIndex];          
+                tallaSeleccionada = picker.Items[picker.SelectedIndex];          
             };
         }
        
@@ -157,7 +159,8 @@ namespace SmartTrade.Views
 
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
-            ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado());
+            Console.WriteLine("Añadir al carrito:: " + tallaSeleccionada);
+            ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
             if (await service.AgregarItemCarrito(item))
             {
                 UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
