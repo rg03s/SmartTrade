@@ -68,6 +68,7 @@
             <Label Text="Mis Productos"
                    FontSize="24"
                    HorizontalOptions="Center"
+                   TextColor="SlateGray"
                    x:Name="Labelproductos"/>
         </Grid>
         <BoxView HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Center" Margin="0,10,0,0"/>
