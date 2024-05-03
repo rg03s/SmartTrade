@@ -49,9 +49,17 @@ namespace SmartTrade.Views
                         //await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         UserDialogs.Instance.HideLoading();
                         UserDialogs.Instance.Toast("Inicio de sesión exitoso", TimeSpan.FromSeconds(2));
-                        Catalogo paginaPrincipal = new Catalogo(service);
-                        await Navigation.PushAsync(paginaPrincipal);
-                        UserDialogs.Instance.HideLoading();
+                        if (!service.IsVendedor()) {
+                            Catalogo paginaPrincipal = new Catalogo(service);
+                            await Navigation.PushAsync(paginaPrincipal);
+                            UserDialogs.Instance.HideLoading();
+                        }
+                        else
+                        {
+                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service);
+                            await Navigation.PushAsync(paginaPrincipal);
+                            UserDialogs.Instance.HideLoading();
+                        }
                     }
                     else
                     {

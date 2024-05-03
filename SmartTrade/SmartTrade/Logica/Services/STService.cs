@@ -260,6 +260,28 @@ namespace SmartTrade.Logica.Services
 
         }
 
+        public string GetLoggedNickname()
+        {
+            return loggedUser.Nickname;
+        }
+
+        public bool IsVendedor()
+        {
+            return loggedUser.IsVendedor;
+        }
+
+        public async Task<List<Producto>> GetProductosDeVendedor(string nickname)
+        {
+            List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+            productosVendedor = productosVendedor.Where(pv => pv.NicknameVendedor == nickname).ToList();
+
+            List<Producto> productos = await dal.GetAll<Producto>();
+            productos = productos.Where(p => productosVendedor.Select(pv => pv.IdProducto).Contains(p.Id)).ToList();
+            productos.ForEach(p => p.Producto_Vendedor = productosVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
+
+            return productos;
+        }
+
         public async Task<bool> ActualizarItemCarrito(ItemCarrito item)
         {
             try

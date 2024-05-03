@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:SmartTrade.ViewModels" x:DataType="viewmodels:CatalogoVendedorViewModel"
+             mc:Ignorable="d"
+             x:Class="SmartTrade.Views.CatalogoVendedor"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+    <StackLayout>
+        <Grid RowDefinitions="50,30">
+            <StackLayout Orientation="Horizontal"
+                         Grid.Row="0">
+                <Label Text="SmartTrade"
+                       VerticalOptions="Center"
+                       FontSize="24"
+                       TextColor="RoyalBlue"
+                       Margin="15,10,0,0"
+                       FontAttributes="Bold"
+                       FontFamily="Comfortaa"/>
+                <!--<Image Source="https://i.ibb.co/YcD5rHp/Regalo.png"
+                       HeightRequest="28"
+                       Margin="15,10,0,0"
+                       HorizontalOptions="EndAndExpand"/>-->
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf07a;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Margin="15,10,0,0"
+                    Clicked="BtnCarrito_click"
+                />
+                <Button HorizontalOptions="End"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    Margin="0,10,0,0"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
+            </StackLayout>
+            <Grid ColumnDefinitions="*,175"
+                  Grid.Row="1">
+                <SearchBar Grid.Column="1"
+                       Placeholder="Buscar..."
+                       PlaceholderColor="LightGray"
+                       FontSize="14"
+                       CancelButtonColor="RoyalBlue"
+                       SearchButtonPressed="OnBusqueda"
+                       x:Name="searchBar"
+                />
+            </Grid>
+
+            <Picker Grid.Row="2"
+                x:Name="picker_categorias"
+                Title="Filtrar por categorías"
+                TitleColor="RoyalBlue"
+                Margin="15,10,15,0"/>
+
+        </Grid>
+        <Grid Margin="0,15,0,0" IsVisible="true" x:Name="grid_productosDestacados">
+            <Label Text="Mis Productos"
+                   FontSize="24"
+                   HorizontalOptions="Center"
+                   x:Name="Labelproductos"/>
+        </Grid>
+        <BoxView HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Center" Margin="0,10,0,0"/>
+        <ScrollView>
+            <Grid ColumnDefinitions="*,*" x:Name="grid_productos">
+                <!-- CONTENIDO MANEJADO CON CODIGO. NO BORRAR EL GRID -->
+            </Grid>
+        </ScrollView>
+    </StackLayout>
+</ContentPage>

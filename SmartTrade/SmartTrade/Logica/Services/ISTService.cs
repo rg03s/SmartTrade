@@ -25,6 +25,9 @@ namespace SmartTrade.Logica.Services
         Task<List<Producto>> GetAllProductos();
         Task<bool> ActualizarItemCarrito(ItemCarrito itemCarrito);
         Task<bool> EliminarItemCarrito(ItemCarrito itemCarrito);
+        string GetLoggedNickname();
+        bool IsVendedor();
+        Task<List<Producto>> GetProductosDeVendedor(string nickname);
 
         Task<bool> AgregarItemCarrito(ItemCarrito itemCarrito);
     }

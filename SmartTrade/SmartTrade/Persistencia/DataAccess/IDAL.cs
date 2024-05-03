@@ -13,7 +13,7 @@ namespace SmartTrade.Persistencia.DataAccess
         Task Delete<T>(T entity) where T : class;
 
         Task<List<T>> GetAll<T>() where T : class;
-        Task<T> GetById<T>(string id) where T : class;
+        Task<T> GetById<T>(IComparable id) where T : class;
         Usuario GetByEmail(string email);
 
         Task Update<T>(T entity) where T : class;
