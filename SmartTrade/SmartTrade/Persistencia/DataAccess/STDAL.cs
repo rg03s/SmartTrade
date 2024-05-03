@@ -60,7 +60,7 @@ namespace SmartTrade.Persistencia.DataAccess
             }
         }
 
-        public async Task<T> GetById(IComparable id)
+        public async Task<T> GetById<T>(IComparable id) where T : class
         {
             try
             {

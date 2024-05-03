@@ -271,14 +271,20 @@ namespace SmartTrade.Logica.Services
 
         public async Task<List<Producto>> GetProductosDeVendedor(string nickname)
         {
-            List<Producto_vendedor> productosVendedor = await dalProductoVendedor.GetAll();
-            productosVendedor = productosVendedor.Where(pv => pv.NicknameVendedor == loggedUser.Nickname).ToList();
-            List<Producto> productos = new List<Producto>();
+            List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+            List<int> ids = new List<int>();
 
             foreach (Producto_vendedor pv in productosVendedor)
             {
-                productos.Add(dalProducto.GetById(pv.IdProducto.ToString()));
+                if (pv.NicknameVendedor == nickname){
+                    ids.Add(pv.IdProducto);
+                }
             }
+
+            List<Producto> productos = await dal.GetAll<Producto>();
+
+            productos = productos.Where(p => ids.Contains(p.Id)).ToList();
+
 
             return productos;
         }

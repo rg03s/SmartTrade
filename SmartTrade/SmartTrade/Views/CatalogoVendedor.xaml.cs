@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using SmartTrade.Logica.Services;
+using Acr.UserDialogs;
 
 namespace SmartTrade.Views
 {
@@ -31,7 +32,9 @@ namespace SmartTrade.Views
         {
             try
             {
+                UserDialogs.Instance.ShowLoading("Cargando productos...");
                 List<Producto> catalogoProductos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
+                UserDialogs.Instance.HideLoading();
                 this.productosVendedor = catalogoProductos;
                 if (productosVendedor.Count == 0)
                 {
@@ -39,7 +42,7 @@ namespace SmartTrade.Views
                 }
                 else
                 {
-                    MostrarProductos(this.productosVendedor);
+                    MostrarProductos(catalogoProductos);
 
                 }
             }
@@ -66,10 +69,8 @@ namespace SmartTrade.Views
                 picker.Items.Add("Tecnologia");
                 picker.SelectedIndexChanged += (s, e) =>
                 {
-                    List<Producto> productosFiltrados = new List<Producto>();
                     string categoria = picker.Items[picker.SelectedIndex];
-                    if (productosVendedor.Count > 0) 
-                        productosFiltrados = productosVendedor.Where(p => p.Categoria == categoria).ToList();
+                    List<Producto> productosFiltrados = productosVendedor.Where(p => p.Categoria == categoria).ToList();
                     MostrarProductos(productosFiltrados);
                 };
             }
