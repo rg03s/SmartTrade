@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace SmartTrade.Persistencia.DataAccess
 {
-    public interface IDAL<T> where T : class
+    public interface IDAL
     {
-        Task Add(T entity);
-        Task Delete(T entity);
-        Task<List<T>> GetAll();
-        Task<T> GetById(string id);
+        Task Add<T>(T entity) where T : class;
+        Task Delete<T>(T entity) where T : class;
+
+        Task<List<T>> GetAll<T>() where T : class;
+        Task<T> GetById<T>(string id) where T : class;
         Usuario GetByEmail(string email);
 
-        Task Update(T entity);
+        Task Update<T>(T entity) where T : class;
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;
 

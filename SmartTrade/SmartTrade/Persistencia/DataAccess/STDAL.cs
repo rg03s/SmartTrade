@@ -12,17 +12,16 @@ using Postgrest;
 
 namespace SmartTrade.Persistencia.DataAccess
 {
-    public partial class STDAL<T> : IDAL<T> where T : class
+    public partial class STDAL : IDAL
     {
 
         private readonly SupabaseContext sc;
-        protected readonly DbSet<T> table;
+        //protected readonly DbSet<T> table;
 
 
         public STDAL(SupabaseContext dbContext)
         {
             sc = dbContext;
-            table = dbContext.Set<T>();
         }
 
 
@@ -49,11 +48,11 @@ namespace SmartTrade.Persistencia.DataAccess
         }
 
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAll<T>() where T : class
         {
             try
             {
-                return await table.ToListAsync();
+                return await sc.Set<T>().ToListAsync();
             } catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -61,11 +60,11 @@ namespace SmartTrade.Persistencia.DataAccess
             }
         }
 
-        public async Task<T> GetById(string id)
+        public async Task<T> GetById<T>(string id) where T : class
         {
             try
             {
-                return await table.FindAsync(id);
+                return await sc.Set<T>().FindAsync(id);
             }
             catch (Exception)
             {
@@ -74,21 +73,21 @@ namespace SmartTrade.Persistencia.DataAccess
 
         }
 
-        public async Task Add(T entity)
+        public async Task Add<T>(T entity) where T : class
         {
-            await table.AddAsync(entity);
+            await sc.Set<T>().AddAsync(entity);
             await sc.SaveChangesAsync();
         }
 
-        public async Task Update(T entity)
+        public async Task Update<T>(T entity) where T : class
         {
-            table.Update(entity);
+            sc.Set<T>().Update(entity);
             await sc.SaveChangesAsync();
         }
 
-        public async Task Delete(T entity)
+        public async Task Delete<T>(T entity) where T : class
         {
-            table.Remove(entity);
+            sc.Set<T>().Remove(entity);
             await sc.SaveChangesAsync();
         }
 
