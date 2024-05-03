@@ -8,30 +8,21 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Postgrest;
 using SmartTrade.Entities;
 using SmartTrade.Persistencia.DataAccess;
+using SmartTrade.Views;
 using Xamarin.Essentials;
 
 namespace SmartTrade.Logica.Services
 {
     public class STService : ISTService
     {
-        private readonly IDAL<Usuario> dalUsuario;
-        private readonly IDAL<Vendedor> dalVendedor;
-        private readonly IDAL<Comprador> dalComprador;
-        private readonly IDAL<Tarjeta> dalTarjeta;
-        private readonly IDAL<Producto> dalProducto;
-        private readonly IDAL<Deporte> dalDeporte;
-        private readonly IDAL<Producto_vendedor> dalProductoVendedor;
-        private readonly IDAL<ItemCarrito> dalCarrito;
+        private readonly IDAL dal;
         private SupabaseContext supabaseContext = SupabaseContext.Instance;
-        private static STService instance = new STService();
+        private static STService instance = new STService(new STDAL(new SupabaseContext()));
         private Usuario loggedUser;
 
-        public STService()
+        public STService(IDAL dal)
         {
-            dalUsuario = new STDAL<Usuario>(supabaseContext);
-            dalProducto = new STDAL<Producto>(supabaseContext);
-            dalProductoVendedor = new STDAL<Producto_vendedor>(supabaseContext);
-            dalCarrito = new STDAL<ItemCarrito>(supabaseContext);
+            this.dal = dal;
         }
         public static STService Instance
         {
@@ -43,11 +34,11 @@ namespace SmartTrade.Logica.Services
 
         public async Task AddUser(Usuario usuario)
         {
-            if (dalUsuario.GetByEmail(usuario.Email) != null)
+            if (dal.GetByEmail(usuario.Email) != null)
             {
                 throw new EmailYaRegistradoException();
             }
-            else if (await dalUsuario.GetById(usuario.Nickname) != null)
+            else if (await dal.GetById<Usuario>(usuario.Nickname) != null)
             {
                 throw new NickYaRegistradoException();
             }
@@ -59,7 +50,7 @@ namespace SmartTrade.Logica.Services
                         throw new EmailFormatoIncorrectoException();
                     if (usuario.Email.EndsWith(".com") || usuario.Email.EndsWith(".es"))
                     {
-                        await dalUsuario.Add(usuario);
+                        await dal.Add<Usuario>(usuario);
                     }
                     else throw new EmailFormatoIncorrectoException();
                 }
@@ -77,17 +68,17 @@ namespace SmartTrade.Logica.Services
         public async Task AddUserVendedor(Vendedor vendedor)
         {
 
-            await dalVendedor.Add(vendedor);
+            await dal.Add<Vendedor>(vendedor);
         }
 
         public async Task AddUserComprador(Comprador comprador)
         {
-            await dalComprador.Add(comprador);
+            await dal.Add<Comprador>(comprador);
         }
 
         public async Task AddTarjeta(Tarjeta tarjeta)
         {
-            await dalTarjeta.Add(tarjeta);
+            await dal.Add<Tarjeta>(tarjeta);
         }
 
 
@@ -142,10 +133,10 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                Usuario usuario = await dalUsuario.GetById(identifier);
+                Usuario usuario = await dal.GetById<Usuario>(identifier);
                 if (usuario == null)
                 {
-                    usuario = dalUsuario.GetByEmail(identifier);
+                    usuario = dal.GetByEmail(identifier);
                     if (usuario == null)
                     {
                         return false; // El usuario no está registrado ni por nickname ni por correo
@@ -170,20 +161,20 @@ namespace SmartTrade.Logica.Services
 
         public async Task<List<Producto>> GetAllProductsAsync()
         {
-            var productos = await dalProducto.GetAll();
+            var productos = await dal.GetAll<Producto>();
             return productos.ToList();
         }
 
         public async Task<List<Deporte>> GetAllDeporte()
         {
-            var d = await dalDeporte.GetAll();
+            var d = await dal.GetAll<Deporte>();
             return d.ToList();
         }
 
         // metodo para ordenar los productos por categorías
         public async Task<List<Producto>> GetProductosPorCategoria(string categoria)
         {
-            var productos = await dalProducto.GetAll();
+            var productos = await dal.GetAll<Producto>();
             var productosPorCategoria = productos.Where(p => p.Categoria == categoria);
             return productosPorCategoria.ToList();
         }
@@ -191,9 +182,9 @@ namespace SmartTrade.Logica.Services
         public async Task<List<Producto>> GetAllProductos()
         {
             try {
-                List<Producto> productos = await dalProducto.GetAll();
+                List<Producto> productos = await dal.GetAll<Producto>();
                 
-                List<Producto_vendedor> productoVendedor = await dalProductoVendedor.GetAll();
+                List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
                 productos.OrderBy(p => p.Categoria);
 
@@ -209,7 +200,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                return dalProducto.GetById(id).Result;
+                return dal.GetById<Producto>(id).Result;
             } catch (Exception e)
             {
                 Console.WriteLine("Error al obtener el producto: ", e.Message);
@@ -221,7 +212,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                List<Producto_vendedor> productoVendedorList = await dalProductoVendedor.GetAll();
+                List<Producto_vendedor> productoVendedorList = await dal.GetAll<Producto_vendedor>();
                 Producto_vendedor pv = productoVendedorList.Where(aux => aux.Id == idProductoVendedor).FirstOrDefault();
 
                 if (pv == null)
@@ -232,7 +223,7 @@ namespace SmartTrade.Logica.Services
                 else
                 {
                     //No funciona el getById del DAL
-                    List<Producto> productos = await dalProducto.GetAll();
+                    List<Producto> productos = await dal.GetAll<Producto>();
                     return productos.Where(p => p.Id == pv.IdProducto).FirstOrDefault();
                 }
             }
@@ -247,7 +238,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                return dalProductoVendedor.GetById(id.ToString()).Result;
+                return dal.GetById<Producto_vendedor>(id.ToString()).Result;
             } catch (Exception e)
             {
                 Console.WriteLine("Error al obtener el producto vendedor: ", e.Message);
@@ -259,7 +250,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                List<ItemCarrito> productosCarrito = await dalCarrito.GetAll();
+                List<ItemCarrito> productosCarrito = await dal.GetAll<ItemCarrito>();
                 return productosCarrito.Where(p => p.NicknameUsuario == loggedUser.Nickname).ToList();
             } catch (Exception e)
             {
@@ -273,7 +264,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                await dalCarrito.Update(item);
+                await dal.Update<ItemCarrito>(item);
                 return true;
             } catch (Exception e)
             {
@@ -286,7 +277,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                await dalCarrito.Delete(item);
+                await dal.Delete<ItemCarrito>(item);
                 return true;
             } catch (Exception e)
             {
@@ -305,12 +296,12 @@ namespace SmartTrade.Logica.Services
                 if (itemCarrito != null)
                 {
                     itemCarrito.Cantidad += item.Cantidad;
-                    await dalCarrito.Update(itemCarrito);
+                    await dal.Update<ItemCarrito>(itemCarrito);
                     return true;
                 }
                 else
                 {
-                    await dalCarrito.Add(item);
+                    await dal.Add<ItemCarrito>(item);
                     return true;
                 }
             } catch (Exception e)
