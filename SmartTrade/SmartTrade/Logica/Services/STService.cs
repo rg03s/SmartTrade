@@ -47,7 +47,7 @@ namespace SmartTrade.Logica.Services
             {
                 throw new EmailYaRegistradoException();
             }
-            else if (await dalUsuario.GetById(usuario.Nickname) != null)
+            else if (dalUsuario.GetById(usuario.Nickname) != null)
             {
                 throw new NickYaRegistradoException();
             }
@@ -142,7 +142,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                Usuario usuario = await dalUsuario.GetById(identifier);
+                Usuario usuario = dalUsuario.GetById(identifier);
                 if (usuario == null)
                 {
                     usuario = dalUsuario.GetByEmail(identifier);
@@ -208,7 +208,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                return dalProducto.GetById(id).Result;
+                return dalProducto.GetById(id);
             } catch (Exception e)
             {
                 Console.WriteLine("Error al obtener el producto: ", e.Message);
@@ -246,7 +246,7 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                return dalProductoVendedor.GetById(id.ToString()).Result;
+                return dalProductoVendedor.GetById(id.ToString());
             } catch (Exception e)
             {
                 Console.WriteLine("Error al obtener el producto vendedor: ", e.Message);
@@ -266,6 +266,30 @@ namespace SmartTrade.Logica.Services
                 return null;
             }
 
+        }
+
+        public string GetLoggedNickname()
+        {
+            return loggedUser.Nickname;
+        }
+
+        public bool IsVendedor()
+        {
+            return loggedUser.IsVendedor;
+        }
+
+        public async Task<List<Producto>> GetProductosDeVendedor(string nickname)
+        {
+            List<Producto_vendedor> productosVendedor = await dalProductoVendedor.GetAll();
+            List<Producto> productos = new List<Producto>();
+
+            productosVendedor = productosVendedor.Where(pv => pv.NicknameVendedor == loggedUser.Nickname).ToList();
+            foreach (Producto_vendedor pv in productosVendedor)
+            {
+                productos.Add(dalProducto.GetById(pv.IdProducto.ToString()));
+            }
+
+            return productos;
         }
     }
 }

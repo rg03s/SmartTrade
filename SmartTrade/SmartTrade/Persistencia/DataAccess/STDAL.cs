@@ -61,11 +61,11 @@ namespace SmartTrade.Persistencia.DataAccess
             }
         }
 
-        public async Task<T> GetById(string id)
+        public T GetById(string id)
         {
             try
             {
-                return await table.FindAsync(id);
+                return table.Find(id);
             }
             catch (Exception)
             {

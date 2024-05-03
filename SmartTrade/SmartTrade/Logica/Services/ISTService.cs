@@ -22,6 +22,9 @@ namespace SmartTrade.Logica.Services
         Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor);
         Producto_vendedor GetProductoVendedorById(int idProductoVendedor);
         Task<List<Producto>> GetAllProductos();
+        string GetLoggedNickname();
+        bool IsVendedor();
+        Task<List<Producto>> GetProductosDeVendedor(string nickname);
 
     }
 }

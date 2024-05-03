@@ -46,8 +46,14 @@ namespace SmartTrade.Views
                         contraseña.Text = string.Empty;
                         await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         //await Navigation.PopAsync();
-                        Catalogo paginaPrincipal = new Catalogo(service);
-                        await Navigation.PushAsync(paginaPrincipal);
+                        if (!service.IsVendedor()) {
+                            Catalogo paginaPrincipal = new Catalogo(service);
+                            await Navigation.PushAsync(paginaPrincipal);
+                        } else
+                        {
+                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service);
+                            await Navigation.PushAsync(paginaPrincipal);
+                        }
                     }
                     else
                     {
