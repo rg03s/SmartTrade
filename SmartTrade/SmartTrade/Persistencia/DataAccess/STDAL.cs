@@ -61,11 +61,11 @@ namespace SmartTrade.Persistencia.DataAccess
             }
         }
 
-        public T GetById(string id)
+        public async Task<T> GetById(IComparable id)
         {
             try
             {
-                return table.Find(id);
+                return await table.FindAsync(id);
             }
             catch (Exception)
             {

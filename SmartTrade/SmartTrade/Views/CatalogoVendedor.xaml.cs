@@ -39,7 +39,7 @@ namespace SmartTrade.Views
                 }
                 else
                 {
-                    MostrarProductos(catalogoProductos);
+                    MostrarProductos(this.productosVendedor);
 
                 }
             }
