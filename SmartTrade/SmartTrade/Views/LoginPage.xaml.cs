@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Acr.UserDialogs;
+using SmartTrade.Entities;
 using SmartTrade.Logica.Services;
 using SmartTrade.ViewModels;
 using System;
@@ -40,19 +41,24 @@ namespace SmartTrade.Views
                 }
                 else
                 {
+                    UserDialogs.Instance.ShowLoading("Iniciando sesión...");
                     if (await service.Login(username, password))
                     {
                         correo.Text = string.Empty;
                         contraseña.Text = string.Empty;
-                        await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
-                        //await Navigation.PopAsync();
+                        //await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
+                        UserDialogs.Instance.HideLoading();
+                        UserDialogs.Instance.Toast("Inicio de sesión exitoso", TimeSpan.FromSeconds(2));
                         if (!service.IsVendedor()) {
                             Catalogo paginaPrincipal = new Catalogo(service);
                             await Navigation.PushAsync(paginaPrincipal);
-                        } else
+                            UserDialogs.Instance.HideLoading();
+                        }
+                        else
                         {
                             CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service);
                             await Navigation.PushAsync(paginaPrincipal);
+                            UserDialogs.Instance.HideLoading();
                         }
                     }
                     else

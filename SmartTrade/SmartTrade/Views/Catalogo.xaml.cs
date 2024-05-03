@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using SmartTrade.Logica.Services;
+using Acr.UserDialogs;
 
 namespace SmartTrade.Views
 {
@@ -31,7 +32,9 @@ namespace SmartTrade.Views
         {
             try
             {
+                UserDialogs.Instance.ShowLoading("Cargando productos...");
                 List<Producto> catalogoProductos = await service.GetAllProductos();
+                UserDialogs.Instance.HideLoading();
                 this.catalogoProductos = catalogoProductos;
                 if (catalogoProductos.Count == 0)
                 {

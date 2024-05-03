@@ -10,11 +10,11 @@ namespace SmartTrade.Entities
         {
         }
 
-        public ItemCarrito(int idProductoVendedor, int cantidad, DateTime created_at)
+        public ItemCarrito(int idProductoVendedor, int cantidad, Usuario usuario)
         {
             this.idProductoVendedor = idProductoVendedor;
             this.Cantidad = cantidad;
-            this.CreatedAt = created_at;
+            this.NicknameUsuario = usuario.Nickname;
         }
     }
 }

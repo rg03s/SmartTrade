@@ -14,7 +14,7 @@ namespace SmartTrade.Persistencia.DataAccess
 
         static SupabaseContext() { }
 
-        private SupabaseContext()
+        public SupabaseContext()
         {
             optionsBuilder = new DbContextOptionsBuilder();
             optionsBuilder.UseNpgsql("User Id=postgres.apjeqdhvkthosokvpvma;Password=zGvvULbrYK4XeQe2;Server=aws-0-eu-west-2.pooler.supabase.com;Port=5432;Database=postgres");

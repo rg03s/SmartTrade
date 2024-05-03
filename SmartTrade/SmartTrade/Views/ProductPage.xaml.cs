@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Acr.UserDialogs;
+using SmartTrade.Entities;
 using SmartTrade.Logica.Entities;
 using SmartTrade.Logica.Services;
 using System;
@@ -17,12 +18,14 @@ namespace SmartTrade.Views
     {
 
         private ISTService service;
+        private Producto_vendedor productoVendedor_seleccionado;
 
         public ProductPage(ISTService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;
 
+            
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 
@@ -44,19 +47,23 @@ namespace SmartTrade.Views
                 picker.Items.Add(pv.NicknameVendedor + " - " + pv.Precio + "€");
             }
             picker.SelectedItem = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().NicknameVendedor + " - " + producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First().Precio + "€";
+            productoVendedor_seleccionado = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
 
             picker.SelectedIndexChanged += (sender, args) =>
             {
                 string selected = picker.Items[picker.SelectedIndex];
                 selected = selected.Split('-')[0].Trim();
-                precio_producto.Text = producto.Producto_Vendedor.Where(pv => pv.NicknameVendedor == selected).First().Precio.ToString() + "€";
+                productoVendedor_seleccionado = producto.Producto_Vendedor.Where(pv => pv.NicknameVendedor == selected).First();
+                precio_producto.Text = productoVendedor_seleccionado.Precio.ToString() + "€";
             };
             
             if(producto is Ropa prod_ropa)
             {
 
-                Span talla_ropa = (Span)FindByName("talla_ropa");
-                talla_ropa.Text = prod_ropa.Talla;
+                //Span talla_ropa = (Span)FindByName("talla_ropa");
+                //talla_ropa.Text = prod_ropa.Talla;
+
+                configurarPicker();
 
                 Span color_ropa = (Span)FindByName("color_ropa");
                 color_ropa.Text = prod_ropa.Color;
@@ -68,11 +75,11 @@ namespace SmartTrade.Views
                 tipoPrenda_ropa.Text = prod_ropa.TipoPrenda;
 
                 Label label_marca_ropa = (Label)FindByName("label_marca_ropa");
-                Label label_talla_ropa = (Label)FindByName("label_talla_ropa");
+                //Label label_talla_ropa = (Label)FindByName("label_talla_ropa");
                 Label label_color_ropa = (Label)FindByName("label_color_ropa");
                 Label label_tipoPrenda_ropa = (Label)FindByName("label_tipoPrenda_ropa");
 
-                label_talla_ropa.IsVisible = true;
+                //label_talla_ropa.IsVisible = true;
                 label_color_ropa.IsVisible = true;
                 label_marca_ropa.IsVisible = true;
                 label_tipoPrenda_ropa.IsVisible = true;
@@ -115,6 +122,22 @@ namespace SmartTrade.Views
             }
         }
 
+        private void configurarPicker()
+        {
+            Picker picker = (Picker)FindByName("tallaPicker");
+            picker.IsVisible = true;
+            picker.Items.Add("Talla XS");
+            picker.Items.Add("Talla S");
+            picker.Items.Add("Talla M");
+            picker.Items.Add("Talla L");
+            picker.Items.Add("Talla XL");
+            picker.Items.Add("Talla XXL");
+            picker.SelectedIndex = 0;
+            picker.SelectedIndexChanged += (sender, args) =>
+            {
+                string talla = picker.Items[picker.SelectedIndex];          
+            };
+        }
        
         private void BtnAtras_click(object sender, EventArgs e)
         {
@@ -132,10 +155,13 @@ namespace SmartTrade.Views
             Console.WriteLine("Perfil");
         }
 
-        private void BtnAgregarCarrito_click(object sender, EventArgs e)
+        private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
-            //TODO
-            Console.WriteLine("Agregar al Carrito");
+            ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado());
+            if (await service.AgregarItemCarrito(item))
+            {
+                UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
+            }
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {
