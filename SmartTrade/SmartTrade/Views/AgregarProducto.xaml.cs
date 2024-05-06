@@ -68,6 +68,7 @@ namespace SmartTrade.Views
             else {
                 Producto producto = new Producto(Nombre.Text, "0", ImagenURL.Text, "", Descripcion.Text, 0, picker.Items[picker.SelectedIndex]);
                 await service.AddProducto(producto);
+                await DisplayAlert("Éxito", "Producto añadido!", "OK");
             }
         }
 
