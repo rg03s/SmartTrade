@@ -16,10 +16,11 @@ namespace SmartTrade.Views
         private ISTService service;
         private List<Producto> catalogoProductos = new List<Producto>();
 
-        public Catalogo(ISTService service)
+        public Catalogo(ISTService service, List<Producto> productos)
         {
             InitializeComponent();
             this.service = service;
+            this.catalogoProductos = productos;
 
             ConfigurarPickerFiltrado();
 
@@ -28,14 +29,12 @@ namespace SmartTrade.Views
 
         }
 
-        private async void CargarProductos()
+        private void CargarProductos()
         {
             try
             {
                 UserDialogs.Instance.ShowLoading("Cargando productos...");
-                List<Producto> catalogoProductos = await service.GetAllProductos();
                 UserDialogs.Instance.HideLoading();
-                this.catalogoProductos = catalogoProductos;
                 if (catalogoProductos.Count == 0)
                 {
                     Debug.WriteLine("No se han encontrado productos");

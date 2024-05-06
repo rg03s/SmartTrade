@@ -16,10 +16,11 @@ namespace SmartTrade.Views
         private ISTService service;
         private List<Producto> productosVendedor = new List<Producto>();
 
-        public CatalogoVendedor(ISTService service)
+        public CatalogoVendedor(ISTService service, List<Producto> productos)
         {
             InitializeComponent();
             this.service = service;
+            this.productosVendedor = productos;
 
             ConfigurarPickerFiltrado();
 
