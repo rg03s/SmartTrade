@@ -81,6 +81,16 @@ namespace SmartTrade.Logica.Services
             await dal.Add<Tarjeta>(tarjeta);
         }
 
+        public async Task AddProducto(Producto producto)
+        {
+            await dal.Add<Producto>(producto);
+        }
+
+        public async Task AddProductoVendedor(Producto_vendedor producto_vendedor)
+        {
+            await dal.Add<Producto_vendedor>(producto_vendedor);
+        }
+
 
         /*
         public void Commit()
@@ -177,6 +187,17 @@ namespace SmartTrade.Logica.Services
             var productos = await dal.GetAll<Producto>();
             var productosPorCategoria = productos.Where(p => p.Categoria == categoria);
             return productosPorCategoria.ToList();
+        }
+
+        public async Task<Usuario> GetUsuarioByNick(string nickname)
+        {
+            try {
+                return await dal.GetById<Usuario>(nickname); 
+            } catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener al usuario: " + e.Message);
+                return null;
+            }
         }
 
         public async Task<List<Producto>> GetAllProductos()

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:SmartTrade.ViewModels" x:DataType="viewmodels:CatalogoViewModel"
+             mc:Ignorable="d"
+             x:Class="SmartTrade.Views.AgregarProducto"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+    <ScrollView>
+        <StackLayout>
+            <Label Text="Agregar Producto"
+                FontSize="24"
+                TextColor="SlateGray"
+                Margin="15,15,0,0"
+                FontAttributes="Bold"/>
+            <BoxView HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Center" Margin="0,10,0,0"/>
+            <Entry x:Name="Nombre" Placeholder="Nombre del producto" TextColor="Black" PlaceholderColor="Gray" 
+                Margin="15,0,15,0"/>
+            <Editor x:Name="Descripcion" HeightRequest="100" Placeholder="Descripción" TextColor="Black" PlaceholderColor="Gray"
+                Margin="15,0,15,0"/>
+            <Picker x:Name="picker" Title="Categoría del producto" Margin="15,0,15,0" TitleColor="RoyalBlue" TextColor="RoyalBlue"/>
+            <Entry x:Name="Stock" Placeholder="Stock del producto" TextColor="Black" PlaceholderColor="Gray" 
+                Margin="15,0,15,0" TextChanged="Stock_TextChanged"/>
+            <Entry x:Name="Precio" Placeholder="Precio del producto" TextColor="Black" PlaceholderColor="Gray" 
+                Margin="15,0,15,0" TextChanged="Precio_TextChanged"/>
+            <Entry x:Name="ImagenURL" Placeholder="URL de la imagen" TextColor="DarkGray" PlaceholderColor="Gray"
+                Margin="15,0,15,0"/>
+            <Button x:Name="ButtonImagen" Text="Ver Imagen" HorizontalOptions="End" Margin="15,0,15,0" Clicked="ButtonImagen_Clicked"/>
+            <Image x:Name="Imagen" Margin="15,15,15,15"/>
+            <Button x:Name="AceptarButton" Text="Agregar Producto" WidthRequest="50" HeightRequest="50" Margin="15,0,15,0" Clicked="AgregarProducto_Clicked"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
