@@ -30,5 +30,7 @@ namespace SmartTrade.Logica.Services
         Task<List<Producto>> GetProductosDeVendedor(string nickname);
 
         Task<bool> AgregarItemCarrito(ItemCarrito itemCarrito);
+        Task<List<Producto>> getProductosListaDeseos(string nickPropietario);
+        Task EliminarProductoListaDeseos(Producto productoLista);
     }
 }

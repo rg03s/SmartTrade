@@ -332,7 +332,63 @@ namespace SmartTrade.Logica.Services
                 return false;
             }
         }
+        public async Task<List<Producto>> getProductosListaDeseos(string nickPropietario)
+        {
+            List<int> productosListaDeseos = new List<int>();
+            List<Producto> listaDeseos = new List<Producto>();
+            try
+            { productosListaDeseos = await dal.GetProductosIdLista(nickPropietario);
+                
+                Producto p = null;
+                
+                    foreach (int idproducto in productosListaDeseos)
+                    {
+                        p = await dal.GetById<Producto>(idproducto);
+                        if (p != null)
+                        {
+                            listaDeseos.Add(p);
+                        }
+                    }
+                }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EXCEPCION EN getIdProductosListaDeseos " + ex.Message + " ProductosListaDeseos: " + string.Join(",", productosListaDeseos));
+            }
+            return listaDeseos;
+        }
+        public async Task<List<Producto>> getProductosDeLista(List<int> listaDeseosId)
+        {
+            List<Producto> listaDeseos = new List<Producto>();
+            Producto p = null;
+            try
+            {
+                foreach (int idproducto in listaDeseosId)
+                {
+                    p = await dal.GetById<Producto>(idproducto);
+                    if (p != null)
+                    {
+                        listaDeseos.Add(p);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EXCEPCION en GETPRODUCTOSDELISTA " + ex.Message + " Lista deseos: " + string.Join(",", listaDeseos));
+            }
+            Console.WriteLine("Lista deseos: " + string.Join(",", listaDeseos));
+            return listaDeseos;
+        }
 
+        public async Task EliminarProductoListaDeseos(Producto productoLista)
+        {
+
+            List<ListaDeseosItem> ListaLoggedUser = await dal.GetListaDeseos(GetLoggedNickname());
+            foreach (var item in ListaLoggedUser)
+            {
+                if (item.ProductoId == productoLista.Id) await dal.Delete<ListaDeseosItem>(item);
+            }
+        }
+        
         public Usuario GetUsuarioLogueado()
         {
             return loggedUser;
