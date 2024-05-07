@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+
+//using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+
+//using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 using static System.Net.WebRequestMethods;
 
@@ -18,6 +22,7 @@ namespace SmartTrade.Views
     {
 
         ISTService service;
+        public Producto_vendedor productoVendedor_seleccionado;
 
         public ListaDeseos(ISTService service)
         {
@@ -37,8 +42,7 @@ namespace SmartTrade.Views
         {
             try
             {
-                string nick =  service.GetLoggedNickname();
-                List <Producto> lista = await service.getProductosListaDeseos(nick);
+                List <Producto> lista = await service.getProductosListaDeseos();
                 Console.WriteLine("Conteido lista: ");
                 foreach (Producto producto in lista) Console.WriteLine(producto.Nombre);
                // List<ItemCarrito> carrito = await service.GetCarrito();
@@ -77,7 +81,7 @@ namespace SmartTrade.Views
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error al cargar los productos del carrito: {e.Message}");
+                Console.WriteLine($"Error al cargar los productos de la lista: {e.Message}");
             }
         }
 
@@ -97,17 +101,17 @@ namespace SmartTrade.Views
         {
             try
             {
+                List<Producto_vendedor> pvendedores = await service.GetAProductoVendedorByProducto(producto);
 
-                Label puntos = new Label { Text = producto.Puntos.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
+               // Label puntos = new Label { Text = producto.Puntos.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
 
-                List <Producto_vendedor> pro_vendedores = producto.Producto_Vendedor.ToList();
                 List <string> vendedoresDatos = new List<string>();
                 string[] talla = new string[] {"XS", "S", "M", "L","XL" };
-
-                foreach (Producto_vendedor p_vendedor in pro_vendedores) 
+               // Picker picker = (Picker)FindByName("vendedorPicker");
+              
+                foreach (Producto_vendedor pvendedor in pvendedores) 
                 {
-                  //  double precio =  vendedores.Where(v => v.IdProducto == producto.Id && v.NicknameVendedor == vendedor.NicknameVendedor).Select( v => v.Precio).FirstOrDefault();
-                    vendedoresDatos.Add(p_vendedor.NicknameVendedor);
+                    vendedoresDatos.Add(pvendedor.NicknameVendedor + ": " + pvendedor.Precio + "€");
                 }
 
                 string caracteristicas = "";
@@ -117,16 +121,59 @@ namespace SmartTrade.Views
                 {
                     Title = "Elige vendedor",
                     ItemsSource = vendedoresDatos
+                    
                 };
+
+                vendedorPicker.SelectedIndexChanged += (sender, args) =>
+                {
+                    string selected = vendedorPicker.Items[vendedorPicker.SelectedIndex];
+                    selected = selected.Split(':')[0].Trim();
+                    productoVendedor_seleccionado = pvendedores.Where(pv => pv.NicknameVendedor == selected).First();
+                };
+                vendedorPicker.SelectedItem = pvendedores.OrderBy(pv => pv.Precio).First().NicknameVendedor + ": " + pvendedores.OrderBy(pv => pv.Precio).First().Precio + "€";
+
                 Picker tallaPicker = new Picker
                 {
 
                     Title = "Talla",
-                    ItemsSource = talla
+                    ItemsSource = talla,
+                    IsVisible = false,
 
                 };
-
-                string precioVendedor = (vendedorPicker.SelectedItem != null) ? vendedorPicker.SelectedItem.ToString() : "No seleccionado";
+                tallaPicker.SelectedIndex = 0 ;
+                if (producto.Categoria == "Ropa") tallaPicker.IsVisible = true;
+                ImageButton EliminarDeDeseos = new ImageButton
+                {
+                    Source = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png",
+                    HeightRequest = 25,
+                    WidthRequest = 25,
+                    Aspect = Aspect.AspectFit,
+                    BackgroundColor = Color.White,
+                    
+                };
+                EliminarDeDeseos.Clicked += async (sender, e) =>
+                {
+                    await service.EliminarProductoListaDeseos(producto);
+                    await CargarProductosListaDeseos();
+                };
+                Button AddAlCarrito = new Button
+                {
+                    Text = "Añadir al carrito",
+                    FontAttributes = FontAttributes.Italic,
+                    VerticalOptions = LayoutOptions.End,
+                    BackgroundColor = Color.HotPink,
+                    CornerRadius = 12
+                };
+                
+                AddAlCarrito.Clicked += async (sender, e) =>
+                {
+                    if (producto.Categoria == "Ropa") caracteristicas =  ("Talla " + tallaPicker.SelectedItem.ToString()) ;
+                    ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
+                    await service.AgregarItemCarrito(item);
+                    await service.EliminarProductoListaDeseos(producto);
+                    await CargarProductosListaDeseos();
+                };
+                //                string precioVendedor = (vendedorPicker.SelectedItem != null) ? vendedorPicker.SelectedItem.ToString() : "No seleccionado";
 
                 var productCard = new Frame
                 {
@@ -158,33 +205,14 @@ namespace SmartTrade.Views
                 var grid = (Grid)productCard.Content;
                 grid.Children.Add(
 
-                                    new ImageButton
-                                    {
-                                        Source = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png",
-                                        HeightRequest = 25,
-                                        WidthRequest = 25,
-                                        Aspect = Aspect.AspectFit,
-                                        BackgroundColor = Color.White,
-                                        GestureRecognizers =
-                                        {
-                                            new TapGestureRecognizer
-                                            {
-                                                Command = new Command(async () =>
-                                                {
-                                                    await service.EliminarProductoListaDeseos(producto);
-                                                    await CargarProductosListaDeseos();
-                                                })
-                                            }
-                                        }
-
-                                    },
+                                   EliminarDeDeseos,
                                     0,0
                                     );
                 grid.Children.Add(
 
                                    new Label
                                    {
-                                       Text = "Puntos",
+                                       Text = producto.Puntos.ToString() ,
                                        FontAttributes = FontAttributes.Bold,
                                        FontSize = 16,
                                        TextColor = Color.Gray
@@ -236,39 +264,15 @@ namespace SmartTrade.Views
                                2, 3
                             );
                 grid.Children.Add(
-                               tallaPicker,
+                                tallaPicker,
                                1, 3
                             );
                 grid.Children.Add(
-                                new Button
-                                {
-                                    Text = "Añadir al carrito",
-                                    FontAttributes = FontAttributes.Italic,
-                                    VerticalOptions = LayoutOptions.End,
-                                    BackgroundColor = Color.HotPink,
-                                    CornerRadius = 12,
-                                     GestureRecognizers =
-                                        {
-                                                        new TapGestureRecognizer
-                                                        {
-                                                            Command = new Command(async () =>
-                                                            {
-                                                                Producto_vendedor vendedorElegido = new Producto_vendedor() ;
-                                                                vendedorElegido.NicknameVendedor = vendedorPicker.SelectedItem.ToString();
-                                                                caracteristicas = tallaPicker.SelectedItem.ToString();
-                                                                ItemCarrito item = new ItemCarrito(vendedorElegido.Id ,1,service.GetUsuarioLogueado(),caracteristicas);
-                                                                await service.AgregarItemCarrito(item);
-                                                                await service.EliminarProductoListaDeseos(producto);
-                                                                await CargarProductosListaDeseos();
-                                                            })
-                                                        }
-                                        }
-                                },
+                                AddAlCarrito,
                                2, 4
                             );
 
 
-                foreach (string p in vendedoresDatos) Console.WriteLine( "HOLAAAAAAAAAAAAAA" + p );
                 stackLayout.Children.Add(productCard);
             }
             catch (Exception e)
@@ -276,6 +280,8 @@ namespace SmartTrade.Views
                 Console.WriteLine($"Error al obtener el producto: {e.Message}");
             }
         }
+
+        
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Console.WriteLine("Atras");
