@@ -50,13 +50,18 @@ namespace SmartTrade.Views
                         UserDialogs.Instance.HideLoading();
                         UserDialogs.Instance.Toast("Inicio de sesión exitoso", TimeSpan.FromSeconds(2));
                         if (!service.IsVendedor()) {
-                            ListaDeseos paginaPrincipal = new ListaDeseos(service);
+
+
+                            List<Producto> productos = await service.GetAllProductos();
+                            Catalogo paginaPrincipal = new Catalogo(service, productos);
+
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
                         else
                         {
-                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service);
+                            List<Producto> productos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
+                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service, productos);
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
