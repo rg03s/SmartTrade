@@ -84,6 +84,7 @@ namespace SmartTrade.Logica.Services
         public async Task AddProducto(Producto producto)
         {
             await dal.Add<Producto>(producto);
+            dal.Commit();
         }
 
         public async Task AddProductoVendedor(Producto_vendedor producto_vendedor)

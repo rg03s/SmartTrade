@@ -107,12 +107,12 @@ namespace SmartTrade.Persistencia.DataAccess
         {
             return dbContext.Set<T>().Where(predicate).AsEnumerable();
         }
-
+        */
         public void Commit()
         {
-            dbContext.SaveChanges();
+            sc.SaveChanges();
         }
-        */
+        
 
     }
 }

@@ -5,6 +5,7 @@ using SmartTrade.Logica.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,17 +65,28 @@ namespace SmartTrade.Views
 
         private async void AgregarProducto_Clicked(object sender, EventArgs e)
         {
-            if (!StockPrecioSonInt()) await DisplayAlert("Error", "El stock y el precio del producto deben ser números!", "OK");
+            if (!StockPrecioSonValidos()) await DisplayAlert("Error", "El stock y el precio del producto deben ser números!", "OK");
             else {
-                Producto producto = new Producto(Nombre.Text, "0", ImagenURL.Text, "", Descripcion.Text, 0, picker.Items[picker.SelectedIndex]);
-                await service.AddProducto(producto);
-                await DisplayAlert("Éxito", "Producto añadido!", "OK");
+                try
+                {
+                    Producto producto = new Producto(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, picker.Items[picker.SelectedIndex]);
+                    await service.AddProducto(producto);
+                    int stock = Int32.Parse(Stock.Text);
+                    double precio = double.Parse(Precio.Text);
+                    Producto_vendedor producto_vendedor = new Producto_vendedor(producto.Id, service.GetLoggedNickname(), stock, precio);
+                    await service.AddProductoVendedor(producto_vendedor);
+                    await DisplayAlert("Éxito", "Producto añadido!", "Aceptar"); 
+                } catch (Exception ex)
+                {
+                    await DisplayAlert("Error", "Error al añadir el producto", "Aceptar");
+                    Debug.WriteLine("Error al añadir el producto: " + ex.Message);
+                }
             }
         }
 
         private void Precio_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!Precio.Text.All(Char.IsDigit))
+            if (!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation))
             {
                 Precio.TextColor = Color.Red;
             } else
@@ -95,9 +107,9 @@ namespace SmartTrade.Views
             }
         }
 
-        private bool StockPrecioSonInt()
+        private bool StockPrecioSonValidos()
         {
-            if (!Precio.Text.All(Char.IsDigit) || !Stock.Text.All(Char.IsDigit))
+            if ((!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation)) || !Stock.Text.All(Char.IsDigit))
             {
                 return false;
             }
