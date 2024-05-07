@@ -22,6 +22,16 @@
                        HeightRequest="28"
                        Margin="15,10,0,0"
                        HorizontalOptions="EndAndExpand"/>-->
+
+                <ImageButton HorizontalOptions="EndAndExpand"
+                    Source= "https://i.ibb.co/Pzq5CQT/corazon-lleno.png"
+                    BackgroundColor="Transparent"
+                    WidthRequest="28"
+                    HeightRequest="23"
+                    Aspect="AspectFit"
+                    Margin="15,10,-130,0"
+                    Clicked="BtnDeseos_click"
+                />
                 <Button HorizontalOptions="EndAndExpand"
                     Text="&#xf07a;" 
                     FontFamily="{StaticResource FontAwesomeSolid}"
@@ -33,6 +43,7 @@
                     Margin="15,10,0,0"
                     Clicked="BtnCarrito_click"
                 />
+                
                 <Button HorizontalOptions="End"
                     Text="&#xf007;" 
                     FontFamily="{StaticResource FontAwesomeSolid}"
