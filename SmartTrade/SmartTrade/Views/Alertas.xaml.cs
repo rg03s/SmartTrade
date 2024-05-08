@@ -17,25 +17,31 @@ namespace SmartTrade.Views
     {
         public Alertas(ISTService service)
         {
+
+            InitializeComponent();
+
             Usuario user = service.GetUsuarioLogueado();
             ObservableCollection<Producto> productos = new ObservableCollection<Producto>(user.AlertasProductosSinStock);
             ListView lista = new ListView();
             lista.ItemsSource = productos;
-            lista.Parent = this.FindByName<StackLayout>("stack_alertas");
+            StackLayout stack = (StackLayout)FindByName("stack_alertas");
+            stack.Children.Add(lista);
 
             lista.ItemSelected += (sender, e) =>
             {
                 Producto p = (Producto)e.SelectedItem;
                 Navigation.PushAsync(new ProductPage(service, p));
             };
-
-            InitializeComponent();
-
         }
 
-        public void BtnAtras_click(object sender, EventArgs e)
+        private void BtnAtras_click(object sender, EventArgs e)
         {
             Navigation.PopAsync();
+        }
+
+        private void BtnPerfil_click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Perfil");
         }
 
     }

@@ -32,7 +32,7 @@
                     Margin="15,10,-130,0"
                     Clicked="BtnDeseos_click"
                 />
-                <Button HorizontalOptions="EndAndExpand"
+                <Button HorizontalOptions="End"
                     Text="&#xf0f3;" 
                     FontFamily="{StaticResource FontAwesomeSolid}"
                     FontSize="21"

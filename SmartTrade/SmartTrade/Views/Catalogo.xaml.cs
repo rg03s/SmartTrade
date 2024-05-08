@@ -7,6 +7,7 @@ using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using SmartTrade.Logica.Services;
 using Acr.UserDialogs;
+using System.Threading.Tasks;
 
 namespace SmartTrade.Views
 {
@@ -27,6 +28,19 @@ namespace SmartTrade.Views
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
             searchBar.TextChanged += OnBusqueda;
 
+            //TEST
+            test();
+
+        }
+
+        private async Task test()
+        {
+            List<Producto> productos = await service.getProductosListaDeseos();
+            foreach(Producto p in productos)
+            {
+                p.ReducirStock(p.Producto_Vendedor.First(), p.Producto_Vendedor.First().Stock);
+                Console.WriteLine(p.Producto_Vendedor.First().Stock);
+            }
         }
 
         private void CargarProductos()
@@ -238,7 +252,7 @@ namespace SmartTrade.Views
 
         private void BtnAlerta_click(object sender, EventArgs e)
         {
-            Console.WriteLine("Alerta");
+            Navigation.PushAsync(new Alertas(service));
         }
 
         private void BtnDeseos_click(object sender, EventArgs e)

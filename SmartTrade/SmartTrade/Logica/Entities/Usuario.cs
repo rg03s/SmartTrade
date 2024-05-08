@@ -9,7 +9,9 @@ namespace SmartTrade.Entities
 {
     public partial class Usuario : IObservador
     {
-        public Usuario() { }
+        public Usuario() { 
+            AlertasProductosSinStock = new List<Producto>();
+        }
         public Usuario(string nickname, string nombre, string password, string direccion, string email, DateTime fecha_nac, Boolean isVendedor)
         {
             this.Nickname = nickname;
@@ -49,6 +51,7 @@ namespace SmartTrade.Entities
 
         public void Actualizar(Producto p)
         {
+            Console.WriteLine("Producto sin stock");
             AlertasProductosSinStock.Add(p);
         }
     }
