@@ -20,12 +20,13 @@ namespace SmartTrade.Views
         private ISTService service;
         private Producto_vendedor productoVendedor_seleccionado;
         private string tallaSeleccionada;
+        private Producto productoVista;
 
         public ProductPage(ISTService service, Producto producto)
         {
             InitializeComponent();
             this.service = service;
-
+            productoVista = producto;
             
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
@@ -121,8 +122,18 @@ namespace SmartTrade.Views
                 Label label_material_papeleria = (Label)FindByName("label_material_papeleria");
                 label_material_papeleria.IsVisible = true;
             }
+
+            configurarBotonListaDeseos();
         }
 
+        private async Task configurarBotonListaDeseos()
+        {
+            string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
+            string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
+            bool estaEnLista = await service.ProductoEnListaDeseos(productoVista);
+            if (!estaEnLista) btnDeseos.Source = corazonVacioUrl;
+            else btnDeseos.Source = corazonLlenoUrl;
+        }
         private void configurarPicker()
         {
             Picker picker = (Picker)FindByName("tallaPicker");
@@ -175,6 +186,24 @@ namespace SmartTrade.Views
         {
             //TODO
             Console.WriteLine("Ver Comentarios");
+        }
+
+
+        private async void BtnDeseos_ClickedAsync(object sender, EventArgs e)
+        {
+            string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
+            string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
+            bool estaEnLista = await service.ProductoEnListaDeseos(productoVista);
+            if (!estaEnLista) 
+            {
+                await service.AgregarProductoListaDeseos(productoVista);
+                btnDeseos.Source = corazonLlenoUrl;
+            }
+            if (estaEnLista) 
+            {
+                await service.EliminarProductoListaDeseos(productoVista);
+                btnDeseos.Source = corazonVacioUrl;
+            }
         }
     }
 }

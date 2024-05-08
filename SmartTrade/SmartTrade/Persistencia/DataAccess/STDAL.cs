@@ -47,7 +47,32 @@ namespace SmartTrade.Persistencia.DataAccess
             else { return sc.Usuario.Where(us => us.Email == email).Single(); }
         }
 
+        public async Task<List<ListaDeseosItem>> GetListaDeseos(string nickPropietario)
+        {
+            return await sc.ListaDeseosItem.Where(ld => ld.NickPropietario == nickPropietario).ToListAsync();
 
+        }
+        public async Task<List<int>> GetProductosIdLista(string nickPropietario)
+        {
+            try
+            {
+                List<int> listaDeseos = await sc.ListaDeseosItem.Where(ld => ld.NickPropietario == nickPropietario).Select(ld => ld.ProductoId).ToListAsync();
+              
+                if (listaDeseos == null || listaDeseos.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return listaDeseos;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en GetProductosListaDeseosByUsuario: " + ex.Message);
+                return new List<int>(); // Devolver una lista vacía en caso de error
+            }
+        }
         public async Task<List<T>> GetAll<T>() where T : class
         {
             try

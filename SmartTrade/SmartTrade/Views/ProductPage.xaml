@@ -31,9 +31,9 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <!-- boton modelo3d y valoracion -->
+                            <!-- boton lista deseos y valoracion -->
                             <StackLayout Orientation="Horizontal" Grid.Row="1" Margin="-10,0,0,0">
-                                <Button Text="&#xe049;" FontFamily="{StaticResource FontAwesomeBrands}" FontSize="20" TextColor="Black" BackgroundColor="Transparent" HorizontalOptions="Start" HeightRequest="40" WidthRequest="50" Clicked="BtnModelo3d_click" />
+                                <ImageButton Source="https://i.ibb.co/MfL1wHp/corazon-vacio.png" x:Name="btnDeseos" BackgroundColor="Transparent" HorizontalOptions="Start" HeightRequest="40" WidthRequest="50" Clicked="BtnDeseos_ClickedAsync" />
                                 <Button Text="modelo 3D" TextColor="Black" FontSize="12" HorizontalOptions="Start" VerticalOptions="Center" Margin="-20,0,0,0" BackgroundColor="Transparent" HeightRequest="40" Clicked="BtnModelo3d_click"/>
                             </StackLayout>
                             <Label Text="44 Valoraciones" Margin="0,0,0,-8" TextColor="Gray" Grid.Row="0" Grid.Column="1" HorizontalOptions="EndAndExpand"/>
@@ -239,6 +239,7 @@
                     </StackLayout>
                 </ScrollView>
             </Grid>
+
             <Button
                 Text="&#xf217;"
                 TextColor="White"
