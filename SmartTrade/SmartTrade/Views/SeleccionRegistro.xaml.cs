@@ -16,29 +16,29 @@ namespace SmartTrade.Views
     public partial class SeleccionRegistro : ContentPage
     {
         private STService service;
-        public SeleccionRegistro(STService service)
+        public SeleccionRegistro()
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
         }
 
         private  void RegistroVendedor(object sender, EventArgs e)
         {
             //await Navigation.PopAsync();
-            RegistroVendedor registroVendedor = new RegistroVendedor(service);
+            RegistroVendedor registroVendedor = new RegistroVendedor();
             Navigation.PushAsync(registroVendedor);
         }
         private void RegistroComprador(object sender, EventArgs e)
         {
             //await Navigation.PopAsync();
-            Registro registroComprador = new Registro(service);
+            Registro registroComprador = new Registro();
             Navigation.PushAsync(registroComprador);
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
            // await Navigation.PopAsync();
-            LoginPage inicioSesion = new LoginPage(service);
+            LoginPage inicioSesion = new LoginPage();
             Navigation.PushAsync(inicioSesion);
         }
 

@@ -21,13 +21,13 @@ namespace SmartTrade.Views
     public partial class ListaDeseos : ContentPage
     {
 
-        ISTService service;
+        STService service;
         public Producto_vendedor productoVendedor_seleccionado;
 
-        public ListaDeseos(ISTService service)
+        public ListaDeseos()
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
 
         }
         override protected void OnAppearing()
@@ -233,7 +233,7 @@ namespace SmartTrade.Views
                                                         {
                                                             Command = new Command(async () =>
                                                             {
-                                                                await Navigation.PushAsync(new ProductPage(service, producto));
+                                                                await Navigation.PushAsync(new ProductPage(producto));
                                                             })
                                                         }
                                         }

@@ -22,9 +22,9 @@ namespace SmartTrade.Views
         //private Registro registro;
         //private LoginPage loginPage;
 
-        public LoginPage(STService service)
+        public LoginPage()
         {
-            this.service = service;
+            this.service = STService.Instance;
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
         }
@@ -52,14 +52,14 @@ namespace SmartTrade.Views
                         if (!service.IsVendedor()) {
 
                             List<Producto> productos = await service.GetAllProductos();
-                            Catalogo paginaPrincipal = new Catalogo(service, productos);
+                            Catalogo paginaPrincipal = new Catalogo(productos);
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
                         else
                         {
                             List<Producto> productos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
-                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service, productos);
+                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(productos);
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
@@ -118,7 +118,7 @@ namespace SmartTrade.Views
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             //await Navigation.
-            SeleccionRegistro registro = new SeleccionRegistro(service);
+            SeleccionRegistro registro = new SeleccionRegistro();
             Navigation.PushAsync(registro);
         }
     }

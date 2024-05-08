@@ -19,7 +19,7 @@ namespace SmartTrade.Logica.Services
         private static STService instance = new STService(new STDAL(new SupabaseContext()));
         private Usuario loggedUser;
 
-        public STService(IDAL dal)
+        private STService(IDAL dal)
         {
             this.dal = dal;
         }
@@ -27,6 +27,10 @@ namespace SmartTrade.Logica.Services
         {
             get
             {
+                if (instance == null)
+                {
+                    instance = new STService(new STDAL(new SupabaseContext()));
+                }
                 return instance;
             }
         }

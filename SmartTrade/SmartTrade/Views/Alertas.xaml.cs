@@ -15,9 +15,10 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Alertas : ContentPage
     {
-        public Alertas(ISTService service)
+        STService service;
+        public Alertas()
         {
-
+            service = STService.Instance;
             InitializeComponent();
 
             Usuario user = service.GetUsuarioLogueado();
@@ -30,7 +31,7 @@ namespace SmartTrade.Views
             lista.ItemSelected += (sender, e) =>
             {
                 Producto p = (Producto)e.SelectedItem;
-                Navigation.PushAsync(new ProductPage(service, p));
+                Navigation.PushAsync(new ProductPage(p));
             };
         }
 
