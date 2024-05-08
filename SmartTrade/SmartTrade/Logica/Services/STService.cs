@@ -189,7 +189,6 @@ namespace SmartTrade.Logica.Services
 
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
-                productos.OrderBy(p => p.Categoria);
 
                 return productos;
             }
