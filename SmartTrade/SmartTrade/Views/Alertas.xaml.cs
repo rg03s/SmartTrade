@@ -33,5 +33,10 @@ namespace SmartTrade.Views
 
         }
 
+        public void BtnAtras_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
+        }
+
     }
 }
