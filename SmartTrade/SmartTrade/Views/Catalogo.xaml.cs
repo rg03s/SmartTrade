@@ -236,6 +236,10 @@ namespace SmartTrade.Views
             Console.WriteLine("Perfil");
         }
 
+        private void BtnAlerta_click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Alerta");
+
         private void BtnDeseos_click(object sender, EventArgs e)
         {
             Navigation.PushAsync(new ListaDeseos(service));

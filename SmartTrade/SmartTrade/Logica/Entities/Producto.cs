@@ -1,6 +1,8 @@
 ﻿using SmartTrade.Logica.Entities;
+using SmartTrade.Logica.Observador;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SmartTrade.Entities
@@ -9,6 +11,7 @@ namespace SmartTrade.Entities
     {
         public Producto() {
             this.Producto_Vendedor = new List<Producto_vendedor>();
+            this.alerta = new Alerta();
         }
         public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat)
         {
@@ -20,6 +23,30 @@ namespace SmartTrade.Entities
             this.Puntos = puntos;
             this.Categoria = cat;
             
+        }
+
+        public void ReducirStock(Producto_vendedor pv, int cantidad)
+        {
+            try
+            {
+                if (pv.Stock >= cantidad)
+                {
+                    pv.Stock -= cantidad;
+
+                    if (pv.Stock == 0)
+                    {
+                        this.alerta.Notificar();
+                    }
+                }
+                else
+                {
+                  throw new Exception("No hay suficiente stock");
+                }
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

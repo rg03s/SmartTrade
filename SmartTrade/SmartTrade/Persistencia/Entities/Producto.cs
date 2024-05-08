@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using SmartTrade.Logica.Observador;
 
 namespace SmartTrade.Entities
 {
@@ -32,6 +33,8 @@ namespace SmartTrade.Entities
         public virtual ICollection<Producto_vendedor> Producto_Vendedor { get; set; }
         [Column("categoria")]
         public string Categoria { get; set; }
+        [NotMapped]
+        public Alerta alerta { get; set; }
         
     }
 }
