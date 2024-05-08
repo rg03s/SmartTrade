@@ -375,7 +375,11 @@ namespace SmartTrade.Logica.Services
                 List<ListaDeseosItem> ListaLoggedUser = await dal.GetListaDeseos(GetLoggedNickname());
                 foreach (var item in ListaLoggedUser)
                 {
-                    if (item.ProductoId == productoLista.Id) await dal.Delete<ListaDeseosItem>(item);
+                    if (item.ProductoId == productoLista.Id)
+                    {
+                        await dal.Delete<ListaDeseosItem>(item);
+                        productoLista.observadoresListaDeseos.Remove(loggedUser);
+                    }
                 }
             }catch (Exception ex)
             {
@@ -386,14 +390,21 @@ namespace SmartTrade.Logica.Services
 
         public async Task AgregarProductoListaDeseos(Producto producto)
         {
-            string propietario = GetLoggedNickname();
-            ListaDeseosItem ld = new ListaDeseosItem(propietario, producto.Id);
-            bool estaEnLista = await ProductoEnListaDeseos(producto);
-            if (!estaEnLista)
+            try
             {
-                await dal.Add<ListaDeseosItem>(ld);
-                producto.observadoresListaDeseos.Add(loggedUser);
+                string propietario = GetLoggedNickname();
+                ListaDeseosItem ld = new ListaDeseosItem(propietario, producto.Id);
+                bool estaEnLista = await ProductoEnListaDeseos(producto);
+                if (!estaEnLista)
+                {
+                    await dal.Add<ListaDeseosItem>(ld);
+                    producto.observadoresListaDeseos.Add(loggedUser);
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Error al añadir el producto a la Lista de Deseos.: " + ex.Message);
             }
+
         }
         //true si el producto ya está en la lista
         public async Task<Boolean> ProductoEnListaDeseos(Producto producto)
