@@ -196,7 +196,7 @@ namespace SmartTrade.Logica.Services
                     Producto p = productos.Where(x => x.Id == item.ProductoId).FirstOrDefault();
                     if (p != null)
                     {
-                        p.managerAlertas.AgregarObservador(loggedUser);
+                        p.AddObservador(loggedUser);
                     }
                 }
 
@@ -388,7 +388,7 @@ namespace SmartTrade.Logica.Services
                     if (item.ProductoId == productoLista.Id)
                     {
                         await dal.Delete<ListaDeseosItem>(item);
-                        productoLista.managerAlertas.EliminarObservador(loggedUser);
+                        productoLista.RemoveObservador(loggedUser);
                     }
                 }
             }catch (Exception ex)
@@ -408,7 +408,7 @@ namespace SmartTrade.Logica.Services
                 if (!estaEnLista)
                 {
                     await dal.Add<ListaDeseosItem>(ld);
-                    producto.managerAlertas.AgregarObservador(loggedUser);
+                    producto.AddObservador(loggedUser);
                 }
             } catch (Exception ex)
             {

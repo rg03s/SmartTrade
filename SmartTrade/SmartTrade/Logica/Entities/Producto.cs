@@ -7,12 +7,13 @@ using System.Text;
 
 namespace SmartTrade.Entities
 {
-    public partial class Producto
+    public partial class Producto : IObservable
     {
         public Producto() {
             this.Producto_Vendedor = new List<Producto_vendedor>();
-            managerAlertas = new ManagerAlertas();
+            this.observadoresListaDeseos = new List<IObservador>();
         }
+
         public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat)
         {
             this.Nombre = nombre;
@@ -25,6 +26,19 @@ namespace SmartTrade.Entities
             
         }
 
+        public void AddObservador(IObservador observador)
+        {
+            observadoresListaDeseos.Add(observador);
+        }
+
+        public void NotificarObservadores()
+        {
+            foreach (IObservador o in observadoresListaDeseos)
+            {
+                o.Actualizar(this);
+            }
+        }
+
         public void ReducirStock(Producto_vendedor pv, int cantidad)
         {
             try
@@ -35,7 +49,7 @@ namespace SmartTrade.Entities
 
                     if (pv.Stock == 0)
                     {
-                        managerAlertas.NotificarObservadores(this);
+                        NotificarObservadores();
                     }
 
                 }
@@ -48,6 +62,11 @@ namespace SmartTrade.Entities
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        public void RemoveObservador(IObservador observador)
+        {
+            observadoresListaDeseos.Remove(observador);
         }
     }
 }
