@@ -42,5 +42,7 @@ namespace SmartTrade.Entities
 
         [Column("puntos")]
         public int Puntos { get; set; }
+        [NotMapped]
+        public ICollection<Producto> AlertasProductosSinStock { get; set; }
     }
 }

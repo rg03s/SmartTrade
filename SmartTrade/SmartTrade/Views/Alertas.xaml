@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.Alertas"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Barra de navegación y título -->
+            <StackLayout Orientation="Horizontal" Margin="10,10,5,0" Grid.Row="0">
+                <Button 
+                    Text="&#xf053;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnAtras_click"
+                />
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
+                <Label Text="Alertas" FontSize="Title" TextColor="Black" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+
+            <!-- Contenido principal -->
+            <StackLayout Grid.Row="2">
+                <Label Text="Alertas" />
+            </StackLayout>
+
+            <StackLayout Grid.Row="3" BackgroundColor="Black" HeightRequest="1" x:Name="stack_alertas"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

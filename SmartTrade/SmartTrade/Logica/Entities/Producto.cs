@@ -11,7 +11,6 @@ namespace SmartTrade.Entities
     {
         public Producto() {
             this.Producto_Vendedor = new List<Producto_vendedor>();
-            this.alerta = new Alerta();
         }
         public Producto(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat)
         {
@@ -35,7 +34,7 @@ namespace SmartTrade.Entities
 
                     if (pv.Stock == 0)
                     {
-                        this.alerta.Notificar();
+                        observadoresListaDeseos.ForEach(o => o.Actualizar(this));
                     }
                 }
                 else

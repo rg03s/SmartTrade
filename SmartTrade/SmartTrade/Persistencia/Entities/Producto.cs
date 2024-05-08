@@ -34,7 +34,6 @@ namespace SmartTrade.Entities
         [Column("categoria")]
         public string Categoria { get; set; }
         [NotMapped]
-        public Alerta alerta { get; set; }
-        
+        public List<IObservador> observadoresListaDeseos { get; set; }
     }
 }
