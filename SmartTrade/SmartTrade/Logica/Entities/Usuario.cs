@@ -51,7 +51,6 @@ namespace SmartTrade.Entities
 
         public void Actualizar(Producto p)
         {
-            Console.WriteLine("Producto sin stock");
             AlertasProductosSinStock.Add(p);
         }
     }
