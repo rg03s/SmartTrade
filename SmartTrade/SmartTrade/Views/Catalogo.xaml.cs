@@ -235,5 +235,10 @@ namespace SmartTrade.Views
             //TODO
             Console.WriteLine("Perfil");
         }
+
+        private void BtnAlerta_click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Alerta");
+        }
     }
 }
