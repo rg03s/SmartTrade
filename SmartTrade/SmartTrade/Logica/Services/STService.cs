@@ -389,8 +389,11 @@ namespace SmartTrade.Logica.Services
             string propietario = GetLoggedNickname();
             ListaDeseosItem ld = new ListaDeseosItem(propietario, producto.Id);
             bool estaEnLista = await ProductoEnListaDeseos(producto);
-            if (!estaEnLista) await dal.Add<ListaDeseosItem>(ld);
-            else;
+            if (!estaEnLista)
+            {
+                await dal.Add<ListaDeseosItem>(ld);
+                producto.observadoresListaDeseos.Add(loggedUser);
+            }
         }
         //true si el producto ya está en la lista
         public async Task<Boolean> ProductoEnListaDeseos(Producto producto)
