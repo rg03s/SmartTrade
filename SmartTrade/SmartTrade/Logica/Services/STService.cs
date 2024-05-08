@@ -16,7 +16,6 @@ namespace SmartTrade.Logica.Services
     public class STService : ISTService
     {
         private readonly IDAL dal;
-        private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService(new STDAL(new SupabaseContext()));
         private Usuario loggedUser;
 
@@ -189,6 +188,17 @@ namespace SmartTrade.Logica.Services
 
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
+
+                //agregar observadores a los productos
+                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+                foreach (ListaDeseosItem item in listaDeseos)
+                {
+                    Producto p = productos.Where(x => x.Id == item.ProductoId).FirstOrDefault();
+                    if (p != null)
+                    {
+                        p.observadoresListaDeseos.Add(loggedUser);
+                    }
+                }
 
                 return productos;
             }

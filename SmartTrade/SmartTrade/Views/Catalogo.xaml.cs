@@ -39,7 +39,7 @@ namespace SmartTrade.Views
             foreach(Producto p in productos)
             {
                 p.ReducirStock(p.Producto_Vendedor.First(), p.Producto_Vendedor.First().Stock);
-                Console.WriteLine(p.Producto_Vendedor.First().Stock);
+                Console.WriteLine(p.Nombre + " : " + p.Producto_Vendedor.First().Stock + " - Observadores : " + p.observadoresListaDeseos.Count);
             }
         }
 
