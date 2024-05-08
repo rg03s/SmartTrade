@@ -13,13 +13,13 @@ namespace SmartTrade.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CatalogoVendedor : ContentPage
     {
-        private ISTService service;
+        private STService service;
         private List<Producto> productosVendedor = new List<Producto>();
 
-        public CatalogoVendedor(ISTService service, List<Producto> productos)
+        public CatalogoVendedor( List<Producto> productos)
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
             this.productosVendedor = productos;
 
             ConfigurarPickerFiltrado();
@@ -169,7 +169,7 @@ namespace SmartTrade.Views
                     TapGestureRecognizer tap = new TapGestureRecognizer();
                     tap.Tapped += (s, ev) =>
                     {
-                        ProductPage productPage = new ProductPage(service, producto);
+                        ProductPage productPage = new ProductPage(producto);
                         Navigation.PushAsync(productPage);
                     };
 
@@ -234,7 +234,7 @@ namespace SmartTrade.Views
 
         public void BtnCarrito_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Carrito(service));
+            Navigation.PushAsync(new Carrito());
         }
 
         public void BtnPerfil_click(object sender, EventArgs e)

@@ -17,15 +17,15 @@ namespace SmartTrade.Views
     public partial class ProductPage : ContentPage
     {
 
-        private ISTService service;
+        private STService service;
         private Producto_vendedor productoVendedor_seleccionado;
         private string tallaSeleccionada;
         private Producto productoVista;
 
-        public ProductPage(ISTService service, Producto producto)
+        public ProductPage(Producto producto)
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
             productoVista = producto;
             
             Image imagen_producto = (Image)FindByName("imagen_producto");
@@ -159,7 +159,7 @@ namespace SmartTrade.Views
 
         private void BtnCarrito_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Carrito(service));
+            Navigation.PushAsync(new Carrito());
         }
 
         private void BtnPerfil_click(object sender, EventArgs e)

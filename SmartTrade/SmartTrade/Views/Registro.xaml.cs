@@ -17,10 +17,10 @@ namespace SmartTrade.Views
     public partial class Registro : ContentPage
     {
         private STService service;
-        public Registro(STService service)
+        public Registro()
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
         }
         //Manejadores Campo Nombre
         private void Nombre_Focused(object sender, FocusEventArgs e)
@@ -162,7 +162,7 @@ namespace SmartTrade.Views
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
-                LoginPage inicioSesion = new LoginPage(service);
+                LoginPage inicioSesion = new LoginPage();
             await Navigation.PushAsync(inicioSesion);
         }
 
@@ -209,7 +209,7 @@ namespace SmartTrade.Views
                     await service.AddUser(compradorNuevo);
                      
                    // await Navigation.PopAsync();
-                    LoginPage login = new LoginPage(service);
+                    LoginPage login = new LoginPage();
                     await Navigation.PushAsync(login);
                 }
                 catch (EmailYaRegistradoException ex)

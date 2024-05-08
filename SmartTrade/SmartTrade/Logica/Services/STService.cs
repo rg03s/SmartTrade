@@ -27,6 +27,11 @@ namespace SmartTrade.Logica.Services
         {
             get
             {
+                // Si la instancia aún no se ha creado, crearla
+                if (instance == null)
+                {
+                    instance = new STService(new STDAL(new SupabaseContext()));
+                }
                 return instance;
             }
         }
