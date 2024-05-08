@@ -182,11 +182,14 @@ namespace SmartTrade.Logica.Services
         public async Task<List<Producto>> GetAllProductos()
         {
             try {
-                List<Producto> productos = await dal.GetAll<Producto>();
+                List<Producto> productos = await GetProductosPorCategoria("Deporte");
+                productos.AddRange(await GetProductosPorCategoria("Ropa"));
+                productos.AddRange(await GetProductosPorCategoria("Papeleria"));
+                productos.AddRange(await GetProductosPorCategoria("Tecnologia"));
                 
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
-                productos.OrderBy(p => p.Categoria);
+
 
                 return productos;
             }
