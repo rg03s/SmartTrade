@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using Xamarin.Forms.Xaml;   
 
 namespace SmartTrade.Views
 {
@@ -37,12 +37,42 @@ namespace SmartTrade.Views
                 picker.Items.Add("Deporte");
                 picker.Items.Add("Papeleria");
                 picker.Items.Add("Tecnologia");
+
+                picker.SelectedIndexChanged += (s, e) =>
+                {
+                    string categoria = picker.Items[picker.SelectedIndex];
+                    switch (categoria.ToLower())
+                    {
+                        case "ropa":
+                            OcultarGrids();
+                            GridRopa.IsVisible = true; break;
+                        case "deporte":
+                            OcultarGrids();
+                            GridDeporte.IsVisible = true; break;
+                        case "papeleria":
+                            OcultarGrids();
+                            GridPapeleria.IsVisible = true; break;
+                        case "tecnologia":
+                            OcultarGrids();
+                            GridTecnologia.IsVisible = true; break;
+                        default:
+                            break;
+                    }
+                };
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
+        }
+
+        private void OcultarGrids()
+        {
+            GridRopa.IsVisible = false;
+            GridDeporte.IsVisible = false;
+            GridPapeleria.IsVisible = false;
+            GridTecnologia.IsVisible = false;
         }
 
         private void Nombre_Focused(object sender, FocusEventArgs e)
@@ -65,23 +95,87 @@ namespace SmartTrade.Views
 
         private async void AgregarProducto_Clicked(object sender, EventArgs e)
         {
-            if (!StockPrecioSonValidos()) await DisplayAlert("Error", "El stock y el precio del producto deben ser números!", "OK");
+            Picker picker = (Picker)FindByName("picker");
+            if (!StockPrecioSonValidos()) 
+            { 
+                await DisplayAlert("Error", "El stock y el precio del producto deben ser números!", "Aceptar");
+                return;
+            }
+            if(string.IsNullOrWhiteSpace(Nombre.Text) || string.IsNullOrEmpty(Descripcion.Text) || string.IsNullOrEmpty(Stock.Text) || string.IsNullOrEmpty(Precio.Text) || string.IsNullOrEmpty(ImagenURL.Text))
+            {
+                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                return;
+            }
+            if(picker.SelectedIndex == -1)
+            {
+                await DisplayAlert("Error", "Por favor, elija la categoría del producto", "Aceptar");
+                return;
+            }
             else {
                 try
                 {
-                    Producto producto = new Producto(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, picker.Items[picker.SelectedIndex]);
+                    Producto producto = new Producto();
+                    string categoria = picker.Items[picker.SelectedIndex];
+                    switch (categoria.ToLower())
+                    {
+                        case "ropa":
+                            if (string.IsNullOrEmpty(EntryTalla.Text) || string.IsNullOrEmpty(EntryColor.Text) || string.IsNullOrEmpty(EntryMarcaRopa.Text) || string.IsNullOrEmpty(EntryTipoRopa.Text))
+                            {
+                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                                return;
+                            }
+                            if (!TallaEsValida())
+                            {
+                                await DisplayAlert("Error", "Por favor, elija una talla válida (XS, S, M, L o XL)", "Aceptar");
+                                return;
+                            }
+                            producto = new Ropa(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryTalla.Text.ToUpper(), EntryColor.Text, EntryMarcaRopa.Text, EntryTipoRopa.Text);
+                            break;
+                        case "deporte":
+                            if (string.IsNullOrEmpty(EntryTipoDeporte.Text))
+                            {
+                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                                return;
+                            }
+                            producto = new Deporte(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryTipoDeporte.Text);
+                            break;
+                        case "papeleria":
+                            if (string.IsNullOrEmpty(EntryMaterial.Text))
+                            {
+                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                                return;
+                            }
+                            producto = new Papeleria(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryMaterial.Text);
+                            break;
+                        case "tecnologia":
+                            if (string.IsNullOrEmpty(EntryDispositivo.Text) || string.IsNullOrEmpty(EntryMarcaTecnologia.Text) || string.IsNullOrEmpty(EntryModelo.Text))
+                            {
+                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                                return;
+                            }
+                            producto = new Tecnologia(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryDispositivo.Text, EntryMarcaTecnologia.Text, EntryModelo.Text);
+                            break;
+                        default:
+                            break;
+                    }
                     await service.AddProducto(producto);
                     int stock = Int32.Parse(Stock.Text);
                     double precio = double.Parse(Precio.Text);
                     Producto_vendedor producto_vendedor = new Producto_vendedor(producto.Id, service.GetLoggedNickname(), stock, precio);
                     await service.AddProductoVendedor(producto_vendedor);
-                    await DisplayAlert("Éxito", "Producto añadido!", "Aceptar"); 
+                    await DisplayAlert("Éxito", "Producto añadido!", "Aceptar");
                 } catch (Exception ex)
                 {
                     await DisplayAlert("Error", "Error al añadir el producto", "Aceptar");
                     Debug.WriteLine("Error al añadir el producto: " + ex.Message);
                 }
             }
+        }
+
+        private bool TallaEsValida()
+        {
+            List<string> tallasValidas = new List<string>(){ "XS", "S", "M", "L", "XL" };
+            return tallasValidas.Contains(EntryTalla.Text.ToUpper());
         }
 
         private void Precio_TextChanged(object sender, TextChangedEventArgs e)
@@ -109,7 +203,7 @@ namespace SmartTrade.Views
 
         private bool StockPrecioSonValidos()
         {
-            if ((!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation)) || !Stock.Text.All(Char.IsDigit))
+            if ((!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation)) || !Stock.Text.All(Char.IsDigit) || string.IsNullOrEmpty(Stock.Text) || string.IsNullOrEmpty(Precio.Text))
             {
                 return false;
             }

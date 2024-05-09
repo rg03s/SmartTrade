@@ -20,6 +20,35 @@
             <Editor x:Name="Descripcion" HeightRequest="100" Placeholder="Descripción" TextColor="Black" PlaceholderColor="Gray"
                 Margin="15,0,15,0"/>
             <Picker x:Name="picker" Title="Categoría del producto" Margin="15,0,15,0" TitleColor="RoyalBlue" TextColor="RoyalBlue"/>
+            <Grid x:Name="GridRopa" IsVisible="false" RowDefinitions="50,50">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="0">
+                    <Entry x:Name="EntryTalla" Placeholder="Talla" PlaceholderColor="Gray" WidthRequest="180" Margin="15,0,0,0"/>
+                    <Entry x:Name="EntryColor" Placeholder="Color" PlaceholderColor="Gray" WidthRequest="180" Margin="0,0,15,0"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="1">
+                    <Entry x:Name="EntryMarcaRopa" Placeholder="Marca" PlaceholderColor="Gray" WidthRequest="180" Margin="15,0,0,0"/>
+                    <Entry x:Name="EntryTipoRopa" Placeholder="Tipo de prenda" PlaceholderColor="Gray" WidthRequest="180" Margin="0,0,15,0"/>
+                </StackLayout>
+            </Grid>
+            <Grid x:Name="GridDeporte" IsVisible="false">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Entry x:Name="EntryTipoDeporte" Placeholder="Tipo de Producto" PlaceholderColor="Gray" WidthRequest="360"/>
+                </StackLayout>
+            </Grid>
+            <Grid x:Name="GridPapeleria" IsVisible="false">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Entry x:Name="EntryMaterial" Placeholder="Material del producto" PlaceholderColor="Gray" WidthRequest="360"/>
+                </StackLayout>
+            </Grid>
+            <Grid x:Name="GridTecnologia" IsVisible="false" RowDefinitions="50,50">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="0">
+                    <Entry x:Name="EntryDispositivo" Placeholder="Tipo de dispositivo" PlaceholderColor="Gray" WidthRequest="360"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="1">
+                    <Entry x:Name="EntryMarcaTecnologia" Placeholder="Marca" PlaceholderColor="Gray" WidthRequest="180" Margin="15,0,0,0"/>
+                    <Entry x:Name="EntryModelo" Placeholder="Modelo" PlaceholderColor="Gray" WidthRequest="180" Margin="0,0,15,0"/>
+                </StackLayout>
+            </Grid>
             <Entry x:Name="Stock" Placeholder="Stock del producto" TextColor="Black" PlaceholderColor="Gray" 
                 Margin="15,0,15,0" TextChanged="Stock_TextChanged" Keyboard="Numeric"/>
             <Entry x:Name="Precio" Placeholder="Precio del producto" TextColor="Black" PlaceholderColor="Gray" 
@@ -28,7 +57,7 @@
                 Margin="15,0,15,0"/>
             <Button x:Name="ButtonImagen" Text="Ver Imagen" HorizontalOptions="End" Margin="15,0,15,0" Clicked="ButtonImagen_Clicked"/>
             <Image x:Name="Imagen" Margin="15,15,15,15"/>
-            <Button x:Name="AceptarButton" Text="Agregar Producto" WidthRequest="50" HeightRequest="50" Margin="15,0,15,0" Clicked="AgregarProducto_Clicked"/>
+            <Button x:Name="AceptarButton" Text="Agregar Producto" MinimumWidthRequest="50" WidthRequest="50" MinimumHeightRequest="50" HeightRequest="50" Margin="15,0,15,0" Clicked="AgregarProducto_Clicked" VerticalOptions="End"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
