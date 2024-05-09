@@ -5,8 +5,8 @@ using SmartTrade.Entities;
 
 namespace SmartTrade.Fabrica
 {
-    public abstract class ProductoFactory
+    public interface IProductoFactory
     {
-        public abstract Producto CrearProducto(params object[] args);
+        Producto CrearProducto();
     }
 }
