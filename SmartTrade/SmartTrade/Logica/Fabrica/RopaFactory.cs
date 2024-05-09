@@ -10,7 +10,8 @@ namespace SmartTrade.Fabrica
         private string nombre, huella, imagen, modelo3d, desc, cat, talla, color, marca, tipoPrenda;
         private int puntos;
 
-        public RopaFactory(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, string talla, string color, string marca, string tipoPrenda)
+        public RopaFactory(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, 
+                                string talla, string color, string marca, string tipoPrenda)
         {
             this.nombre = nombre;
             this.huella = huella;
