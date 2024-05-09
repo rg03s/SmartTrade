@@ -178,6 +178,9 @@ namespace SmartTrade.Views
                     Producto_vendedor producto_vendedor = new Producto_vendedor(producto.Id, service.GetLoggedNickname(), stock, precio);
                     await service.AddProductoVendedor(producto_vendedor);
                     await DisplayAlert("Éxito", "Producto añadido!", "Aceptar");
+                    List<Producto> productos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
+                    CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service, productos);
+                    await Navigation.PushAsync(paginaPrincipal);
                 } catch (Exception ex)
                 {
                     await DisplayAlert("Error", "Error al añadir el producto", "Aceptar");
@@ -217,7 +220,8 @@ namespace SmartTrade.Views
 
         private bool StockPrecioSonValidos()
         {
-            if ((!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation)) || !Stock.Text.All(Char.IsDigit) || string.IsNullOrEmpty(Stock.Text) || string.IsNullOrEmpty(Precio.Text))
+            if (string.IsNullOrEmpty(Precio.Text) || string.IsNullOrEmpty(Stock.Text)) return false;
+            if ((!Precio.Text.All(Char.IsDigit) && !Precio.Text.Any(Char.IsPunctuation)) || !Stock.Text.All(Char.IsDigit))
             {
                 return false;
             }
