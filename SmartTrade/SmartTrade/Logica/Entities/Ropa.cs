@@ -9,8 +9,8 @@ namespace SmartTrade.Entities
     {
         public Ropa() { }
         
-        public Ropa(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, string talla, string color, string marca, string tipoPrenda)
-            :base(nombre, huella, imagen, modelo3d, desc, puntos, cat)
+        public Ropa(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, string talla, 
+                        string color, string marca, string tipoPrenda) :base(nombre, huella, imagen, modelo3d, desc, puntos, cat)
         {
             this.Talla = talla;
             this.Color = color;
