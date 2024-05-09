@@ -95,7 +95,14 @@ namespace SmartTrade.Views
 
         private async void AgregarProducto_Clicked(object sender, EventArgs e)
         {
+
             Picker picker = (Picker)FindByName("picker");
+            if (picker.SelectedIndex == -1)
+            {
+                await DisplayAlert("Error", "Por favor, elija la categoría del producto", "Aceptar");
+                return;
+            }
+            string categoria = picker.Items[picker.SelectedIndex];
             if (!StockPrecioSonValidos()) 
             { 
                 await DisplayAlert("Error", "El stock y el precio del producto deben ser números!", "Aceptar");
@@ -106,53 +113,60 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
                 return;
             }
-            if(picker.SelectedIndex == -1)
+            if(categoria.ToLower() == "ropa")
             {
-                await DisplayAlert("Error", "Por favor, elija la categoría del producto", "Aceptar");
-                return;
+                if (string.IsNullOrEmpty(EntryTalla.Text) || string.IsNullOrEmpty(EntryColor.Text) || string.IsNullOrEmpty(EntryMarcaRopa.Text) || string.IsNullOrEmpty(EntryTipoRopa.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                    return;
+                }
+                if (!TallaEsValida())
+                {
+                    await DisplayAlert("Error", "Por favor, elija una talla válida (XS, S, M, L o XL)", "Aceptar");
+                    return;
+                }
+            }
+            if (categoria.ToLower() == "deporte")
+            {
+                if (string.IsNullOrEmpty(EntryTipoDeporte.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                    return;
+                }
+            }
+            if (categoria.ToLower() == "papeleria")
+            {
+                if (string.IsNullOrEmpty(EntryMaterial.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                    return;
+                }
+            }
+            if (categoria.ToLower() == "papeleria")
+            {
+                if (string.IsNullOrEmpty(EntryDispositivo.Text) || string.IsNullOrEmpty(EntryMarcaTecnologia.Text) || string.IsNullOrEmpty(EntryModelo.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
+                    return;
+                }
             }
             else {
                 try
                 {
                     Producto producto = new Producto();
-                    string categoria = picker.Items[picker.SelectedIndex];
+                    
                     switch (categoria.ToLower())
                     {
                         case "ropa":
-                            if (string.IsNullOrEmpty(EntryTalla.Text) || string.IsNullOrEmpty(EntryColor.Text) || string.IsNullOrEmpty(EntryMarcaRopa.Text) || string.IsNullOrEmpty(EntryTipoRopa.Text))
-                            {
-                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
-                                return;
-                            }
-                            if (!TallaEsValida())
-                            {
-                                await DisplayAlert("Error", "Por favor, elija una talla válida (XS, S, M, L o XL)", "Aceptar");
-                                return;
-                            }
                             producto = new Ropa(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryTalla.Text.ToUpper(), EntryColor.Text, EntryMarcaRopa.Text, EntryTipoRopa.Text);
                             break;
                         case "deporte":
-                            if (string.IsNullOrEmpty(EntryTipoDeporte.Text))
-                            {
-                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
-                                return;
-                            }
                             producto = new Deporte(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryTipoDeporte.Text);
                             break;
                         case "papeleria":
-                            if (string.IsNullOrEmpty(EntryMaterial.Text))
-                            {
-                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
-                                return;
-                            }
                             producto = new Papeleria(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryMaterial.Text);
                             break;
                         case "tecnologia":
-                            if (string.IsNullOrEmpty(EntryDispositivo.Text) || string.IsNullOrEmpty(EntryMarcaTecnologia.Text) || string.IsNullOrEmpty(EntryModelo.Text))
-                            {
-                                await DisplayAlert("Error", "Por favor, rellene todos los campos", "Aceptar");
-                                return;
-                            }
                             producto = new Tecnologia(Nombre.Text, "0%", ImagenURL.Text, "", Descripcion.Text, 0, categoria, EntryDispositivo.Text, EntryMarcaTecnologia.Text, EntryModelo.Text);
                             break;
                         default:
