@@ -59,7 +59,7 @@ namespace SmartTrade.Views
                         else
                         {
                             List<Producto> productos = await service.GetProductosDeVendedor(service.GetLoggedNickname());
-                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(productos);
+                            CatalogoVendedor paginaPrincipal = new CatalogoVendedor(service, productos);
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
