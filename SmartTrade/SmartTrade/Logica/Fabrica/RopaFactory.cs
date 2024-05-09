@@ -5,17 +5,30 @@ using System.Text;
 
 namespace SmartTrade.Fabrica
 {
-    public class RopaFactory : ProductoFactory
+    public class RopaFactory : IProductoFactory
     {
-        public override Producto CrearProductoVacio()
+        private string nombre, huella, imagen, modelo3d, desc, cat, talla, color, marca, tipoPrenda;
+        private int puntos;
+
+        public RopaFactory(string nombre, string huella, string imagen, string modelo3d, string desc, int puntos, string cat, 
+                                string talla, string color, string marca, string tipoPrenda)
         {
-            return new Ropa();
+            this.nombre = nombre;
+            this.huella = huella;
+            this.imagen = imagen;
+            this.modelo3d = modelo3d;
+            this.desc = desc;
+            this.puntos = puntos;
+            this.cat = cat;
+            this.talla = talla;
+            this.color = color;
+            this.marca = marca;
+            this.tipoPrenda = tipoPrenda;
         }
 
-        public override Producto CrearProducto(params object[] args)
+        public Producto CrearProducto()
         {
-            if (args.Length != 4) throw new ArgumentOutOfRangeException("Número de argumentos incorrecto!");
-            return new Ropa { Talla = (string)args[0], Color = (string)args[1], Marca = (string)args[2], TipoPrenda = (string)args[3] };
+            return new Ropa(nombre, huella, imagen, modelo3d, desc, puntos, cat, talla, color, marca, tipoPrenda);
         }
     }
 }

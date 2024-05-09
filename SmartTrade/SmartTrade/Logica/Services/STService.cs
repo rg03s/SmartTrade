@@ -16,11 +16,10 @@ namespace SmartTrade.Logica.Services
     public class STService : ISTService
     {
         private readonly IDAL dal;
-        private SupabaseContext supabaseContext = SupabaseContext.Instance;
         private static STService instance = new STService(new STDAL(new SupabaseContext()));
         private Usuario loggedUser;
 
-        public STService(IDAL dal)
+        private STService(IDAL dal)
         {
             this.dal = dal;
         }
@@ -28,6 +27,10 @@ namespace SmartTrade.Logica.Services
         {
             get
             {
+                if (instance == null)
+                {
+                    instance = new STService(new STDAL(new SupabaseContext()));
+                }
                 return instance;
             }
         }
@@ -204,11 +207,24 @@ namespace SmartTrade.Logica.Services
         public async Task<List<Producto>> GetAllProductos()
         {
             try {
-                List<Producto> productos = await dal.GetAll<Producto>();
-                
+                List<Producto> productos = await GetProductosPorCategoria("Deporte");
+                productos.AddRange(await GetProductosPorCategoria("Ropa"));
+                productos.AddRange(await GetProductosPorCategoria("Papeleria"));
+                productos.AddRange(await GetProductosPorCategoria("Tecnologia"));
+
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
-                productos.OrderBy(p => p.Categoria);
+
+                //agregar observadores a los productos
+                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+                foreach (ListaDeseosItem item in listaDeseos)
+                {
+                    Producto p = productos.Where(x => x.Id == item.ProductoId).FirstOrDefault();
+                    if (p != null)
+                    {
+                        p.AddObservador(loggedUser);
+                    }
+                }
 
                 return productos;
             }
@@ -355,7 +371,87 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public Usuario GetUsuarioLogueado()
+        public async Task<List<Producto_vendedor>> GetAProductoVendedorByProducto(Producto p) 
+        {
+           List<Producto_vendedor> pvList = await dal.GetAll<Producto_vendedor>();
+           return  pvList.Where(pv => pv.IdProducto == p.Id).ToList();
+        }
+        public async Task<List<Producto>> getProductosListaDeseos()
+        {
+            string nickPropietario = GetLoggedNickname();
+            List<int> productosListaDeseos = new List<int>();
+            List<Producto> listaDeseos = new List<Producto>();
+            try
+            {   productosListaDeseos = await dal.GetProductosIdLista(nickPropietario);
+                if (productosListaDeseos != null)
+                {
+                    Producto p = null;
+
+                    foreach (int idproducto in productosListaDeseos)
+                    {
+                        p = await dal.GetById<Producto>(idproducto);
+                        if (p != null)
+                        {
+                            listaDeseos.Add(p);
+                        }
+                    }
+                }
+                
+                return listaDeseos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al obtener los productos de la Lista de Deseos. " + ex.Message);
+                return null;
+            }
+        }
+        public async Task EliminarProductoListaDeseos(Producto productoLista)
+        {
+            try {
+                List<ListaDeseosItem> ListaLoggedUser = await dal.GetListaDeseos(GetLoggedNickname());
+                foreach (var item in ListaLoggedUser)
+                {
+                    if (item.ProductoId == productoLista.Id)
+                    {
+                        await dal.Delete<ListaDeseosItem>(item);
+                        productoLista.RemoveObservador(loggedUser);
+                    }
+                }
+            }catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar el producto de la Lista de Deseos. " + ex.Message);
+            }
+            
+        }
+
+        public async Task AgregarProductoListaDeseos(Producto producto)
+        {
+            try
+            {
+                string propietario = GetLoggedNickname();
+                ListaDeseosItem ld = new ListaDeseosItem(propietario, producto.Id);
+                bool estaEnLista = await ProductoEnListaDeseos(producto);
+                if (!estaEnLista)
+                {
+                    await dal.Add<ListaDeseosItem>(ld);
+                    producto.AddObservador(loggedUser);
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Error al añadir el producto a la Lista de Deseos.: " + ex.Message);
+            }
+
+        }
+        //true si el producto ya está en la lista
+        public async Task<Boolean> ProductoEnListaDeseos(Producto producto)
+        {
+            string propietario = GetLoggedNickname();
+            List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(propietario);
+            ListaDeseosItem item = listaDeseos.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
+            return item != null;
+        }
+
+            public Usuario GetUsuarioLogueado()
         {
             return loggedUser;
         }

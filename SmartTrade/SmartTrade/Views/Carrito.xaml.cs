@@ -16,13 +16,13 @@ namespace SmartTrade.Views
     public partial class Carrito : ContentPage
     {
 
-        ISTService service;
+        STService service;
         double costeTotal = 0, puntosObtenidos = 0;
 
-        public Carrito(ISTService service)
+        public Carrito()
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
 
         }
         override protected void OnAppearing()
@@ -225,7 +225,7 @@ namespace SmartTrade.Views
                                     {
                                         Command = new Command(async () =>
                                         {
-                                            await Navigation.PushAsync(new ProductPage(service, producto));
+                                            await Navigation.PushAsync(new ProductPage( producto));
                                         })
                                     }
                                 }

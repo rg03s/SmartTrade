@@ -31,6 +31,7 @@ namespace SmartTrade.Persistencia.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("User Id=postgres.apjeqdhvkthosokvpvma;Password=zGvvULbrYK4XeQe2;Server=aws-0-eu-west-2.pooler.supabase.com;Port=5432;Database=postgres");
 
+        public DbSet<ListaDeseosItem> ListaDeseosItem { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Tarjeta> Tarjeta { get; set; }
         //  public DbSet<Entities.Vendedor> Vendedor { get; set; }

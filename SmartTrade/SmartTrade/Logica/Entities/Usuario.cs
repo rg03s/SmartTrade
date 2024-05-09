@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartTrade.Logica.Observador;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace SmartTrade.Entities
 {
-    public partial class Usuario
+    public partial class Usuario : IObservador
     {
-        public Usuario() { }
+        public Usuario() { 
+            AlertasProductosSinStock = new List<Producto>();
+        }
         public Usuario(string nickname, string nombre, string password, string direccion, string email, DateTime fecha_nac, Boolean isVendedor)
         {
             this.Nickname = nickname;
@@ -44,6 +47,11 @@ namespace SmartTrade.Entities
 
             if (string.IsNullOrEmpty(contraseña) || contraseña.Length < 8) return false;
             return contraseña.Any(char.IsDigit);
+        }
+
+        public void Actualizar(Producto p)
+        {
+            AlertasProductosSinStock.Add(p);
         }
     }
 }

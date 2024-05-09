@@ -7,19 +7,20 @@ using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using SmartTrade.Logica.Services;
 using Acr.UserDialogs;
+using System.Threading.Tasks;
 
 namespace SmartTrade.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Catalogo : ContentPage
     {
-        private ISTService service;
+        private STService service;
         private List<Producto> catalogoProductos = new List<Producto>();
 
-        public Catalogo(ISTService service, List<Producto> productos)
+        public Catalogo(List<Producto> productos)
         {
             InitializeComponent();
-            this.service = service;
+            this.service = STService.Instance;
             this.catalogoProductos = productos;
 
             ConfigurarPickerFiltrado();
@@ -27,6 +28,18 @@ namespace SmartTrade.Views
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
             searchBar.TextChanged += OnBusqueda;
 
+            //TEST
+            test();
+
+        }
+
+        private async Task test()
+        {
+            List<Producto> productos = await service.getProductosListaDeseos();
+            foreach(Producto p in productos)
+            {
+                p.ReducirStock(p.Producto_Vendedor.First(), p.Producto_Vendedor.First().Stock);
+            }
         }
 
         private void CargarProductos()
@@ -162,7 +175,7 @@ namespace SmartTrade.Views
                     TapGestureRecognizer tap = new TapGestureRecognizer();
                     tap.Tapped += (s, ev) =>
                     {
-                        ProductPage productPage = new ProductPage(service, producto);
+                        ProductPage productPage = new ProductPage(producto);
                         Navigation.PushAsync(productPage);
                     };
 
@@ -227,13 +240,23 @@ namespace SmartTrade.Views
 
         public void BtnCarrito_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Carrito(service));
+            Navigation.PushAsync(new Carrito());
         }
 
         public void BtnPerfil_click(object sender, EventArgs e)
         {
             //TODO
             Console.WriteLine("Perfil");
+        }
+
+        private void BtnAlerta_click(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new Alertas());
+        }
+
+        private void BtnDeseos_click(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ListaDeseos());
         }
     }
 }
