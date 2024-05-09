@@ -22,6 +22,6 @@ namespace SmartTrade.Persistencia.DataAccess
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;
 
-        // void Commit();
+        void Commit();
     }
 }
