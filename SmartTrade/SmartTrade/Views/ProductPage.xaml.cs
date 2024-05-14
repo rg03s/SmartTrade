@@ -171,9 +171,12 @@ namespace SmartTrade.Views
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
-            if (await service.AgregarItemCarrito(item))
-            {
-                UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
+            var confirmacion = await DisplayAlert("Confirmación", "¿Desea agregar este producto al carrito?", "SI", "NO");
+            if (confirmacion) {
+                if (await service.AgregarItemCarrito(item))
+                {
+                    UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
+                }
             }
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
