@@ -38,9 +38,16 @@
             <!-- Contenido principal -->
             <StackLayout Grid.Row="2" Margin="10, 10, 5, 0">
                 <Label Text="Mis Alertas" FontSize="Large" TextColor="Black"/>
-            </StackLayout>
 
-            <StackLayout Grid.Row="3" HeightRequest="1" x:Name="stack_alertas"/>
+                <StackLayout Grid.Row="3" HeightRequest="1" x:Name="stack_alertas">
+                    <!-- Contenido manejado por codigo -->
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="200">
+                        <Image Source="https://img.freepik.com/free-vector/notify-concept-illustration_114360-4297.jpg" Margin="0, 50, 0, 0"></Image>
+                        <Label Text="¡No tiene ninguna alerta!" FontSize="Medium" TextColor="Black"/>
+                    </StackLayout> 
+                </StackLayout>
+                
+            </StackLayout>
 
         </Grid>
     </ContentPage.Content>

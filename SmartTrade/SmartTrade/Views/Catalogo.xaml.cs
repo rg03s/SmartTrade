@@ -28,8 +28,8 @@ namespace SmartTrade.Views
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
             searchBar.TextChanged += OnBusqueda;
 
-            //TEST
-            test();
+            //TEST - REDUCE EL STOCK A 0 PARA PROBAR LAS ALERTAS
+            //test();
 
         }
 
