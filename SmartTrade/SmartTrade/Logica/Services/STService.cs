@@ -352,6 +352,7 @@ namespace SmartTrade.Logica.Services
                     if (item.ProductoVendedorId == pv.Id)
                     {
                         await dal.Delete<ListaDeseosItem>(item);
+                        loggedUser.AlertasProductosSinStock.Remove(p);
                         p.RemoveObservador(loggedUser);
                     }
                 }
