@@ -48,6 +48,7 @@ namespace SmartTrade.Views
 
         private void CrearAlerta(Producto p, StackLayout container)
         {
+
             StackLayout stack_alerta = new StackLayout() {
                 Orientation = StackOrientation.Horizontal, Margin = new Thickness(10, 10, 10, 10),
                 Padding = new Thickness(10, 10, 10, 10), BackgroundColor = Color.White
@@ -62,7 +63,19 @@ namespace SmartTrade.Views
             Label lbl_nombre = new Label() { Text = p.Nombre, FontSize = 20 };
             stack_mensaje.Children.Add(lbl_nombre);
 
-            Label lbl_mensaje = new Label { Text = "El vendedor de este producto de tu lista de deseos se ha quedado sin stock. Pruebe a seleccionar otro vendedor", FontSize = 15 };
+            Label lbl_mensaje = new Label
+            {
+                FormattedText = new FormattedString
+                {
+                    Spans =
+                    {
+                        new Span { Text = "El producto del vendedor ", FontSize = 15, FontAttributes = FontAttributes.Bold },
+                        new Span { Text = p.Producto_Vendedor.First().NicknameVendedor, FontSize = 15, TextColor = Color.Blue },
+                        new Span { Text = " de tu lista de deseos se ha quedado sin stock. Pruebe a mirar otro vendedor", FontSize = 15, FontAttributes = FontAttributes.Bold }
+                    }
+                }
+            };
+
             stack_mensaje.Children.Add(lbl_mensaje);
 
             container.Children.Add(stack_alerta);
