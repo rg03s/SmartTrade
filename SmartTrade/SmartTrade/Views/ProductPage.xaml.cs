@@ -178,13 +178,16 @@ namespace SmartTrade.Views
             bool estaEnLista = await service.ProductoEnGuardarMasTarde(productoVista);
             if (estaEnLista)
             {
+                GuardarMasTardeButton.TextColor = Color.White;
                 await service.EliminarProductoGuardarMasTarde(productoVista);
-                GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
-            }
+                
+                UserDialogs.Instance.Toast("Producto eliminado de guardar para más tarde", TimeSpan.FromSeconds(3));
+            } 
             if (!estaEnLista)
             {
-               await service.AgregarProductoGuardarMasTarde(productoVista);
-                GuardarMasTardeButton.TextColor = Color.White;
+                GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
+                await service.AgregarProductoGuardarMasTarde(productoVista);
+               
                 UserDialogs.Instance.Toast("Producto guardado para más tarde", TimeSpan.FromSeconds(3));
             }
         }
