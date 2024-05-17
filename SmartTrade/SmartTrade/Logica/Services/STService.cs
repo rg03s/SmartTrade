@@ -16,7 +16,7 @@ namespace SmartTrade.Logica.Services
     public class STService : ISTService
     {
         private readonly IDAL dal;
-        private static STService instance = new STService(new STDAL(new SupabaseContext()));
+        private static STService instance;
         private Usuario loggedUser;
 
         private STService(IDAL dal)
@@ -194,7 +194,8 @@ namespace SmartTrade.Logica.Services
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
 
                 //agregar observadores a los productos
-                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+               /* List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+                foreach(ListaDeseosItem ldi in listaDeseos) Console.WriteLine(ldi);
                 foreach (ListaDeseosItem item in listaDeseos)
                 {
                     Producto p = productos.Where(x => x.Id == item.ProductoId).FirstOrDefault();
@@ -203,7 +204,7 @@ namespace SmartTrade.Logica.Services
                         p.AddObservador(loggedUser);
                     }
                 }
-
+               */
                 return productos;
             }
             catch (Exception e) { 
@@ -211,7 +212,12 @@ namespace SmartTrade.Logica.Services
                 return null; 
             }
         }
+        public async Task<List<ListaDeseosItem>> GetListaDeseos(string nickPropietario)
+        {
+            var listaDeseos = await dal.GetAll<ListaDeseosItem>();
+            return  listaDeseos.Where(ld => ld.NickPropietario == nickPropietario).ToList();
 
+        }
         public Producto GetProductoById(string id)
         {
             try
@@ -428,8 +434,124 @@ namespace SmartTrade.Logica.Services
             ListaDeseosItem item = listaDeseos.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
             return item != null;
         }
+        public async Task<List<Producto>> GetProductosGuardarMasTarde()
+        {
+            string nickPropietario = GetLoggedNickname();
+            List<int> productoslistaMasTarde = new List<int>();
+            List<Producto> listaMasTarde = new List<Producto>();
+            try
+            {
+                productoslistaMasTarde = await GetProductosIdGuardarMasTarde(nickPropietario);
+                if (productoslistaMasTarde != null)
+                {
+                    Producto p = null;
 
-            public Usuario GetUsuarioLogueado()
+                    foreach (int idproducto in productoslistaMasTarde)
+                    {
+                        p = await dal.GetById<Producto>(idproducto);
+                        if (p != null)
+                        {
+                            listaMasTarde.Add(p);
+                        }
+                    }
+                }
+
+                return listaMasTarde;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al obtener los productos de la Lista de Deseos. " + ex.Message);
+                return null;
+            }
+        }
+        public async Task EliminarProductoGuardarMasTarde(Producto productoLista)
+        {
+            try
+            {
+                List<GuardarMasTardeItem> ListaLoggedUser = await GetGuardarMasTarde();
+                foreach (var item in ListaLoggedUser)
+                {
+                    if (item.ProductoId == productoLista.Id)
+                    {
+                        await dal.Delete<GuardarMasTardeItem>(item);
+                        productoLista.RemoveObservador(loggedUser);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar el producto de la Lista Guardar para más tarde. " + ex.Message);
+            }
+
+        }
+
+        public async Task AgregarProductoGuardarMasTarde(Producto producto)
+        {
+            try
+            {
+                string propietario = GetLoggedNickname();
+                GuardarMasTardeItem gmt = new GuardarMasTardeItem(propietario, producto.Id);
+                bool estaEnLista = await ProductoEnGuardarMasTarde(producto);
+
+
+                    if (!estaEnLista)
+                {
+                    await dal.Add<GuardarMasTardeItem>(gmt);
+                    producto.AddObservador(loggedUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al añadir el producto a la Lista Guardar para más tarde.: " + ex.Message);
+            }
+
+        }
+        public async Task<Boolean> ProductoEnGuardarMasTarde(Producto producto)
+        {
+            string propietario = GetLoggedNickname();
+            List<GuardarMasTardeItem> gmt = await GetGuardarMasTarde();
+            GuardarMasTardeItem item = gmt.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
+            return item != null;
+        }
+        public async Task<Boolean> ProductoEnCarrito(Producto producto)
+        {
+
+            List<ItemCarrito> items = await GetCarrito();
+            foreach (ItemCarrito itemC in items) 
+            {
+                Producto_vendedor pv = await dal.GetById<Producto_vendedor>(itemC.idProductoVendedor);
+                if (pv.IdProducto == producto.Id) return true;
+            }
+            return false;
+        }
+        public async Task<List<GuardarMasTardeItem>> GetGuardarMasTarde()
+        {
+            try
+            {
+                List<GuardarMasTardeItem> productosGuardarMasTarde = await dal.GetAll<GuardarMasTardeItem>();
+                return productosGuardarMasTarde.Where(p => p.NickPropietario == loggedUser.Nickname).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el carrito: ", e.Message);
+                return null;
+            }
+
+        }
+        public async Task<List<int>> GetProductosIdGuardarMasTarde(string nickPropietario)
+        {
+            try
+            {
+                    List<GuardarMasTardeItem> productosGuardarMasTarde = await dal.GetAll<GuardarMasTardeItem>();
+                    return productosGuardarMasTarde.Where(p => p.NickPropietario == loggedUser.Nickname).Select(gmt => gmt.ProductoId).ToList();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error al obtener el carrito: ", e.Message);
+                    return null;
+                }
+        }
+        public Usuario GetUsuarioLogueado()
         {
             return loggedUser;
         }

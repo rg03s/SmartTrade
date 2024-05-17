@@ -15,7 +15,7 @@ namespace SmartTrade.Entities
         public DateTime Fecha { get; set; }
         [Column("precio_total")]
         public double Precio_total { get; set; }
-        [Column("id_productos")]
+        [Column("id_itemsCarrito")]
         public List<int> Productos { get; set; }
         [Column("id_comprador")]
         public string nickComprador{ get; set; }

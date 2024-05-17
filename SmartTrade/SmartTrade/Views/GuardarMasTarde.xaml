@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.GuardarMasTarde"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+
+            </Grid.ColumnDefinitions>
+
+            <!-- Barra de navegación -->
+            <StackLayout Orientation="Horizontal" Margin="10,10,5,0" Grid.Row="0">
+                <Button 
+                    Text="&#xf053;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnAtras_click"
+                />
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
+            </StackLayout>
+
+            <!-- Título de la página -->
+            <StackLayout Grid.Row="1" Margin="20,20,0,0">
+                <Label Text="Guardar para más tarde" FontSize="Title" TextColor="Black" />
+            </StackLayout>
+
+            <!-- Contenido principal -->
+            <ScrollView Grid.Row="2" Padding="20" Orientation="Vertical">
+                <StackLayout Orientation="Vertical">
+                    <StackLayout x:Name="listaItems">
+
+
+                        <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

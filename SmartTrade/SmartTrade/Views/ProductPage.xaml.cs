@@ -123,17 +123,25 @@ namespace SmartTrade.Views
                 label_material_papeleria.IsVisible = true;
             }
 
-            configurarBotonListaDeseos();
+            configurarBotones();
+            configurarBotonGuardarMasTarde();
         }
 
-        private async Task configurarBotonListaDeseos()
+        private async Task configurarBotones()
         {
             string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
             string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
             bool estaEnLista = await service.ProductoEnListaDeseos(productoVista);
             if (!estaEnLista) btnDeseos.Source = corazonVacioUrl;
             else btnDeseos.Source = corazonLlenoUrl;
+
         }
+        private async Task configurarBotonGuardarMasTarde()
+        {
+            if (await service.ProductoEnGuardarMasTarde(productoVista)) GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
+            else GuardarMasTardeButton.TextColor = Color.White;
+        }
+        
         private void configurarPicker()
         {
             Picker picker = (Picker)FindByName("tallaPicker");
@@ -167,9 +175,25 @@ namespace SmartTrade.Views
             //TODO
             Console.WriteLine("Perfil");
         }
-
+        private async void BtnAgregarGuardarMasTarde_clickAsync(object sender, EventArgs e)
+        {
+            bool estaEnLista = await service.ProductoEnGuardarMasTarde(productoVista);
+            if (estaEnLista)
+            {
+                await service.EliminarProductoGuardarMasTarde(productoVista);
+                GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
+            }
+            if (!estaEnLista)
+            {
+               await service.AgregarProductoGuardarMasTarde(productoVista);
+                GuardarMasTardeButton.TextColor = Color.White;
+                UserDialogs.Instance.Toast("Producto guardado para más tarde", TimeSpan.FromSeconds(3));
+            }
+        }
+        
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
+            if (await service.ProductoEnGuardarMasTarde(productoVista)) await service.EliminarProductoGuardarMasTarde(productoVista);
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
             if (await service.AgregarItemCarrito(item))
             {
