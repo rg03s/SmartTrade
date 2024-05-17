@@ -84,53 +84,16 @@ namespace SmartTrade.Logica.Services
             await dal.Add<Tarjeta>(tarjeta);
         }
 
-
-        /*
-        public void Commit()
+        public async Task AddProducto(Producto producto)
         {
+            await dal.Add<Producto>(producto);
             dal.Commit();
         }
 
-        public void AddUser(Usuario usuario)
+        public async Task AddProductoVendedor(Producto_vendedor producto_vendedor)
         {
-           
-            
-                dal.Insert<Usuario>(usuario);
-                dal.Commit();
-                
-
-            
+            await dal.Add<Producto_vendedor>(producto_vendedor);
         }
-
-        public void GetUsuarios() {
-            dal.GetAll<Usuario>();
-        }
-        */
-
-
-        /*public async Task<bool> Login(string nickname, string password)
-        {
-            Usuario usuario = await dalUsuario.GetById(nickname);
-            Usuario correo = dalUsuario.GetByEmail(usuario.Email);
-            // Si no existe el usuario
-            if (usuario == null || correo == null)
-            {
-                return false;
-            }
-
-            // Si la contraseña no coincide
-            else if (usuario.Password != password)
-            {
-                return false;
-            }
-
-            else
-            {
-                loggedUser = usuario;
-                return true;
-            }
-
-        }*/
 
         public async Task<bool> Login(string identifier, string password)
         {
@@ -162,18 +125,6 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public async Task<List<Producto>> GetAllProductsAsync()
-        {
-            var productos = await dal.GetAll<Producto>();
-            return productos.ToList();
-        }
-
-        public async Task<List<Deporte>> GetAllDeporte()
-        {
-            var d = await dal.GetAll<Deporte>();
-            return d.ToList();
-        }
-
         // metodo para ordenar los productos por categorías
         public async Task<List<Producto>> GetProductosPorCategoria(string categoria)
         {
@@ -194,17 +145,31 @@ namespace SmartTrade.Logica.Services
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
 
                 //agregar observadores a los productos
-               /* List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
-                foreach(ListaDeseosItem ldi in listaDeseos) Console.WriteLine(ldi);
+                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
                 foreach (ListaDeseosItem item in listaDeseos)
                 {
-                    Producto p = productos.Where(x => x.Id == item.ProductoId).FirstOrDefault();
+                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+
                     if (p != null)
                     {
                         p.AddObservador(loggedUser);
                     }
                 }
-               */
+
+                //notificar a los observadores si el stock es 0
+                foreach (ListaDeseosItem item in listaDeseos)
+                {
+                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    if (p != null)
+                    {
+                        if (pv.Stock == 0)
+                        {
+                            p.NotificarObservadores();
+                        }
+                    }
+                }
                 return productos;
             }
             catch (Exception e) { 
@@ -362,26 +327,18 @@ namespace SmartTrade.Logica.Services
         }
         public async Task<List<Producto>> getProductosListaDeseos()
         {
-            string nickPropietario = GetLoggedNickname();
-            List<int> productosListaDeseos = new List<int>();
-            List<Producto> listaDeseos = new List<Producto>();
             try
-            {   productosListaDeseos = await dal.GetProductosIdLista(nickPropietario);
-                if (productosListaDeseos != null)
+            {
+                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+                List<Producto> productos = new List<Producto>();
+                foreach (ListaDeseosItem item in listaDeseos)
                 {
-                    Producto p = null;
-
-                    foreach (int idproducto in productosListaDeseos)
-                    {
-                        p = await dal.GetById<Producto>(idproducto);
-                        if (p != null)
-                        {
-                            listaDeseos.Add(p);
-                        }
-                    }
+                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    p.Producto_Vendedor = new List<Producto_vendedor> { pv };
+                    productos.Add(p);
                 }
-                
-                return listaDeseos;
+                return productos;
             }
             catch (Exception ex)
             {
@@ -389,16 +346,18 @@ namespace SmartTrade.Logica.Services
                 return null;
             }
         }
-        public async Task EliminarProductoListaDeseos(Producto productoLista)
+        public async Task EliminarProductoListaDeseos(Producto_vendedor pv)
         {
             try {
                 List<ListaDeseosItem> ListaLoggedUser = await dal.GetListaDeseos(GetLoggedNickname());
-                foreach (var item in ListaLoggedUser)
+                foreach (ListaDeseosItem item in ListaLoggedUser)
                 {
-                    if (item.ProductoId == productoLista.Id)
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    if (item.ProductoVendedorId == pv.Id)
                     {
                         await dal.Delete<ListaDeseosItem>(item);
-                        productoLista.RemoveObservador(loggedUser);
+                        loggedUser.AlertasProductosSinStock.Remove(p);
+                        p.RemoveObservador(loggedUser);
                     }
                 }
             }catch (Exception ex)
@@ -408,17 +367,19 @@ namespace SmartTrade.Logica.Services
             
         }
 
-        public async Task AgregarProductoListaDeseos(Producto producto)
+        public async Task AgregarProductoListaDeseos(Producto_vendedor pv)
         {
             try
             {
                 string propietario = GetLoggedNickname();
-                ListaDeseosItem ld = new ListaDeseosItem(propietario, producto.Id);
-                bool estaEnLista = await ProductoEnListaDeseos(producto);
+                ListaDeseosItem ld = new ListaDeseosItem(propietario, pv.Id);
+                bool estaEnLista = await ProductoEnListaDeseos(loggedUser, pv);
                 if (!estaEnLista)
                 {
+                    Producto producto = await GetProductoByIdProductoVendedor(pv.Id);
                     await dal.Add<ListaDeseosItem>(ld);
                     producto.AddObservador(loggedUser);
+                    if (pv.Stock == 0) producto.NotificarObservadores();
                 }
             } catch (Exception ex)
             {
@@ -426,12 +387,10 @@ namespace SmartTrade.Logica.Services
             }
 
         }
-        //true si el producto ya está en la lista
-        public async Task<Boolean> ProductoEnListaDeseos(Producto producto)
+        public async Task<Boolean> ProductoEnListaDeseos(Usuario user, Producto_vendedor pv)
         {
-            string propietario = GetLoggedNickname();
-            List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(propietario);
-            ListaDeseosItem item = listaDeseos.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
+            List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(user.Nickname);
+            ListaDeseosItem item = listaDeseos.Where(i => i.ProductoVendedorId == pv.Id).FirstOrDefault();
             return item != null;
         }
         public async Task<List<Producto>> GetProductosGuardarMasTarde()
@@ -513,17 +472,7 @@ namespace SmartTrade.Logica.Services
             GuardarMasTardeItem item = gmt.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
             return item != null;
         }
-        public async Task<Boolean> ProductoEnCarrito(Producto producto)
-        {
 
-            List<ItemCarrito> items = await GetCarrito();
-            foreach (ItemCarrito itemC in items) 
-            {
-                Producto_vendedor pv = await dal.GetById<Producto_vendedor>(itemC.idProductoVendedor);
-                if (pv.IdProducto == producto.Id) return true;
-            }
-            return false;
-        }
         public async Task<List<GuardarMasTardeItem>> GetGuardarMasTarde()
         {
             try
@@ -536,20 +485,19 @@ namespace SmartTrade.Logica.Services
                 Console.WriteLine("Error al obtener el carrito: ", e.Message);
                 return null;
             }
-
         }
         public async Task<List<int>> GetProductosIdGuardarMasTarde(string nickPropietario)
         {
             try
             {
-                    List<GuardarMasTardeItem> productosGuardarMasTarde = await dal.GetAll<GuardarMasTardeItem>();
-                    return productosGuardarMasTarde.Where(p => p.NickPropietario == loggedUser.Nickname).Select(gmt => gmt.ProductoId).ToList();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error al obtener el carrito: ", e.Message);
-                    return null;
-                }
+                List<GuardarMasTardeItem> productosGuardarMasTarde = await dal.GetAll<GuardarMasTardeItem>();
+                return productosGuardarMasTarde.Where(p => p.NickPropietario == loggedUser.Nickname).Select(gmt => gmt.ProductoId).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el carrito: ", e.Message);
+                return null;
+            }
         }
         public Usuario GetUsuarioLogueado()
         {

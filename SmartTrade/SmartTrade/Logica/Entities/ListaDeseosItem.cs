@@ -8,10 +8,10 @@ namespace SmartTrade.Entities
     {
         public ListaDeseosItem() { }
 
-        public ListaDeseosItem(string nickPropietario, int productoId)
+        public ListaDeseosItem(string nickPropietario, int productoVendedorId)
         {
             this.NickPropietario = nickPropietario;
-            this.ProductoId = productoId;
+            this.ProductoVendedorId = productoVendedorId;
         }
     }
 }

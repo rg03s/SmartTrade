@@ -153,7 +153,7 @@ namespace SmartTrade.Views
                 };
                 EliminarDeDeseos.Clicked += async (sender, e) =>
                 {
-                    await service.EliminarProductoListaDeseos(producto);
+                    await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
                     await CargarProductosListaDeseos();
                 };
                 Button AddAlCarrito = new Button
@@ -170,7 +170,7 @@ namespace SmartTrade.Views
                     if (producto.Categoria == "Ropa") caracteristicas =  ("Talla " + tallaPicker.SelectedItem.ToString()) ;
                     ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
                     await service.AgregarItemCarrito(item);
-                    await service.EliminarProductoListaDeseos(producto);
+                    await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
                     await CargarProductosListaDeseos();
                 };
                 //                string precioVendedor = (vendedorPicker.SelectedItem != null) ? vendedorPicker.SelectedItem.ToString() : "No seleccionado";

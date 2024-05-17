@@ -16,7 +16,7 @@ namespace SmartTrade.Views
         private STService service;
         private List<Producto> productosVendedor = new List<Producto>();
 
-        public CatalogoVendedor( List<Producto> productos)
+        public CatalogoVendedor(STService service, List<Producto> productos)
         {
             InitializeComponent();
             this.service = STService.Instance;
@@ -241,6 +241,12 @@ namespace SmartTrade.Views
         {
             //TODO
             Console.WriteLine("Perfil");
+        }
+
+        private void FloatingButton_Clicked(object sender, EventArgs e)
+        {
+            AgregarProducto agregarProducto = new AgregarProducto(this.service);
+            Navigation.PushAsync(agregarProducto);
         }
     }
 }

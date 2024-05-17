@@ -56,16 +56,13 @@ namespace SmartTrade.Persistencia.DataAccess
         {
             try
             {
-                List<int> listaDeseos = await sc.ListaDeseosItem.Where(ld => ld.NickPropietario == nickPropietario).Select(ld => ld.ProductoId).ToListAsync();
-              
-                if (listaDeseos == null || listaDeseos.Count == 0)
+                List<ListaDeseosItem> listaDeseos = await GetListaDeseos(nickPropietario);
+                List<int> productosId = new List<int>();
+                foreach (ListaDeseosItem ld in listaDeseos)
                 {
-                    return null;
+                    productosId.Add(ld.ProductoVendedorId);
                 }
-                else
-                {
-                    return listaDeseos;
-                }
+                return productosId;
             }
             catch (Exception ex)
             {
@@ -132,12 +129,12 @@ namespace SmartTrade.Persistencia.DataAccess
         {
             return dbContext.Set<T>().Where(predicate).AsEnumerable();
         }
-
+        */
         public void Commit()
         {
-            dbContext.SaveChanges();
+            sc.SaveChanges();
         }
-        */
+        
 
     }
 }

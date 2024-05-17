@@ -31,6 +31,11 @@ namespace SmartTrade.Entities
             observadoresListaDeseos.Add(observador);
         }
 
+        public void RemoveObservador(IObservador observador)
+        {
+            observadoresListaDeseos.Remove(observador);
+        }
+
         public void NotificarObservadores()
         {
             foreach (IObservador o in observadoresListaDeseos)
@@ -64,9 +69,5 @@ namespace SmartTrade.Entities
             }
         }
 
-        public void RemoveObservador(IObservador observador)
-        {
-            observadoresListaDeseos.Remove(observador);
-        }
     }
 }

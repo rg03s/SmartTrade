@@ -20,13 +20,13 @@ namespace SmartTrade.Views
         private STService service;
         private Producto_vendedor productoVendedor_seleccionado;
         private string tallaSeleccionada;
-        private Producto productoVista;
+        private const string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
+        private const string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
 
         public ProductPage(Producto producto)
         {
             InitializeComponent();
             this.service = STService.Instance;
-            productoVista = producto;
             
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
@@ -129,9 +129,7 @@ namespace SmartTrade.Views
 
         private async Task configurarBotones()
         {
-            string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
-            string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
-            bool estaEnLista = await service.ProductoEnListaDeseos(productoVista);
+            bool estaEnLista = await service.ProductoEnListaDeseos(service.GetUsuarioLogueado(), productoVendedor_seleccionado);
             if (!estaEnLista) btnDeseos.Source = corazonVacioUrl;
             else btnDeseos.Source = corazonLlenoUrl;
 
@@ -195,9 +193,12 @@ namespace SmartTrade.Views
         {
             if (await service.ProductoEnGuardarMasTarde(productoVista)) await service.EliminarProductoGuardarMasTarde(productoVista);
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
-            if (await service.AgregarItemCarrito(item))
-            {
-                UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
+            var confirmacion = await DisplayAlert("Confirmación", "¿Desea agregar este producto al carrito?", "SI", "NO");
+            if (confirmacion) {
+                if (await service.AgregarItemCarrito(item))
+                {
+                    UserDialogs.Instance.Toast("Producto añadido al carrito", TimeSpan.FromSeconds(3));
+                }
             }
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
@@ -215,17 +216,15 @@ namespace SmartTrade.Views
 
         private async void BtnDeseos_ClickedAsync(object sender, EventArgs e)
         {
-            string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
-            string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
-            bool estaEnLista = await service.ProductoEnListaDeseos(productoVista);
+            bool estaEnLista = await service.ProductoEnListaDeseos(service.GetUsuarioLogueado(), productoVendedor_seleccionado);
             if (!estaEnLista) 
             {
-                await service.AgregarProductoListaDeseos(productoVista);
+                await service.AgregarProductoListaDeseos(productoVendedor_seleccionado);
                 btnDeseos.Source = corazonLlenoUrl;
             }
             if (estaEnLista) 
             {
-                await service.EliminarProductoListaDeseos(productoVista);
+                await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
                 btnDeseos.Source = corazonVacioUrl;
             }
         }
