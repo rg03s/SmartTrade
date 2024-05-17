@@ -375,6 +375,7 @@ namespace SmartTrade.Logica.Services
                     Producto producto = await GetProductoByIdProductoVendedor(pv.Id);
                     await dal.Add<ListaDeseosItem>(ld);
                     producto.AddObservador(loggedUser);
+                    if (pv.Stock == 0) producto.NotificarObservadores();
                 }
             } catch (Exception ex)
             {
