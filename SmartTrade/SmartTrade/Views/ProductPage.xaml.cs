@@ -22,12 +22,12 @@ namespace SmartTrade.Views
         private string tallaSeleccionada;
         private const string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
         private const string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
-
+        Producto productoVista;
         public ProductPage(Producto producto)
         {
             InitializeComponent();
             this.service = STService.Instance;
-            
+            productoVista = producto;
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 

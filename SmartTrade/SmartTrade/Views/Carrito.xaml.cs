@@ -286,7 +286,7 @@ namespace SmartTrade.Views
 
         private void BtnFinalizarCompra_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PedidoPage(carrito));
+            //Navigation.PushAsync(new PedidoPage(carrito));
             //TODO
             Console.WriteLine("Finalizar Compra");
         }
