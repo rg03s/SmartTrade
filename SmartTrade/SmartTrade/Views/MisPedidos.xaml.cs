@@ -21,7 +21,7 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = STService.Instance;
         }
-
+        /*
         override protected void OnAppearing()
         {
             base.OnAppearing();
@@ -197,5 +197,6 @@ namespace SmartTrade.Views
             //TODO 
             Console.WriteLine("Perfil");
         }
+        */
     }
 }
