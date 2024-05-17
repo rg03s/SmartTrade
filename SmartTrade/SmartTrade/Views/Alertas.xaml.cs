@@ -69,9 +69,9 @@ namespace SmartTrade.Views
                 {
                     Spans =
                     {
-                        new Span { Text = "El producto del vendedor ", FontSize = 15, FontAttributes = FontAttributes.Bold },
+                        new Span { Text = "El producto del vendedor ", FontSize = 15, FontAttributes = FontAttributes.Bold, TextColor = Color.DarkGray },
                         new Span { Text = p.Producto_Vendedor.First().NicknameVendedor, FontSize = 15, TextColor = Color.Blue },
-                        new Span { Text = " de tu lista de deseos se ha quedado sin stock. Pruebe a mirar otro vendedor", FontSize = 15, FontAttributes = FontAttributes.Bold }
+                        new Span { Text = " de tu lista de deseos se ha quedado sin stock. Pruebe a mirar otro vendedor", FontSize = 15, FontAttributes = FontAttributes.Bold, TextColor = Color.DarkGray }
                     }
                 }
             };
