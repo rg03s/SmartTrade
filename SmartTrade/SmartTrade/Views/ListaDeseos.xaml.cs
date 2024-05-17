@@ -167,6 +167,7 @@ namespace SmartTrade.Views
                 
                 AddAlCarrito.Clicked += async (sender, e) =>
                 {
+                    if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
                     if (producto.Categoria == "Ropa") caracteristicas =  ("Talla " + tallaPicker.SelectedItem.ToString()) ;
                     ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
                     await service.AgregarItemCarrito(item);
