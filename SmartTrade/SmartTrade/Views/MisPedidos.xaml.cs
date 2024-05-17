@@ -21,7 +21,7 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = STService.Instance;
         }
-        /*
+        
         override protected void OnAppearing()
         {
             base.OnAppearing();
@@ -29,12 +29,12 @@ namespace SmartTrade.Views
             CargarPedidos();
             UserDialogs.Instance.HideLoading();
         }
-
+       
         private async void CargarPedidos()
         {
             try
             {
-                List<Pedido> pedidos = await service.GetPedidos();
+                List<ItemCarrito> pedidos = await service.GetCarrito();
                 StackLayout stackLayout = this.FindByName<StackLayout>("listaPedidos");
                 stackLayout.Children.Clear();
 
@@ -197,6 +197,6 @@ namespace SmartTrade.Views
             //TODO 
             Console.WriteLine("Perfil");
         }
-        */
+        
     }
 }
