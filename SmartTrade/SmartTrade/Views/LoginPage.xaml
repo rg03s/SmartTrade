@@ -39,7 +39,7 @@
 
                     <!-- Input para la contraseña -->
                     <Entry Grid.Row="3" 
-                           Placeholder="Password" 
+                           Placeholder="Contraseña" 
                            IsPassword="True" 
                            HorizontalOptions="FillAndExpand" 
                            VerticalOptions="FillAndExpand"></Entry>
