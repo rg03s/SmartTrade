@@ -14,7 +14,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Source="xamarin_logo.png" Aspect="AspectFit" HeightRequest="50" WidthRequest="80" Margin="0,70,0,80"></Image>
-            <Frame Grid.Row="1" Margin="0,0,0,-40" BorderColor="RoyalBlue" HasShadow="True"  CornerRadius="50" HeightRequest="700">
+            <Frame Grid.Row="1" Margin="0,0,0,-40" BorderColor="DarkBlue" HasShadow="True"  CornerRadius="50" HeightRequest="700">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20" Padding="20,50,20,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -57,7 +57,7 @@
 
                     <Button Grid.Row="5" 
                             Text="Login" 
-                            BackgroundColor="RoyalBlue" 
+                            BackgroundColor="#1C375C" 
                             CornerRadius="20"
                             TextColor="White"></Button>
 
