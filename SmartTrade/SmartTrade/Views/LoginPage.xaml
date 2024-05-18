@@ -34,7 +34,7 @@
 
                     <!-- Input para el correo electrónico -->
                     <Entry Grid.Row="2" 
-                           Placeholder="Username" 
+                           Placeholder="Nickname o correo electrónico" 
                            Margin="0,20,0,0" 
                            HorizontalOptions="FillAndExpand" 
                            VerticalOptions="FillAndExpand"
@@ -59,7 +59,9 @@
                             Text="Login" 
                             BackgroundColor="#1C375C" 
                             CornerRadius="20"
-                            TextColor="White"></Button>
+                            TextColor="White"
+                            Clicked="Ingresar_Clicked"
+                    ></Button>
 
                     <Label Grid.Row="6" HorizontalOptions="Center">
                         <Label.FormattedText>
