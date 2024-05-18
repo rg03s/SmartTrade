@@ -37,7 +37,7 @@ namespace SmartTrade.Views
                 string password = contraseña.Text;
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    await DisplayAlert("Error", "Por favor, ingrese su correo y contraseña", "OK");
+                    await UserDialogs.Instance.AlertAsync("Debe completar todos los campos", "Error", "OK");
                 }
                 else
                 {
