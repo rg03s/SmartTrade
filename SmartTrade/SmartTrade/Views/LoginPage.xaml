@@ -50,7 +50,7 @@
                            VerticalOptions="FillAndExpand"></Entry>
 
                     <StackLayout Grid.Row="4" Orientation="Horizontal">
-                        <CheckBox x:Name="verPass" HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
+                        <CheckBox x:Name="verPass" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" CheckedChanged="VerContraseña_Changed"/>
                         <Label Text="Mostrar contraseña" HorizontalOptions="Start" VerticalOptions="Center"></Label>
                     </StackLayout>
 
