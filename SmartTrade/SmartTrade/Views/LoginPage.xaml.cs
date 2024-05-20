@@ -33,19 +33,19 @@ namespace SmartTrade.Views
         {
             try
             {
-                string username = correo.Text;
-                string password = contraseña.Text;
+                string username = mail.Text;
+                string password = pass.Text;
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    await DisplayAlert("Error", "Por favor, ingrese su correo y contraseña", "OK");
+                    await UserDialogs.Instance.AlertAsync("Debe completar todos los campos", "Error", "OK");
                 }
                 else
                 {
                     UserDialogs.Instance.ShowLoading("Iniciando sesión...");
                     if (await service.Login(username, password))
                     {
-                        correo.Text = string.Empty;
-                        contraseña.Text = string.Empty;
+                        mail.Text = string.Empty;
+                        pass.Text = string.Empty;
                         //await DisplayAlert("Éxito", "Inicio de sesión exitoso", "OK");
                         UserDialogs.Instance.HideLoading();
                         UserDialogs.Instance.Toast("Inicio de sesión exitoso", TimeSpan.FromSeconds(2));
@@ -73,46 +73,46 @@ namespace SmartTrade.Views
             }  
             catch (Exception)
             {
-                correo.Text = string.Empty;
-                contraseña.Text = string.Empty;
+                mail.Text = string.Empty;
+                pass.Text = string.Empty;
             }
         }
 
         private void VerContraseña_Changed(object sender, TextChangedEventArgs e)
         {
-            if (VerContraseña.IsChecked == true) contraseña.IsPassword = false;
-            else contraseña.IsPassword = true; ;
+            if (verPass.IsChecked == true) pass.IsPassword = false;
+            else pass.IsPassword = true; ;
         }
 
         private void Correo_Focused(object sender, FocusEventArgs e)
         {
-            if (string.IsNullOrEmpty(correo.Text))
+            if (string.IsNullOrEmpty(mail.Text))
             {
-                correo.TextColor = Color.Gray;
+                mail.TextColor = Color.Gray;
             }
         }
 
         private void Correo_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(correo.Text))
+            if (!string.IsNullOrEmpty(mail.Text))
             { 
-                correo.TextColor = Color.Black;
+                mail.TextColor = Color.Black;
             }
         }
 
         private void Contraseña_Focused(object sender, FocusEventArgs e)
         {
-            if (string.IsNullOrEmpty(contraseña.Text))
+            if (string.IsNullOrEmpty(pass.Text))
             {
-                contraseña.TextColor = Color.Gray;
+                pass.TextColor = Color.Gray;
             }
         }
 
         private void Contraseña_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(contraseña.Text)) 
+            if (!string.IsNullOrEmpty(pass.Text)) 
             { 
-                contraseña.TextColor = Color.Black; 
+                pass.TextColor = Color.Black; 
             }
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
