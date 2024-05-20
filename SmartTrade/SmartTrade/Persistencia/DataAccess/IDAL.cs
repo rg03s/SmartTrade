@@ -19,6 +19,7 @@ namespace SmartTrade.Persistencia.DataAccess
         Task Update<T>(T entity) where T : class;
         Task<List<int>> GetProductosIdLista(string nickPropietario);
         Task<List<ListaDeseosItem>> GetListaDeseos(string nickPropietario);
+
         //bool Exists<T>(IComparable id) where T : class;
         //void Clear<T>() where T : class;
 

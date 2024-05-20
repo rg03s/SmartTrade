@@ -194,6 +194,18 @@ namespace SmartTrade.Logica.Services
                 return null;
             }
         }
+        public async Task<Producto> GetProductoById(int id)
+        {
+            try
+            {
+                return await dal.GetById<Producto>(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el producto: ", e.Message);
+                return null;
+            }
+        }
 
         public async Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor)
         {
@@ -221,11 +233,11 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public Producto_vendedor GetProductoVendedorById(int id)
+        public async Task <Producto_vendedor> GetProductoVendedorById(int id)
         {
             try
             {
-                return dal.GetById<Producto_vendedor>(id.ToString()).Result;
+                return await dal.GetById<Producto_vendedor>(id);
             } catch (Exception e)
             {
                 Console.WriteLine("Error al obtener el producto vendedor: ", e.Message);
