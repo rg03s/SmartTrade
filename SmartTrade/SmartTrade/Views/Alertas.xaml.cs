@@ -49,10 +49,15 @@ namespace SmartTrade.Views
         private void CrearAlerta(Producto p, StackLayout container)
         {
 
+            Frame frame = new Frame() { CornerRadius = 10, Margin = new Thickness(10, 10, 10, 10), Padding = new Thickness(10, 10, 10, 10), BackgroundColor = Color.White, BorderColor = Color.LightGray };
+            container.Children.Add(frame);
+
             StackLayout stack_alerta = new StackLayout() {
                 Orientation = StackOrientation.Horizontal, Margin = new Thickness(10, 10, 10, 10),
                 Padding = new Thickness(10, 10, 10, 10), BackgroundColor = Color.White
             };
+
+            frame.Content = stack_alerta;
 
             Image img = new Image() { Source = p.Imagen, WidthRequest = 100, HeightRequest = 100 };
             stack_alerta.Children.Add(img);
