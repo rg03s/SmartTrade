@@ -17,10 +17,14 @@ namespace SmartTrade
         {
 
             InitializeComponent();
-            STService service = STService.Instance;
-            // DependencyService.Register<MockDataStore>();
+            MostrarCatalogo();
+        }
 
-            MainPage = new NavigationPage(new LoginPage());
+        private async void MostrarCatalogo()
+        {
+            STService service = STService.Instance;
+            List<Producto> productos = await service.GetAllProductos();
+            MainPage = new NavigationPage(new Catalogo(productos));
         }
 
         protected override void OnStart()
