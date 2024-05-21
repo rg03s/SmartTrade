@@ -18,13 +18,13 @@ using static System.Net.WebRequestMethods;
 namespace SmartTrade.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ListaDeseos : ContentPage
+    public partial class GuardarMasTarde : ContentPage
     {
 
         STService service;
         public Producto_vendedor productoVendedor_seleccionado;
 
-        public ListaDeseos()
+        public GuardarMasTarde()
         {
             InitializeComponent();
             this.service = STService.Instance;
@@ -34,18 +34,18 @@ namespace SmartTrade.Views
         {
             base.OnAppearing();
             UserDialogs.Instance.ShowLoading("Cargando productos...");
-            CargarProductosListaDeseos();
+            CargarProductosLista();
             UserDialogs.Instance.HideLoading();
         }
 
-        private async Task CargarProductosListaDeseos()
+        private async Task CargarProductosLista()
         {
             try
             {
-                List <Producto> lista = await service.getProductosListaDeseos();
+                List<Producto> lista = await service.GetProductosGuardarMasTarde();
                 Console.WriteLine("Conteido lista: ");
                 foreach (Producto producto in lista) Console.WriteLine(producto.Nombre);
-               // List<ItemCarrito> carrito = await service.GetCarrito();
+                // List<ItemCarrito> carrito = await service.GetCarrito();
                 StackLayout listaProd = this.FindByName<StackLayout>("listaItems");
 
                 listaProd.Children.Clear();
@@ -76,7 +76,7 @@ namespace SmartTrade.Views
                 }
                 else
                 {
-                   await MostrarProductosLista(lista);
+                    await MostrarProductosLista(lista);
                 }
             }
             catch (Exception e)
@@ -103,25 +103,25 @@ namespace SmartTrade.Views
             {
                 List<Producto_vendedor> pvendedores = await service.GetAProductoVendedorByProducto(producto);
 
-               // Label puntos = new Label { Text = producto.Puntos.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
+                // Label puntos = new Label { Text = producto.Puntos.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
 
-                List <string> vendedoresDatos = new List<string>();
-                string[] talla = new string[] {"XS", "S", "M", "L","XL" };
-               // Picker picker = (Picker)FindByName("vendedorPicker");
-              
-                foreach (Producto_vendedor pvendedor in pvendedores) 
+                List<string> vendedoresDatos = new List<string>();
+                string[] talla = new string[] { "XS", "S", "M", "L", "XL" };
+                // Picker picker = (Picker)FindByName("vendedorPicker");
+
+                foreach (Producto_vendedor pvendedor in pvendedores)
                 {
                     vendedoresDatos.Add(pvendedor.NicknameVendedor + ": " + pvendedor.Precio + "€");
                 }
 
                 string caracteristicas = "";
-                
+
 
                 Picker vendedorPicker = new Picker
                 {
                     Title = "Elige vendedor",
                     ItemsSource = vendedoresDatos
-                    
+
                 };
 
                 vendedorPicker.SelectedIndexChanged += (sender, args) =>
@@ -140,21 +140,22 @@ namespace SmartTrade.Views
                     IsVisible = false,
 
                 };
-                tallaPicker.SelectedIndex = 0 ;
+                tallaPicker.SelectedIndex = 0;
                 if (producto.Categoria == "Ropa") tallaPicker.IsVisible = true;
-                ImageButton EliminarDeDeseos = new ImageButton
+                Button EliminarDeGuardarMasTarde = new Button
                 {
-                    Source = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png",
+                    Text ="&#xf057;",
+                    TextColor = Color.Red,
+                    FontSize = 18,
                     HeightRequest = 25,
                     WidthRequest = 25,
-                    Aspect = Aspect.AspectFit,
                     BackgroundColor = Color.White,
-                    
+
                 };
-                EliminarDeDeseos.Clicked += async (sender, e) =>
+                EliminarDeGuardarMasTarde.Clicked += async (sender, e) =>
                 {
-                    await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
-                    await CargarProductosListaDeseos();
+                    await service.EliminarProductoGuardarMasTarde(producto);
+                    await CargarProductosLista();
                 };
                 Button AddAlCarrito = new Button
                 {
@@ -164,15 +165,14 @@ namespace SmartTrade.Views
                     BackgroundColor = Color.HotPink,
                     CornerRadius = 12
                 };
-                
+
                 AddAlCarrito.Clicked += async (sender, e) =>
                 {
-                    if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
-                    if (producto.Categoria == "Ropa") caracteristicas =  ("Talla " + tallaPicker.SelectedItem.ToString()) ;
+                    if (producto.Categoria == "Ropa") caracteristicas = ("Talla " + tallaPicker.SelectedItem.ToString());
                     ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
                     await service.AgregarItemCarrito(item);
                     await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
-                    await CargarProductosListaDeseos();
+                    await CargarProductosLista();
                 };
                 //                string precioVendedor = (vendedorPicker.SelectedItem != null) ? vendedorPicker.SelectedItem.ToString() : "No seleccionado";
 
@@ -206,14 +206,14 @@ namespace SmartTrade.Views
                 var grid = (Grid)productCard.Content;
                 grid.Children.Add(
 
-                                   EliminarDeDeseos,
-                                    0,0
+                                   EliminarDeGuardarMasTarde,
+                                    0, 0
                                     );
                 grid.Children.Add(
 
                                    new Label
                                    {
-                                       Text = producto.Puntos.ToString() ,
+                                       Text = producto.Puntos.ToString(),
                                        FontAttributes = FontAttributes.Bold,
                                        FontSize = 16,
                                        TextColor = Color.Gray
@@ -239,7 +239,7 @@ namespace SmartTrade.Views
                                                         }
                                         }
                                     },
-                                   0 , 1
+                                   0, 1
                                 );
                 grid.Children.Add(
                                 new Label
@@ -259,7 +259,7 @@ namespace SmartTrade.Views
                                     LineBreakMode = LineBreakMode.TailTruncation
                                 },
                                1, 2
-                            );
+                            );/*
                 grid.Children.Add(
                                 vendedorPicker,
                                2, 3
@@ -271,7 +271,7 @@ namespace SmartTrade.Views
                 grid.Children.Add(
                                 AddAlCarrito,
                                2, 4
-                            );
+                            );*/
 
 
                 stackLayout.Children.Add(productCard);
@@ -282,7 +282,7 @@ namespace SmartTrade.Views
             }
         }
 
-        
+
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Console.WriteLine("Atras");

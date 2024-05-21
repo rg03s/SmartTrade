@@ -241,6 +241,20 @@
             </Grid>
 
             <Button
+                Text="&#xf02e;"
+                TextColor="White"
+                x:Name="GuardarMasTardeButton"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                BackgroundColor="Black"
+                FontSize="22"
+                CornerRadius="25"
+                HeightRequest="50"
+                WidthRequest="50"
+                AbsoluteLayout.LayoutFlags="PositionProportional"   
+                AbsoluteLayout.LayoutBounds=".75, .95, -1, -1"
+                Clicked="BtnAgregarGuardarMasTarde_clickAsync"
+            />
+            <Button
                 Text="&#xf217;"
                 TextColor="White"
                 FontFamily="{StaticResource FontAwesomeSolid}"

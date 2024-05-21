@@ -75,12 +75,12 @@ namespace SmartTrade.Views
             try
             {
                 Picker picker = (Picker)FindByName("picker_categorias");
-                picker.Items.Add("Ropa");
-                picker.Items.Add("Deporte");
-                picker.Items.Add("Papeleria");
-                picker.Items.Add("Tecnologia");
                 picker.SelectedIndexChanged += (s, e) =>
                 {
+
+                    //mostrar todos los productos
+                    if (picker.SelectedIndex == 0) { MostrarProductos(catalogoProductos); return; }
+
                     string categoria = picker.Items[picker.SelectedIndex];
                     List<Producto> productosFiltrados = catalogoProductos.Where(p => p.Categoria == categoria).ToList();
                     MostrarProductos(productosFiltrados);
@@ -108,11 +108,6 @@ namespace SmartTrade.Views
             if (busqueda == "")
             {
                 productosFiltrados = catalogoProductos;
-                grid_productosDestacados.IsVisible = true;
-            }
-            else
-            {
-                grid_productosDestacados.IsVisible = false;
             }
 
             MostrarProductos(productosFiltrados);
@@ -159,7 +154,8 @@ namespace SmartTrade.Views
                         Margin = new Thickness(0, 0, 5, 0),
                         CornerRadius = 10,
                         BackgroundColor = Color.White,
-                        Padding = 10
+                        Padding = 10,
+                        HasShadow = true
                     };
 
                     grid_productos.Children.Add(frame, columnaActual, filaActual);
@@ -256,7 +252,9 @@ namespace SmartTrade.Views
 
         private void BtnDeseos_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ListaDeseos());
+            //PARA PROBAR GUARDARMASTARDE
+             Navigation.PushAsync(new ListaDeseos());
+           // Navigation.PushAsync(new GuardarMasTarde());
         }
     }
 }

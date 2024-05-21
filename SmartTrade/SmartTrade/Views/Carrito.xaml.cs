@@ -18,6 +18,7 @@ namespace SmartTrade.Views
 
         STService service;
         double costeTotal = 0, puntosObtenidos = 0;
+        List<ItemCarrito> carrito;
 
         public Carrito()
         {
@@ -37,7 +38,7 @@ namespace SmartTrade.Views
         {
             try
             {
-                List<ItemCarrito> carrito = await service.GetCarrito();
+                carrito = await service.GetCarrito();
                 StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
                 StackLayout stack_resumen = this.FindByName<StackLayout>("stack_Resumen");
 
@@ -285,6 +286,7 @@ namespace SmartTrade.Views
 
         private void BtnFinalizarCompra_click(object sender, EventArgs e)
         {
+            Navigation.PushAsync(new PedidoPage(carrito));
             //TODO
             Console.WriteLine("Finalizar Compra");
         }

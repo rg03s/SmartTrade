@@ -22,12 +22,12 @@ namespace SmartTrade.Views
         private string tallaSeleccionada;
         private const string corazonVacioUrl = "https://i.ibb.co/MfL1wHp/corazon-vacio.png";
         private const string corazonLlenoUrl = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png";
-
+        Producto productoVista;
         public ProductPage(Producto producto)
         {
             InitializeComponent();
             this.service = STService.Instance;
-            
+            productoVista = producto;
             Image imagen_producto = (Image)FindByName("imagen_producto");
             imagen_producto.Source = producto.Imagen;
 
@@ -123,15 +123,23 @@ namespace SmartTrade.Views
                 label_material_papeleria.IsVisible = true;
             }
 
-            configurarBotonListaDeseos();
+            configurarBotones();
+            configurarBotonGuardarMasTarde();
         }
 
-        private async Task configurarBotonListaDeseos()
+        private async Task configurarBotones()
         {
             bool estaEnLista = await service.ProductoEnListaDeseos(service.GetUsuarioLogueado(), productoVendedor_seleccionado);
             if (!estaEnLista) btnDeseos.Source = corazonVacioUrl;
             else btnDeseos.Source = corazonLlenoUrl;
+
         }
+        private async Task configurarBotonGuardarMasTarde()
+        {
+            if (await service.ProductoEnGuardarMasTarde(productoVista)) GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
+            else GuardarMasTardeButton.TextColor = Color.White;
+        }
+        
         private void configurarPicker()
         {
             Picker picker = (Picker)FindByName("tallaPicker");
@@ -165,9 +173,28 @@ namespace SmartTrade.Views
             //TODO
             Console.WriteLine("Perfil");
         }
-
+        private async void BtnAgregarGuardarMasTarde_clickAsync(object sender, EventArgs e)
+        {
+            bool estaEnLista = await service.ProductoEnGuardarMasTarde(productoVista);
+            if (estaEnLista)
+            {
+                GuardarMasTardeButton.TextColor = Color.White;
+                await service.EliminarProductoGuardarMasTarde(productoVista);
+                
+                UserDialogs.Instance.Toast("Producto eliminado de guardar para más tarde", TimeSpan.FromSeconds(3));
+            } 
+            if (!estaEnLista)
+            {
+                GuardarMasTardeButton.TextColor = Color.DeepSkyBlue;
+                await service.AgregarProductoGuardarMasTarde(productoVista);
+               
+                UserDialogs.Instance.Toast("Producto guardado para más tarde", TimeSpan.FromSeconds(3));
+            }
+        }
+        
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
+            if (await service.ProductoEnGuardarMasTarde(productoVista)) await service.EliminarProductoGuardarMasTarde(productoVista);
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
             var confirmacion = await DisplayAlert("Confirmación", "¿Desea agregar este producto al carrito?", "SI", "NO");
             if (confirmacion) {

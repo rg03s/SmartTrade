@@ -8,7 +8,13 @@
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False">
     <StackLayout>
-        <Grid RowDefinitions="50,30">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <StackLayout Orientation="Horizontal" Grid.Row="0">
                 <Label Text="SmartTrade"
                        VerticalOptions="Center"
@@ -66,73 +72,35 @@
                     Clicked="BtnPerfil_click"
                 />
             </StackLayout>
-            <Grid ColumnDefinitions="*,175"
-                  Grid.Row="1">
-                <SearchBar Grid.Column="1"
-                       Placeholder="Buscar..."
-                       PlaceholderColor="LightGray"
-                       FontSize="14"
-                       CancelButtonColor="RoyalBlue"
-                       SearchButtonPressed="OnBusqueda"
-                       x:Name="searchBar"
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Margin="0,0,15,0">
+                <SearchBar 
+                    x:Name="searchBar"
+                    Placeholder="Buscar..."
+                    PlaceholderColor="LightGray"
+                    FontSize="16"
+                    CancelButtonColor="RoyalBlue"
+                    WidthRequest="220"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="0,0,0,6"
                 />
-            </Grid>
 
-            <Picker Grid.Row="2"
-                x:Name="picker_categorias"
-                Title="Filtrar por categorías"
-                TitleColor="RoyalBlue"
-                TextColor="RoyalBlue"
-                Margin="15,10,15,0"/>
-            
-        </Grid>
-        <Grid Margin="0,15,0,0" IsVisible="true" x:Name="grid_productosDestacados">
-            <StackLayout>
-                <Label Text="Productos destacados"
-                       TextColor="SlateGray"
-                       FontSize="18"
-                       FontFamily="Comfortaa"
-                       HorizontalOptions="Center"
-                       CharacterSpacing="2"
-                       x:Name="destacadosLabel"/>
-                <Grid ColumnDefinitions="*,*"
-                      Margin="15,0,15,0">
-                    <Frame HeightRequest="180"
-                           Margin="0,0,5,0"
-                           CornerRadius="10"
-                           BackgroundColor="White"
-                           Padding="10"
-                           Grid.Column="0">
-                            <StackLayout>
-                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120" />
-                                <Label Text="No Product" FontAttributes="Bold" TextColor="Gray"/>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="0%" TextColor="ForestGreen" />
-                                    <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" Aspect="AspectFill" HeightRequest="15"/>
-                                </StackLayout>
-                            </StackLayout>
-                    </Frame>
-                    <Frame HeightRequest="180"
-                           WidthRequest="100"
-                           Margin="5,0,0,0"
-                           CornerRadius="10"
-                           BackgroundColor="White"
-                           Padding="10"
-                           Grid.Column="1">
-                        <StackLayout>
-                            <Image Source="https://i.ibb.co/hmTgrvK/NoImage.png" Aspect="AspectFill" HeightRequest="120" />
-                            <Label Text="No Product" FontAttributes="Bold" TextColor="Gray"/>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="0%" TextColor="ForestGreen" />
-                                <Image Source="https://i.ibb.co/NZ99Tp4/Huella-Eco.png" Aspect="AspectFill" HeightRequest="15"/>
-                            </StackLayout>
-                        </StackLayout>
-                    </Frame>
-                </Grid>
+                <Label Text="&#xf0b0;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="RoyalBlue" VerticalOptions="Center" />
+                <Picker x:Name="picker_categorias" Title="Filtrar" TitleColor="RoyalBlue" TextColor="RoyalBlue" HeightRequest="70" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                    <Picker.Items>
+                        <x:String>Mostrar todo</x:String>
+                        <x:String>Ropa</x:String>
+                        <x:String>Deporte</x:String>
+                        <x:String>Tecnologia</x:String>
+                        <x:String>Papeleria</x:String>
+                    </Picker.Items>
+                </Picker>
             </StackLayout>
+
         </Grid>
-        <BoxView HeightRequest="1" WidthRequest="100" BackgroundColor="DarkGray" VerticalOptions="Center" Margin="0,10,0,0"/>
-        <ScrollView>
+        <ScrollView Margin="20, 10, 5, 0">
             <Grid ColumnDefinitions="*,*" x:Name="grid_productos">
                 <!-- CONTENIDO MANEJADO CON CODIGO. NO BORRAR EL GRID -->
             </Grid>

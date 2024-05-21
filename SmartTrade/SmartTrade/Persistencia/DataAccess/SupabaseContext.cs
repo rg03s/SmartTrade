@@ -34,10 +34,7 @@ namespace SmartTrade.Persistencia.DataAccess
         public DbSet<ListaDeseosItem> ListaDeseosItem { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Tarjeta> Tarjeta { get; set; }
-        //  public DbSet<Entities.Vendedor> Vendedor { get; set; }
-        //        
-
-        // public DbSet<Entities.Comprador> Comprador { get; set; }
+        public DbSet<GuardarMasTardeItem> GuardarMasTardeItem { get; set; }
         public DbSet<Producto_vendedor> Producto_Vendedor { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Producto> Producto { get; set; }
