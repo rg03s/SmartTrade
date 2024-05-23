@@ -13,14 +13,12 @@ namespace SmartTrade
     public partial class App : Application
     {
 
+        ISTService service = STService.Instance;
+
         public App()
         {
-
             InitializeComponent();
-            STService service = STService.Instance;
-            // DependencyService.Register<MockDataStore>();
-
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new NavigationPage(new Catalogo());
         }
 
         protected override void OnStart()

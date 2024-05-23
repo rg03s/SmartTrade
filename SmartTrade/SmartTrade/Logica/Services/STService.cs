@@ -145,6 +145,9 @@ namespace SmartTrade.Logica.Services
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
 
+                Console.WriteLine("Productos obtenidos correctamente");
+                if (loggedUser == null) return productos;
+
                 //agregar observadores a los productos
                 List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
                 foreach (ListaDeseosItem item in listaDeseos)

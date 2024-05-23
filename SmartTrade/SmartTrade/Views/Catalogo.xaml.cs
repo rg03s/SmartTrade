@@ -17,12 +17,12 @@ namespace SmartTrade.Views
         private STService service;
         private List<Producto> catalogoProductos = new List<Producto>();
 
-        public Catalogo(List<Producto> productos)
+        public Catalogo()
         {
             InitializeComponent();
             this.service = STService.Instance;
-            this.catalogoProductos = productos;
 
+            ConfigurarNavegacion();
             ConfigurarPickerFiltrado();
 
             SearchBar searchBar = (SearchBar)FindByName("searchBar");
@@ -42,11 +42,22 @@ namespace SmartTrade.Views
             }
         }
 
-        private void CargarProductos()
+        private void ConfigurarNavegacion()
+        {
+            StackLayout stackLayout = (StackLayout)FindByName("userLoggedNavigation");
+            StackLayout stackLayoutNoLogged = (StackLayout)FindByName("userNotLoggedNavigation");
+
+            stackLayout.IsVisible = service.GetUsuarioLogueado() != null;
+            stackLayoutNoLogged.IsVisible = service.GetUsuarioLogueado() == null;
+
+        }
+
+        private async void CargarProductos()
         {
             try
             {
                 UserDialogs.Instance.ShowLoading("Cargando productos...");
+                if (catalogoProductos.Count == 0) this.catalogoProductos = await service.GetAllProductos();
                 UserDialogs.Instance.HideLoading();
                 if (catalogoProductos.Count == 0)
                 {
@@ -145,7 +156,6 @@ namespace SmartTrade.Views
 
                 foreach (Producto producto in productos)
                 {
-
                     Producto_vendedor producto_vendedor = producto.Producto_Vendedor.OrderBy(pv => pv.Precio).First();
 
                     Frame frame = new Frame
@@ -256,5 +266,17 @@ namespace SmartTrade.Views
              Navigation.PushAsync(new ListaDeseos());
            // Navigation.PushAsync(new GuardarMasTarde());
         }
+
+        private void BtnLogin_click(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new LoginPage());
+        }
+
+        //bloquear boton de atras
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+
     }
 }

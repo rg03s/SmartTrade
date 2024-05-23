@@ -51,8 +51,7 @@ namespace SmartTrade.Views
                         UserDialogs.Instance.Toast("Inicio de sesión exitoso", TimeSpan.FromSeconds(2));
                         if (!service.IsVendedor()) {
 
-                            List<Producto> productos = await service.GetAllProductos();
-                            Catalogo paginaPrincipal = new Catalogo(productos);
+                            Catalogo paginaPrincipal = new Catalogo();
                             await Navigation.PushAsync(paginaPrincipal);
                             UserDialogs.Instance.HideLoading();
                         }
