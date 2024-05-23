@@ -13,9 +13,10 @@ namespace SmartTrade
     public partial class App : Application
     {
 
+        ISTService service = STService.Instance;
+
         public App()
         {
-
             InitializeComponent();
             MostrarCatalogo();
         }
