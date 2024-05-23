@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace SmartTrade.Logica.Services
 {
@@ -35,6 +36,12 @@ namespace SmartTrade.Logica.Services
         Task AgregarProductoListaDeseos(Producto_vendedor pv);
         Task<Boolean> ProductoEnListaDeseos(Usuario user, Producto_vendedor pv);
         Task<List<Producto_vendedor>> GetAProductoVendedorByProducto(Producto p);
+        Task<List<Pedido>> GetPedidos();
+        Task CargarDetallesPedido(Pedido pedido);
+        ImageSource GetImagenPedido(Pedido pedido);
+        string GetNombreProductoPedido(int idProducto);
+        string GetDescripcionProductoPedido(int idProducto);
+        double GetPrecioProductoPedido(int idProducto);
        Task<Producto_vendedor> GetProductoVendedorById(int id);
     }
 }

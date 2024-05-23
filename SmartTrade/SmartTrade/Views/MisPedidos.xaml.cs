@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace SmartTrade.Views
@@ -16,179 +17,17 @@ namespace SmartTrade.Views
     public partial class MisPedidos : ContentPage
     {
         STService service;
-        public MisPedidos()
+        Pedido miPedido;
+        public MisPedidos(Pedido pedido)
         {
             InitializeComponent();
             this.service = STService.Instance;
-        }
-        
-        override protected void OnAppearing()
-        {
-            base.OnAppearing();
-            UserDialogs.Instance.ShowLoading("Cargando pedidos...");
-            CargarPedidos();
-            UserDialogs.Instance.HideLoading();
-        }
-       
-        private async void CargarPedidos()
-        {
-            try
-            {
-                List<ItemCarrito> pedidos = await service.GetCarrito();
-                StackLayout stackLayout = this.FindByName<StackLayout>("listaPedidos");
-                stackLayout.Children.Clear();
-
-                if (pedidos.Count == 0)
-                {
-                    StackLayout stackLayoutPedidoVacio = new StackLayout
-                    {
-                        Orientation = StackOrientation.Vertical,
-                        Children =
-                        {
-                            new Label
-                            {
-                                Text = "No hay pedidos disponibles",
-                                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                                TextColor = Color.Black,
-                                FontAttributes = FontAttributes.Bold,
-                                HorizontalOptions = LayoutOptions.Center,
-                                VerticalOptions = LayoutOptions.Center
-                            }
-                        }
-                    };
-                    stackLayout.Children.Add(stackLayoutPedidoVacio);
-                    return;
-                }
-                else
-                {
-                    foreach (var pedido in pedidos)
-                    {
-                        CrearTarjetaPedido(pedido, stackLayout);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error al cargar los pedidos: {e.Message}");
-            }
-        }
-
-        private void CrearTarjetaPedido(Pedido pedido, StackLayout stackLayout)
-        {
-            var stackProductos = new StackLayout { Orientation = StackOrientation.Vertical, Spacing = 5 };
-
-            foreach (var item in pedido.Productos)
-            {
-                var productoCard = new StackLayout
-                {
-                    Orientation = StackOrientation.Horizontal,
-                    Spacing = 10,
-                    Children =
-                    {
-                        new Image { Source = item.Producto.Imagen, HeightRequest = 50, WidthRequest = 50 },
-                        new StackLayout
-                        {
-                            VerticalOptions = LayoutOptions.Center,
-                            Spacing = 5,
-                            Children =
-                            {
-                                new Label { Text = item.Producto.Nombre, FontAttributes = FontAttributes.Bold, TextColor = Color.Black },
-                                new Label { Text = item.Producto.Descripcion, TextColor = Color.Gray, LineBreakMode = LineBreakMode.TailTruncation },
-                            }
-                        }
-                    }
-                };
-                stackProductos.Children.Add(productoCard);
-            }
-
-            var pedidoCard = new Frame
-            {
-                BorderColor = Color.LightGray,
-                CornerRadius = 10,
-                Margin = new Thickness(10),
-                Padding = new Thickness(10),
-                HasShadow = true,
-                Content = new StackLayout
-                {
-                    Orientation = StackOrientation.Vertical,
-                    Spacing = 10,
-                    Children =
-                    {
-                        stackProductos,
-                        new Label { Text = $"Precio total: {pedido.PrecioTotal}€", FontAttributes = FontAttributes.Bold, TextColor = Color.Black },
-                        new Label { Text = $"Estado del pedido: {pedido.Estado}", TextColor = Color.Black },
-                        new Label { Text = $"Fecha estimada: {pedido.FechaEstimada:dd/MM/yyyy}", TextColor = Color.Black },
-                        CrearBotonAccion(pedido)
-                    }
-                }
-            };
-            stackLayout.Children.Add(pedidoCard);
-        }
-
-        private View CrearBotonAccion(Pedido pedido)
-        {
-            Button button = null;
-
-            if (pedido.Estado == "En preparación")
-            {
-                button = new Button
-                {
-                    Text = "Cancelar pedido",
-                    BackgroundColor = Color.Red,
-                    TextColor = Color.White,
-                    CornerRadius = 10
-                };
-
-                button.Clicked += async (sender, args) =>
-                {
-                    var confirm = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
-                    {
-                        Message = "¿Estás seguro de que quieres cancelar este pedido?",
-                        OkText = "Sí",
-                        CancelText = "No"
-                    });
-
-                    if (confirm)
-                    {
-                        await service.CancelarPedido(pedido.Id);
-                        UserDialogs.Instance.Toast("Pedido cancelado", TimeSpan.FromSeconds(3));
-                        CargarPedidos();
-                    }
-                };
-            }
-            else if (pedido.Estado == "Entregado")
-            {
-                button = new Button
-                {
-                    Text = "Devolver pedido",
-                    BackgroundColor = Color.Orange,
-                    TextColor = Color.White,
-                    CornerRadius = 10
-                };
-
-                button.Clicked += async (sender, args) =>
-                {
-                    var confirm = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
-                    {
-                        Message = "¿Estás seguro de que quieres devolver este pedido?",
-                        OkText = "Sí",
-                        CancelText = "No"
-                    });
-
-                    if (confirm)
-                    {
-                        await service.DevolverPedido(pedido.Id);
-                        UserDialogs.Instance.Toast("Pedido marcado para devolución", TimeSpan.FromSeconds(3));
-                        CargarPedidos();
-                    }
-                };
-            }
-
-            return button ?? new Label { Text = "" };
+            miPedido = pedido;
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
         {
+            Console.WriteLine("Atras");
             Navigation.PopAsync();
         }
 
@@ -197,6 +36,149 @@ namespace SmartTrade.Views
             //TODO 
             Console.WriteLine("Perfil");
         }
-        
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            UserDialogs.Instance.ShowLoading("Cargando...");
+            
+            UserDialogs.Instance.HideLoading();
+            if (miPedido != null)
+            {
+                // Cargar los detalles del pedido
+                await CargarDetallesPedido(miPedido);
+            }
+            else
+            {
+                await DisplayAlert("Error", "No se pudo cargar el pedido", "OK");
+            }
+        }
+
+        private async Task CargarDetallesPedido(Pedido pedido)
+        {
+            try
+            {
+                // Cargar los detalles del pedido
+                await service.CargarDetallesPedido(pedido);
+                MostrarDetallesPedido(pedido);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "No se pudo cargar los detalles del pedido", "OK");
+                Console.WriteLine($"Error al cargar los detalles del pedido: {ex.Message}");
+            }
+        }
+
+        private void MostrarDetallesPedido(Pedido pedido)
+        {
+            var stackLayout = this.FindByName<StackLayout>("listaPedidos");
+
+            foreach (var producto in pedido.Productos)
+            {
+                var productCard = new Frame
+                {
+                    BackgroundColor = Color.White,
+                    CornerRadius = 10,
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    HasShadow = true,
+                    Content = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                        {
+                            new Image
+                            {
+                                Source = service.GetImagenPedido(pedido),
+                                HeightRequest = 100,
+                                WidthRequest = 100,
+                                Aspect = Aspect.AspectFit
+                            },
+                            new StackLayout
+                            {
+                                VerticalOptions = LayoutOptions.Center,
+                                Spacing = 5,
+                                Children =
+                                {
+                                    new Label { Text = service.GetNombreProductoPedido(producto), FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
+                                    new Label { Text = service.GetDescripcionProductoPedido(producto).Length > 50 ? service.GetDescripcionProductoPedido(producto).Substring(0, 50) + "..." : service.GetDescripcionProductoPedido(producto), TextColor = Color.Gray },
+                                    new Label { Text = service.GetPrecioProductoPedido(producto).ToString("F2") + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                stackLayout.Children.Add(productCard);
+            }
+
+            // Actualizar resumen
+            this.FindByName<Label>("span_costeTotal").Text = pedido.Precio_total.ToString("F2") + "€";
+            this.FindByName<Label>("span_estadoPedido").Text = pedido.Estado;
+            this.FindByName<Label>("span_fechaEstimada").Text = pedido.FechaEstimacion.ToString("dd/MM/yyyy");
+
+            // Mostrar u ocultar botón de devolver según el estado
+            var btnDevolverPedido = this.FindByName<Button>("btnDevolverPedido");
+            if (pedido.Estado == "Entregado")
+            {
+                btnDevolverPedido.IsVisible = true;
+            }
+            else
+            {
+                btnDevolverPedido.IsVisible = false;
+            }
+        }
+
+        private async void BtnCancelarPedido_click(object sender, EventArgs e)
+        {
+            var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            {
+                Message = "¿Desea cancelar el pedido?",
+                OkText = "Sí",
+                CancelText = "No"
+            });
+
+            if (result)
+            {
+                try
+                {
+                    await service.CancelarPedido(miPedido);
+                    UserDialogs.Instance.Toast("Pedido cancelado", TimeSpan.FromSeconds(3));
+                    await Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", "No se pudo cancelar el pedido", "OK");
+                    Console.WriteLine($"Error al cancelar el pedido: {ex.Message}");
+                }
+            }
+        }
+
+        private async void BtnDevolverPedido_click(object sender, EventArgs e)
+        {
+            var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            {
+                Message = "¿Desea devolver el pedido?",
+                OkText = "Sí",
+                CancelText = "No"
+            });
+
+            if (result)
+            {
+                try
+                {
+                    await service.DevolverPedido(miPedido);
+                    UserDialogs.Instance.Toast("Pedido pendiente de devolución", TimeSpan.FromSeconds(3));
+                    await Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", "No se pudo procesar la devolución", "OK");
+                    Console.WriteLine($"Error al devolver el pedido: {ex.Message}");
+                }
+            }
+        }
+
     }
 }

@@ -10,6 +10,7 @@ using SmartTrade.Entities;
 using SmartTrade.Persistencia.DataAccess;
 using SmartTrade.Views;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace SmartTrade.Logica.Services
 {
@@ -515,5 +516,130 @@ namespace SmartTrade.Logica.Services
         {
             return loggedUser;
         }
+
+        //Servicio para obtener los pedidos de un usuario
+        public async Task<List<Pedido>> GetPedidos()
+        {
+            try
+            {
+                List<Pedido> pedidos = await dal.GetAll<Pedido>();
+                return pedidos.Where(p => p.nickComprador == loggedUser.Nickname).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener los pedidos: ", e.Message);
+                return null;
+            }
+        }
+
+        public async Task CargarDetallesPedido(Pedido pedido)
+        {
+            try
+            {
+                List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
+                pedido.Productos = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al cargar los detalles del pedido: ", e.Message);
+            }
+        }
+
+        //metodo para obtener la imagen de a partir de un objeto de tipo Pedido, teniendo los id de la lista de productos
+        public ImageSource GetImagenPedido(Pedido pedido)
+        {
+            try
+            {
+                List<ItemCarrito> itemsPedido = dal.GetAll<ItemCarrito>().Result;
+                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
+                List<Producto> productos = dal.GetAll<Producto>().Result;
+                List<Producto> productosPedido = new List<Producto>();
+
+                foreach (int id in pedido.Productos)
+                {
+                    Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
+                    Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
+                    productosPedido.Add(p);
+                }
+
+                return ImageSource.FromUri(new Uri(productosPedido[0].Imagen));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener la imagen del pedido: ", e.Message);
+                return null;
+            }
+        }
+
+        //metodo para obtener el atributo nombre a partir de un entero (id del producto de la lista de productos de un objeto de tipo pedido)
+        public string GetNombreProductoPedido(int idProducto)
+        {
+            try
+            {
+                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
+                List<Producto> productos = dal.GetAll<Producto>().Result;
+                Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == idProducto).FirstOrDefault();
+                Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
+                return p.Nombre;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el nombre del producto del pedido: ", e.Message);
+                return null;
+            }
+        }
+
+        //metodo para obtener el atributo descripción a partir de un entero (id del producto de la lista de productos de un objeto de tipo pedido)
+        public string GetDescripcionProductoPedido(int idProducto)
+        {
+            try
+            {
+                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
+                List<Producto> productos = dal.GetAll<Producto>().Result;
+                Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == idProducto).FirstOrDefault();
+                Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
+                return p.Descripcion;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener la descripción del producto del pedido: ", e.Message);
+                return null;
+            }
+        }
+
+        //metodo para obtener el atributo precio a partir de un entero (id del producto de la lista de productos de un objeto de tipo pedido)
+        public double GetPrecioProductoPedido(int idProducto)
+        {
+            try
+            {
+                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
+                Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == idProducto).FirstOrDefault();
+                return pv.Precio;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener el precio del producto del pedido: ", e.Message);
+                return 0;
+            }
+        }
+
+        //metodo para generar un string random de estos 3: "en preparación", "enviado" o "entregado"
+        public string GenerarEstadoPedido()
+        {
+            Random random = new Random();
+            int num = random.Next(1, 4);
+            switch (num)
+            {
+                case 1:
+                    return "En preparación";
+                case 2:
+                    return "Enviado";
+                case 3:
+                    return "Entregado";
+                default:
+                    return "En preparación";
+            }
+        }
+
     }
 }
