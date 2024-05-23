@@ -39,6 +39,8 @@
                            HorizontalOptions="FillAndExpand" 
                            VerticalOptions="FillAndExpand"
                            x:Name="mail"
+                           TextColor="Black"
+                           PlaceholderColor="Gray"
                     />
 
                     <!-- Input para la contraseña -->
@@ -47,11 +49,14 @@
                            x:Name="pass"
                            IsPassword="True" 
                            HorizontalOptions="FillAndExpand" 
-                           VerticalOptions="FillAndExpand"></Entry>
+                           VerticalOptions="FillAndExpand"
+                           TextColor="Black"
+                           PlaceholderColor="Gray"
+                    />
 
                     <StackLayout Grid.Row="4" Orientation="Horizontal">
                         <CheckBox x:Name="verPass" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" CheckedChanged="VerContraseña_Changed"/>
-                        <Label Text="Mostrar contraseña" HorizontalOptions="Start" VerticalOptions="Center"></Label>
+                        <Label Text="Mostrar contraseña" HorizontalOptions="Start" VerticalOptions="Center" TextColor="DimGray"></Label>
                     </StackLayout>
 
 
@@ -66,7 +71,7 @@
                     <Label Grid.Row="6" HorizontalOptions="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="¿No estás registrado?" />
+                                <Span Text="¿No estás registrado?" TextColor="DimGray" />
                                 <Span Text=" Regístrate" TextColor="Blue" >
                                     <Span.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
