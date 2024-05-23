@@ -20,6 +20,7 @@ namespace SmartTrade.Views
         public Catalogo(List<Producto> productos)
         {
             InitializeComponent();
+            Console.WriteLine("Productos del catálogo: " + productos.Count);
             this.service = STService.Instance;
             this.catalogoProductos = productos;
 
