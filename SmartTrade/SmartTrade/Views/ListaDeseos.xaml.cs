@@ -34,7 +34,7 @@ namespace SmartTrade.Views
         {
             base.OnAppearing();
             UserDialogs.Instance.ShowLoading("Cargando productos...");
-            CargarProductosListaDeseos();
+            _ = CargarProductosListaDeseos();
             UserDialogs.Instance.HideLoading();
         }
 
@@ -43,7 +43,6 @@ namespace SmartTrade.Views
             try
             {
                 List <Producto> lista = await service.getProductosListaDeseos();
-                Console.WriteLine("Conteido lista: ");
                 foreach (Producto producto in lista) Console.WriteLine(producto.Nombre);
                // List<ItemCarrito> carrito = await service.GetCarrito();
                 StackLayout listaProd = this.FindByName<StackLayout>("listaItems");
@@ -92,36 +91,29 @@ namespace SmartTrade.Views
 
             foreach (Producto producto in lista)
             {
-                await crearTarjeta(producto, stackLayout);
+                //await CrearTarjeta(producto, stackLayout);
             }
 
         }
 
-        private async Task crearTarjeta(Producto producto, StackLayout stackLayout)
+        private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
         {
             try
             {
                 List<Producto_vendedor> pvendedores = await service.GetAProductoVendedorByProducto(producto);
 
-               // Label puntos = new Label { Text = producto.Puntos.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
+                List<string> vendedoresDatos = new List<string>();
+                string[] tallas = new string[] { "XS", "S", "M", "L", "XL" };
 
-                List <string> vendedoresDatos = new List<string>();
-                string[] talla = new string[] {"XS", "S", "M", "L","XL" };
-               // Picker picker = (Picker)FindByName("vendedorPicker");
-              
-                foreach (Producto_vendedor pvendedor in pvendedores) 
+                foreach (Producto_vendedor pvendedor in pvendedores)
                 {
                     vendedoresDatos.Add(pvendedor.NicknameVendedor + ": " + pvendedor.Precio + "€");
                 }
-
-                string caracteristicas = "";
-                
 
                 Picker vendedorPicker = new Picker
                 {
                     Title = "Elige vendedor",
                     ItemsSource = vendedoresDatos
-                    
                 };
 
                 vendedorPicker.SelectedIndexChanged += (sender, args) =>
@@ -130,18 +122,19 @@ namespace SmartTrade.Views
                     selected = selected.Split(':')[0].Trim();
                     productoVendedor_seleccionado = pvendedores.Where(pv => pv.NicknameVendedor == selected).First();
                 };
+
                 vendedorPicker.SelectedItem = pvendedores.OrderBy(pv => pv.Precio).First().NicknameVendedor + ": " + pvendedores.OrderBy(pv => pv.Precio).First().Precio + "€";
 
                 Picker tallaPicker = new Picker
                 {
-
                     Title = "Talla",
-                    ItemsSource = talla,
+                    ItemsSource = tallas,
                     IsVisible = false,
-
                 };
-                tallaPicker.SelectedIndex = 0 ;
+
+                tallaPicker.SelectedIndex = 0;
                 if (producto.Categoria == "Ropa") tallaPicker.IsVisible = true;
+
                 ImageButton EliminarDeDeseos = new ImageButton
                 {
                     Source = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png",
@@ -149,13 +142,14 @@ namespace SmartTrade.Views
                     WidthRequest = 25,
                     Aspect = Aspect.AspectFit,
                     BackgroundColor = Color.White,
-                    
                 };
+
                 EliminarDeDeseos.Clicked += async (sender, e) =>
                 {
                     await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
                     await CargarProductosListaDeseos();
                 };
+
                 Button AddAlCarrito = new Button
                 {
                     Text = "Añadir al carrito",
@@ -164,17 +158,16 @@ namespace SmartTrade.Views
                     BackgroundColor = Color.HotPink,
                     CornerRadius = 12
                 };
-                
+
                 AddAlCarrito.Clicked += async (sender, e) =>
                 {
                     if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
-                    if (producto.Categoria == "Ropa") caracteristicas =  ("Talla " + tallaPicker.SelectedItem.ToString()) ;
+                    string caracteristicas = (producto.Categoria == "Ropa") ? "Talla " + tallaPicker.SelectedItem.ToString() : "";
                     ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
                     await service.AgregarItemCarrito(item);
                     await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
                     await CargarProductosListaDeseos();
                 };
-                //                string precioVendedor = (vendedorPicker.SelectedItem != null) ? vendedorPicker.SelectedItem.ToString() : "No seleccionado";
 
                 var productCard = new Frame
                 {
@@ -187,92 +180,91 @@ namespace SmartTrade.Views
                     {
                         Padding = 15,
                         RowDefinitions =
-                        {
-                            new RowDefinition { Height = GridLength.Auto },
-                            new RowDefinition { Height = GridLength.Auto },
-                            new RowDefinition { Height = GridLength.Auto },
-                            new RowDefinition { Height = GridLength.Auto },
-                            new RowDefinition { Height = GridLength.Auto }
-                        },
+                {
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto },
+                    new RowDefinition { Height = GridLength.Auto }
+                },
                         ColumnDefinitions =
-                        {
-                            new ColumnDefinition { Width = GridLength.Auto },
-                            new ColumnDefinition { Width = GridLength.Star },
-                            new ColumnDefinition { Width = GridLength.Auto },
-                            new ColumnDefinition { Width = GridLength.Auto }
-                        }
+                {
+                    new ColumnDefinition { Width = GridLength.Auto },
+                    new ColumnDefinition { Width = GridLength.Star },
+                    new ColumnDefinition { Width = GridLength.Auto },
+                    new ColumnDefinition { Width = GridLength.Auto }
+                }
                     }
                 };
+
                 var grid = (Grid)productCard.Content;
                 grid.Children.Add(
+                    new Image
+                    {
+                        Source = producto.Imagen,
+                        HeightRequest = 80,
+                        WidthRequest = 80,
+                        Aspect = Aspect.AspectFit,
+                        GestureRecognizers =
+                        {
+                    new TapGestureRecognizer
+                    {
+                        Command = new Command(async () =>
+                        {
+                            await Navigation.PushAsync(new ProductPage(producto));
+                        })
+                    }
+                        }
+                    },
+                    0, 0
+                );
 
-                                   EliminarDeDeseos,
-                                    0,0
-                                    );
                 grid.Children.Add(
+                    new Label
+                    {
+                        Text = producto.Nombre,
+                        FontAttributes = FontAttributes.Bold
+                    },
+                    1, 1
+                );
 
-                                   new Label
-                                   {
-                                       Text = producto.Puntos.ToString() ,
-                                       FontAttributes = FontAttributes.Bold,
-                                       FontSize = 16,
-                                       TextColor = Color.Gray
+                grid.Children.Add(
+                    new Label
+                    {
+                        Text = producto.Descripcion,
+                        FontAttributes = FontAttributes.Italic,
+                        VerticalOptions = LayoutOptions.End,
+                        MaxLines = 2,
+                        LineBreakMode = LineBreakMode.TailTruncation
+                    },
+                    1, 2
+                );
 
-                                   },
-                                   2, 0
-                                   );
                 grid.Children.Add(
-                                    new Image
-                                    {
-                                        Source = producto.Imagen,
-                                        HeightRequest = 80,
-                                        WidthRequest = 80,
-                                        Aspect = Aspect.AspectFit,
-                                        GestureRecognizers =
-                                        {
-                                                        new TapGestureRecognizer
-                                                        {
-                                                            Command = new Command(async () =>
-                                                            {
-                                                                await Navigation.PushAsync(new ProductPage(producto));
-                                                            })
-                                                        }
-                                        }
-                                    },
-                                   0 , 1
-                                );
-                grid.Children.Add(
-                                new Label
-                                {
-                                    Text = producto.Nombre,
-                                    FontAttributes = FontAttributes.Bold
-                                },
-                               1, 1
-                            );
-                grid.Children.Add(
-                                new Label
-                                {
-                                    Text = producto.Descripcion,
-                                    FontAttributes = FontAttributes.Italic,
-                                    VerticalOptions = LayoutOptions.End,
-                                    MaxLines = 2,
-                                    LineBreakMode = LineBreakMode.TailTruncation
-                                },
-                               1, 2
-                            );
-                grid.Children.Add(
-                                vendedorPicker,
-                               2, 3
-                            );
-                grid.Children.Add(
-                                tallaPicker,
-                               1, 3
-                            );
-                grid.Children.Add(
-                                AddAlCarrito,
-                               2, 4
-                            );
+                    new Label
+                    {
+                        Text = producto.Puntos.ToString(),
+                        FontAttributes = FontAttributes.Bold,
+                        FontSize = 16,
+                        TextColor = Color.Gray
+                    },
+                    2, 0
+                );
 
+                grid.Children.Add(
+                    vendedorPicker,
+                    2, 3
+                );
+
+                grid.Children.Add(
+                    tallaPicker,
+                    1, 3
+                );
+
+                grid.Children.Add(
+                    AddAlCarrito,
+                    2, 4
+                );
 
                 stackLayout.Children.Add(productCard);
             }
@@ -282,7 +274,6 @@ namespace SmartTrade.Views
             }
         }
 
-        
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Console.WriteLine("Atras");
