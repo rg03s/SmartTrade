@@ -73,7 +73,7 @@ namespace SmartTrade.Views
         {
             var stackLayout = this.FindByName<StackLayout>("listaPedidos");
 
-            foreach (var producto in pedido.Productos)
+            foreach (var producto in pedido.ItemsCarrito)
             {
                 var productCard = new Frame
                 {
@@ -112,15 +112,16 @@ namespace SmartTrade.Views
 
                 stackLayout.Children.Add(productCard);
             }
-
+            
             // Actualizar resumen
             this.FindByName<Label>("span_costeTotal").Text = pedido.Precio_total.ToString("F2") + "€";
-            this.FindByName<Label>("span_estadoPedido").Text = pedido.Estado;
-            this.FindByName<Label>("span_fechaEstimada").Text = pedido.FechaEstimacion.ToString("dd/MM/yyyy");
+            string estado = service.GenerarEstadoPedido();
+            this.FindByName<Label>("span_estadoPedido").Text = estado;
+            this.FindByName<Label>("span_fechaEstimada").Text = pedido.Fecha.AddDays(5).ToString("dd/MM/yyyy");
 
             // Mostrar u ocultar botón de devolver según el estado
             var btnDevolverPedido = this.FindByName<Button>("btnDevolverPedido");
-            if (pedido.Estado == "Entregado")
+            if (estado == "Entregado")
             {
                 btnDevolverPedido.IsVisible = true;
             }
@@ -129,7 +130,7 @@ namespace SmartTrade.Views
                 btnDevolverPedido.IsVisible = false;
             }
         }
-
+        
         private async void BtnCancelarPedido_click(object sender, EventArgs e)
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
@@ -154,7 +155,7 @@ namespace SmartTrade.Views
                 }
             }
         }
-
+        
         private async void BtnDevolverPedido_click(object sender, EventArgs e)
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig

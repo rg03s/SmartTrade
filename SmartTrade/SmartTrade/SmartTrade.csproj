@@ -38,7 +38,6 @@
     <EmbeddedResource Update="Views\MisPedidos.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Perfil.xaml">
 	  <EmbeddedResource Update="Views\GuardarMasTarde.xaml">
 		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>

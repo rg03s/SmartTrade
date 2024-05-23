@@ -523,7 +523,7 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<Pedido> pedidos = await dal.GetAll<Pedido>();
-                return pedidos.Where(p => p.nickComprador == loggedUser.Nickname).ToList();
+                return pedidos.Where(p => p.NickComprador == loggedUser.Nickname).ToList();
             }
             catch (Exception e)
             {
@@ -537,7 +537,7 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
-                pedido.Productos = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
+                pedido.ItemsCarrito = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
             }
             catch (Exception e)
             {
@@ -555,7 +555,7 @@ namespace SmartTrade.Logica.Services
                 List<Producto> productos = dal.GetAll<Producto>().Result;
                 List<Producto> productosPedido = new List<Producto>();
 
-                foreach (int id in pedido.Productos)
+                foreach (int id in pedido.ItemsCarrito)
                 {
                     Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
                     Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
@@ -638,6 +638,32 @@ namespace SmartTrade.Logica.Services
                     return "Entregado";
                 default:
                     return "En preparación";
+            }
+        }
+
+        //metodo para cancelar un pedido
+        public async Task CancelarPedido(Pedido pedido)
+        {
+            try
+            {
+                await dal.Delete<Pedido>(pedido);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al cancelar el pedido: ", e.Message);
+            }
+        }
+
+        //metodo para devolver un pedido
+        public async Task DevolverPedido(Pedido pedido)
+        {
+            try
+            {
+                await dal.Update<Pedido>(pedido);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al devolver el pedido: ", e.Message);
             }
         }
 

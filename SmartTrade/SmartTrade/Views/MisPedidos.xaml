@@ -56,7 +56,7 @@
                                 <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_estadoPedido" />
                                 <Label Text="Fecha estimada: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
                                 <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_fechaEstimada" />
-                                <Button Text="Cancelar pedido" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnFinalizarCompra_click" CornerRadius="10" Margin="0,20,0,0"/>
+                                <Button Text="Cancelar pedido" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnCancelarPedido_click" CornerRadius="10" Margin="0,20,0,0"/>
                                 <Button Text="Devolver pedido" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnDevolverPedido_click" CornerRadius="10" Margin="0,20,0,0" IsVisible="False" x:Name="btnDevolverPedido"/>
                             </StackLayout>
                         </Frame>

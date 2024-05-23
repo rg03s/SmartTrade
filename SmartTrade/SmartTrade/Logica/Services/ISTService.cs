@@ -43,5 +43,7 @@ namespace SmartTrade.Logica.Services
         string GetDescripcionProductoPedido(int idProducto);
         double GetPrecioProductoPedido(int idProducto);
        Task<Producto_vendedor> GetProductoVendedorById(int id);
+       Task CancelarPedido(Pedido pedido);
+       Task DevolverPedido(Pedido pedido);
     }
 }
