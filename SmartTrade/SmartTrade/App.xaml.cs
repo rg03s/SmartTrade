@@ -18,14 +18,7 @@ namespace SmartTrade
         public App()
         {
             InitializeComponent();
-            MostrarCatalogo();
-        }
-
-        private async void MostrarCatalogo()
-        {
-            STService service = STService.Instance;
-            List<Producto> productos = await service.GetAllProductos();
-            MainPage = new NavigationPage(new Catalogo(productos));
+            MainPage = new NavigationPage(new Catalogo());
         }
 
         protected override void OnStart()
