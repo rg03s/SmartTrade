@@ -23,55 +23,86 @@
                        Margin="15,10,0,0"
                        FontAttributes="Bold"
                        FontFamily="Comfortaa"/>
-                
-                <Button HorizontalOptions="EndAndExpand"
-                    Text="&#xf004;" 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    FontSize="21"
-                    TextColor="Black"
-                    BackgroundColor="Transparent"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Margin="0,10,-10,0"
-                    Clicked="BtnDeseos_click"
-                />
 
-                <Button HorizontalOptions="End"
-                    Text="&#xf0f3;" 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    FontSize="21"
-                    TextColor="Black"
-                    BackgroundColor="Transparent"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Margin="0,10,-10,0"
-                    Clicked="BtnAlerta_click">
-                    
-                </Button>
-                <Button HorizontalOptions="End"
-                    Text="&#xf07a;" 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    FontSize="21"
-                    TextColor="Black"
-                    BackgroundColor="Transparent"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Margin="0,10,-10,0"
-                    Clicked="BtnCarrito_click"
-                />
-                
-                <Button HorizontalOptions="End"
-                    Text="&#xf007;" 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    FontSize="21"
-                    TextColor="Black"
-                    Margin="0,10,0,0"
-                    BackgroundColor="Transparent"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Clicked="BtnPerfil_click"
-                />
+                <StackLayout x:Name="userLoggedNavigation" IsVisible="false" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                    <Button
+                        Text="&#xf004;" 
+                        FontFamily="{StaticResource FontAwesomeSolid}"
+                        FontSize="21"
+                        TextColor="Black"
+                        BackgroundColor="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Margin="0,10,-10,0"
+                        Clicked="BtnDeseos_click"
+                    />
+
+                    <Button
+                        Text="&#xf0f3;" 
+                        FontFamily="{StaticResource FontAwesomeSolid}"
+                        FontSize="21"
+                        TextColor="Black"
+                        BackgroundColor="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Margin="0,10,-10,0"
+                        Clicked="BtnAlerta_click"
+                    />
+
+                    <Button
+                        Text="&#xf07a;" 
+                        FontFamily="{StaticResource FontAwesomeSolid}"
+                        FontSize="21"
+                        TextColor="Black"
+                        BackgroundColor="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Margin="0,10,-10,0"
+                        Clicked="BtnCarrito_click"
+                    />
+
+                    <Button 
+                        Text="&#xf007;" 
+                        FontFamily="{StaticResource FontAwesomeSolid}"
+                        FontSize="21"
+                        TextColor="Black"
+                        Margin="0,10,0,0"
+                        BackgroundColor="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Clicked="BtnPerfil_click"
+                    />
+                </StackLayout>
+
+                <StackLayout x:Name="userNotLoggedNavigation" IsVisible="true" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                    <Button 
+                        Text="&#xf007;" 
+                        FontFamily="{StaticResource FontAwesomeSolid}"
+                        FontSize="18"
+                        TextColor="Black"
+                        Margin="0,10,-15,0"
+                        BackgroundColor="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Clicked="BtnLogin_click"
+                    />
+                    <Button 
+                        Text="| Iniciar sesión"
+                        VerticalOptions="Center"
+                        FontSize="13"
+                        TextColor="RoyalBlue"
+                        Margin="0,10,15,0"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        Clicked="BtnLogin_click"
+                        />
+
+                </StackLayout>
+
             </StackLayout>
+
             <StackLayout Grid.Row="1" Orientation="Horizontal" Margin="0,0,15,0">
                 <SearchBar 
                     x:Name="searchBar"
