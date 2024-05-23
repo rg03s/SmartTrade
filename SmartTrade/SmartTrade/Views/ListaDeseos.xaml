@@ -50,62 +50,6 @@
             <ScrollView Grid.Row="2" Padding="20" Orientation="Vertical">
                 <StackLayout Orientation="Vertical">
                     <StackLayout x:Name="listaItems">
-                         <!-- Tarjeta de producto -->
-                        <Frame CornerRadius="10" Margin="0,0,0,10" BackgroundColor="White">
-                            <StackLayout Orientation="Vertical">
-                                <StackLayout Orientation="Horizontal">
-                                    <AbsoluteLayout>
-                                        <Image Source="camisetaVCF.jpg" HeightRequest="150" />
-                                        <Button
-                                        Text="&#xf004;"
-                                        FontFamily="{StaticResource FontAwesomeSolid}"
-                                        FontSize="19"
-                                        TextColor="Red"
-                                        BackgroundColor="Transparent"
-                                        WidthRequest="45"
-                                        HeightRequest="40"
-                                        AbsoluteLayout.LayoutBounds="0,0,AutoSize,AutoSize"
-                                        AbsoluteLayout.LayoutFlags="PositionProportional"
-                                        />
-                                    </AbsoluteLayout>
-                                    <StackLayout Orientation="Vertical" Margin="10,0,0,0">
-                                        <Label Text="Nombre del producto" FontSize="20" FontAttributes="Bold" TextColor="Black" />
-                                        <Label Text="Descripción del producto" FontSize="Body" TextColor="Black" />
-                                        <Label>
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="Precio: " FontSize="Body" TextColor="Black" />
-                                                    <Span Text="100.00€" FontSize="Body" TextColor="Black" FontAttributes="Bold" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label>
-                                            <Label.FormattedText>
-                                                <!-- Icono fingerprint -->
-                                                <FormattedString>
-                                                    <Span Text="&#xf577;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="Body" TextColor="Green" />
-                                                    <Span Text=" 20%" FontSize="Body" TextColor="Green" />
-                                                    <Span Text=" + 20 puntos" FontSize="12"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </StackLayout>
-                                </StackLayout>
-                                <StackLayout Orientation="Horizontal" Margin="0,10,0,0">
-                                    <Picker Title="TALLA" SelectedIndex="0" HeightRequest="40" WidthRequest="130">
-                                        <Picker.ItemsSource>
-                                            <x:String>XS</x:String>
-                                            <x:String>S</x:String>
-                                            <x:String>M</x:String>
-                                            <x:String>L</x:String>
-                                            <x:String>XL</x:String>
-                                        </Picker.ItemsSource>
-                                    </Picker>
-                                    <Button Text="Añadir al carrito" HorizontalOptions="EndAndExpand" BackgroundColor="#2961AF" TextColor="White" CornerRadius="10" />
-                                </StackLayout>
-                            </StackLayout>
-                        </Frame>
-
                         <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
                     </StackLayout>
                 </StackLayout>

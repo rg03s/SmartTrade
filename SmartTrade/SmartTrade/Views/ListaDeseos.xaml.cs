@@ -91,189 +91,143 @@ namespace SmartTrade.Views
 
             foreach (Producto producto in lista)
             {
-                //await CrearTarjeta(producto, stackLayout);
+                await CrearTarjeta(producto, stackLayout);
             }
 
         }
 
-        private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
+private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
+{
+    try
+    {
+        var frame = new Frame
         {
-            try
+            CornerRadius = 10,
+            Margin = new Thickness(0, 0, 0, 10),
+            BackgroundColor = Color.White,
+            Content = new StackLayout
             {
-                List<Producto_vendedor> pvendedores = await service.GetAProductoVendedorByProducto(producto);
-
-                List<string> vendedoresDatos = new List<string>();
-                string[] tallas = new string[] { "XS", "S", "M", "L", "XL" };
-
-                foreach (Producto_vendedor pvendedor in pvendedores)
+                Orientation = StackOrientation.Vertical,
+                Children =
                 {
-                    vendedoresDatos.Add(pvendedor.NicknameVendedor + ": " + pvendedor.Precio + "€");
-                }
-
-                Picker vendedorPicker = new Picker
-                {
-                    Title = "Elige vendedor",
-                    ItemsSource = vendedoresDatos
-                };
-
-                vendedorPicker.SelectedIndexChanged += (sender, args) =>
-                {
-                    string selected = vendedorPicker.Items[vendedorPicker.SelectedIndex];
-                    selected = selected.Split(':')[0].Trim();
-                    productoVendedor_seleccionado = pvendedores.Where(pv => pv.NicknameVendedor == selected).First();
-                };
-
-                vendedorPicker.SelectedItem = pvendedores.OrderBy(pv => pv.Precio).First().NicknameVendedor + ": " + pvendedores.OrderBy(pv => pv.Precio).First().Precio + "€";
-
-                Picker tallaPicker = new Picker
-                {
-                    Title = "Talla",
-                    ItemsSource = tallas,
-                    IsVisible = false,
-                };
-
-                tallaPicker.SelectedIndex = 0;
-                if (producto.Categoria == "Ropa") tallaPicker.IsVisible = true;
-
-                ImageButton EliminarDeDeseos = new ImageButton
-                {
-                    Source = "https://i.ibb.co/Pzq5CQT/corazon-lleno.png",
-                    HeightRequest = 25,
-                    WidthRequest = 25,
-                    Aspect = Aspect.AspectFit,
-                    BackgroundColor = Color.White,
-                };
-
-                EliminarDeDeseos.Clicked += async (sender, e) =>
-                {
-                    await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
-                    await CargarProductosListaDeseos();
-                };
-
-                Button AddAlCarrito = new Button
-                {
-                    Text = "Añadir al carrito",
-                    FontAttributes = FontAttributes.Italic,
-                    VerticalOptions = LayoutOptions.End,
-                    BackgroundColor = Color.HotPink,
-                    CornerRadius = 12
-                };
-
-                AddAlCarrito.Clicked += async (sender, e) =>
-                {
-                    if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
-                    string caracteristicas = (producto.Categoria == "Ropa") ? "Talla " + tallaPicker.SelectedItem.ToString() : "";
-                    ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), caracteristicas);
-                    await service.AgregarItemCarrito(item);
-                    await service.EliminarProductoListaDeseos(productoVendedor_seleccionado);
-                    await CargarProductosListaDeseos();
-                };
-
-                var productCard = new Frame
-                {
-                    BackgroundColor = Color.White,
-                    CornerRadius = 10,
-                    Margin = new Thickness(10),
-                    Padding = new Thickness(10),
-                    HasShadow = true,
-                    Content = new Grid
+                    new StackLayout
                     {
-                        Padding = 15,
-                        RowDefinitions =
-                {
-                    new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = GridLength.Auto },
-                    new RowDefinition { Height = GridLength.Auto }
-                },
-                        ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = GridLength.Auto },
-                    new ColumnDefinition { Width = GridLength.Star },
-                    new ColumnDefinition { Width = GridLength.Auto },
-                    new ColumnDefinition { Width = GridLength.Auto }
-                }
-                    }
-                };
-
-                var grid = (Grid)productCard.Content;
-                grid.Children.Add(
-                    new Image
-                    {
-                        Source = producto.Imagen,
-                        HeightRequest = 80,
-                        WidthRequest = 80,
-                        Aspect = Aspect.AspectFit,
-                        GestureRecognizers =
+                        Orientation = StackOrientation.Horizontal,
+                        Children =
                         {
-                    new TapGestureRecognizer
-                    {
-                        Command = new Command(async () =>
-                        {
-                            await Navigation.PushAsync(new ProductPage(producto));
-                        })
-                    }
+                            new AbsoluteLayout
+                            {
+                                Children =
+                                {
+                                    new Image
+                                    {
+                                        Source = producto.Imagen,
+                                        HeightRequest = 150
+                                    },
+                                    new Button
+                                    {
+                                        Text = "&#xf004;",
+                                        FontFamily = Device.RuntimePlatform == Device.iOS ? "FontAwesome" : "FontAwesomeSolid",
+                                        FontSize = 19,
+                                        TextColor = Color.Red,
+                                        BackgroundColor = Color.Transparent,
+                                        WidthRequest = 45,
+                                        HeightRequest = 40,
+                                    }
+                                },
+                            },
+                            new StackLayout
+                            {
+                                Orientation = StackOrientation.Vertical,
+                                Margin = new Thickness(10, 0, 0, 0),
+                                Children =
+                                {
+                                    new Label { Text = producto.Nombre, FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = Color.Black },
+                                    new Label { Text = producto.Descripcion.Length > 50 ? producto.Descripcion.Substring(0, 50) + "..." : producto.Descripcion, FontSize = 16, TextColor = Color.Black },
+                                    new Label {
+                                        FormattedText = new FormattedString
+                                        {
+                                            Spans =
+                                            {
+                                                new Span { Text = "Vendedor: ", FontSize = 16, TextColor = Color.Black },
+                                                new Span { Text = producto.Producto_Vendedor.First().NicknameVendedor, FontSize = 16, TextColor = Color.RoyalBlue, FontAttributes = FontAttributes.Bold}
+                                            }
+                                        }
+                                    },
+                                    new Label
+                                    {
+                                        FormattedText = new FormattedString
+                                        {
+                                            Spans =
+                                            {
+                                                new Span { Text = "Precio: ", FontSize = 16, TextColor = Color.Black },
+                                                new Span { Text = producto.Producto_Vendedor.First().Precio.ToString() + "€", FontSize = 16, TextColor = Color.Black, FontAttributes = FontAttributes.Bold }
+                                            }
+                                        }
+                                    },
+                                    new StackLayout
+                                    {
+                                        Orientation = StackOrientation.Horizontal,
+                                        Children =
+                                        {
+                                            new Image
+                                            {
+                                                Source = new UriImageSource { Uri = new Uri("https://i.ibb.co/NZ99Tp4/Huella-Eco.png") },
+                                                Aspect = Aspect.AspectFill,
+                                                HeightRequest = 13
+                                            },
+                                            new Label
+                                            {
+                                                FormattedText = new FormattedString
+                                                {
+                                                    Spans =
+                                                    {
+                                                        new Span { Text = producto.Huella_eco, FontSize = 16, TextColor = Color.Green },
+                                                        new Span { Text = " +" + producto.Puntos + " puntos", FontSize = 12 }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
-                    0, 0
-                );
-
-                grid.Children.Add(
-                    new Label
+                    new StackLayout
                     {
-                        Text = producto.Nombre,
-                        FontAttributes = FontAttributes.Bold
-                    },
-                    1, 1
-                );
-
-                grid.Children.Add(
-                    new Label
-                    {
-                        Text = producto.Descripcion,
-                        FontAttributes = FontAttributes.Italic,
-                        VerticalOptions = LayoutOptions.End,
-                        MaxLines = 2,
-                        LineBreakMode = LineBreakMode.TailTruncation
-                    },
-                    1, 2
-                );
-
-                grid.Children.Add(
-                    new Label
-                    {
-                        Text = producto.Puntos.ToString(),
-                        FontAttributes = FontAttributes.Bold,
-                        FontSize = 16,
-                        TextColor = Color.Gray
-                    },
-                    2, 0
-                );
-
-                grid.Children.Add(
-                    vendedorPicker,
-                    2, 3
-                );
-
-                grid.Children.Add(
-                    tallaPicker,
-                    1, 3
-                );
-
-                grid.Children.Add(
-                    AddAlCarrito,
-                    2, 4
-                );
-
-                stackLayout.Children.Add(productCard);
+                        Orientation = StackOrientation.Horizontal,
+                        Margin = new Thickness(0, 10, 0, 0),
+                        Children =
+                        {
+                            new Picker
+                            {
+                                Title = "Talla",
+                                SelectedIndex = 0,
+                                HeightRequest = 40,
+                                WidthRequest = 130,
+                                ItemsSource = new List<string> { "XS", "S", "M", "L", "XL" }
+                            },
+                            new Button
+                            {
+                                Text = "Añadir al carrito",
+                                HorizontalOptions = LayoutOptions.EndAndExpand,
+                                BackgroundColor = Color.FromHex("#2961AF"),
+                                TextColor = Color.White,
+                                CornerRadius = 10
+                            }
+                        }
+                    }
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error al obtener el producto: {e.Message}");
-            }
-        }
+        };
 
+        stackLayout.Children.Add(frame);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Error al crear la tarjeta: {e.Message}");
+    }
+}
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Console.WriteLine("Atras");
