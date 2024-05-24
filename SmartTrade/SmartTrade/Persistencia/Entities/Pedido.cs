@@ -25,5 +25,7 @@ namespace SmartTrade.Entities
         public int Num_tarjeta { get; set; }
         [Column ("puntos")]
         public int Puntos_obtenidos { get; set; }
+        [Column("estado")]
+        public int Estado { get; set; }
     }
 }
