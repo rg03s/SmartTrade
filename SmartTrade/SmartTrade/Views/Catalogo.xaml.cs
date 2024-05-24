@@ -208,18 +208,17 @@ namespace SmartTrade.Views
                                 Orientation = StackOrientation.Horizontal,
                                 Children =
                                 {
-
-                                    new Label
-                                    {
-                                        Text = producto.Huella_eco,
-                                        FontAttributes = FontAttributes.Bold,
-                                        TextColor = Color.Green
-                                    },
                                     new Image
                                     {
                                         Source = new UriImageSource { Uri = new Uri("https://i.ibb.co/NZ99Tp4/Huella-Eco.png") },
                                         Aspect = Aspect.AspectFill,
                                         HeightRequest = 15
+                                    },
+                                    new Label
+                                    {
+                                        Text = producto.Huella_eco,
+                                        FontAttributes = FontAttributes.Bold,
+                                        TextColor = Color.Green
                                     },
                                     new Label
                                     {
