@@ -116,8 +116,11 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
             SelectedIndex = 0,
             HeightRequest = 40,
             WidthRequest = 130,
-            ItemsSource = new List<string> { "XS", "S", "M", "L", "XL" }
+            ItemsSource = new List<string> { "XS", "S", "M", "L", "XL" },
+            IsVisible = producto.Categoria == "Ropa",
         };
+
+        tallaPicker.SelectedIndex = 0;
 
         Button btnEliminarFav = new Button
         {
@@ -133,7 +136,7 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
         btnCarrito.Clicked += async (sender, e) =>
         {
             if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
-            if (producto.Categoria == "Ropa") caracteristicas = ("Talla " + tallaPicker.SelectedItem.ToString());
+            if (producto.Categoria == "Ropa") { caracteristicas = ("Talla " + tallaPicker.SelectedItem.ToString()); }
             ItemCarrito item = new ItemCarrito(producto.Producto_Vendedor.First().Id, 1, service.GetUsuarioLogueado(), caracteristicas);
             await service.AgregarItemCarrito(item);
             await service.EliminarProductoListaDeseos(producto.Producto_Vendedor.First());
