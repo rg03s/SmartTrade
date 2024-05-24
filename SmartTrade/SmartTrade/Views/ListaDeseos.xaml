@@ -50,8 +50,6 @@
             <ScrollView Grid.Row="2" Padding="20" Orientation="Vertical">
                 <StackLayout Orientation="Vertical">
                     <StackLayout x:Name="listaItems">
-
-
                         <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
                     </StackLayout>
                 </StackLayout>
