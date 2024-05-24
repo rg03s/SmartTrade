@@ -716,7 +716,7 @@ namespace SmartTrade.Logica.Services
             catch (Exception e)
             {
                 Console.WriteLine("Error al obtener los productos del pedido: ", e.Message);
-                return null;
+                return new List<Producto>();
             }
         }
 
