@@ -22,7 +22,6 @@ namespace SmartTrade.Views
     {
 
         STService service;
-        public Producto_vendedor productoVendedor_seleccionado;
 
         public ListaDeseos()
         {
@@ -100,6 +99,47 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
 {
     try
     {
+        string caracteristicas = "";
+
+        Button btnCarrito = new Button
+        {
+            Text = "Añadir al carrito",
+            HorizontalOptions = LayoutOptions.EndAndExpand,
+            BackgroundColor = Color.FromHex("#2961AF"),
+            TextColor = Color.White,
+            CornerRadius = 10
+        };
+
+        Picker tallaPicker = new Picker
+        {
+            Title = "Talla",
+            SelectedIndex = 0,
+            HeightRequest = 40,
+            WidthRequest = 130,
+            ItemsSource = new List<string> { "XS", "S", "M", "L", "XL" }
+        };
+
+        Button btnEliminarFav = new Button
+        {
+            Text = "&#xf004;",
+            FontFamily = Device.RuntimePlatform == Device.iOS ? "FontAwesome" : "FontAwesomeSolid",
+            FontSize = 19,
+            TextColor = Color.Red,
+            BackgroundColor = Color.Transparent,
+            WidthRequest = 45,
+            HeightRequest = 40,
+        };
+
+        btnCarrito.Clicked += async (sender, e) =>
+        {
+            if (await service.ProductoEnGuardarMasTarde(producto)) await service.EliminarProductoGuardarMasTarde(producto);
+            if (producto.Categoria == "Ropa") caracteristicas = ("Talla " + tallaPicker.SelectedItem.ToString());
+            ItemCarrito item = new ItemCarrito(producto.Producto_Vendedor.First().Id, 1, service.GetUsuarioLogueado(), caracteristicas);
+            await service.AgregarItemCarrito(item);
+            await service.EliminarProductoListaDeseos(producto.Producto_Vendedor.First());
+            await CargarProductosListaDeseos();
+        };
+
         var frame = new Frame
         {
             CornerRadius = 10,
@@ -124,16 +164,7 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
                                         Source = producto.Imagen,
                                         HeightRequest = 150
                                     },
-                                    new Button
-                                    {
-                                        Text = "&#xf004;",
-                                        FontFamily = Device.RuntimePlatform == Device.iOS ? "FontAwesome" : "FontAwesomeSolid",
-                                        FontSize = 19,
-                                        TextColor = Color.Red,
-                                        BackgroundColor = Color.Transparent,
-                                        WidthRequest = 45,
-                                        HeightRequest = 40,
-                                    }
+                                    btnEliminarFav
                                 },
                             },
                             new StackLayout
@@ -199,28 +230,13 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
                         Margin = new Thickness(0, 10, 0, 0),
                         Children =
                         {
-                            new Picker
-                            {
-                                Title = "Talla",
-                                SelectedIndex = 0,
-                                HeightRequest = 40,
-                                WidthRequest = 130,
-                                ItemsSource = new List<string> { "XS", "S", "M", "L", "XL" }
-                            },
-                            new Button
-                            {
-                                Text = "Añadir al carrito",
-                                HorizontalOptions = LayoutOptions.EndAndExpand,
-                                BackgroundColor = Color.FromHex("#2961AF"),
-                                TextColor = Color.White,
-                                CornerRadius = 10
-                            }
+                            tallaPicker,
+                            btnCarrito
                         }
                     }
                 }
             }
         };
-
         stackLayout.Children.Add(frame);
     }
     catch (Exception e)
