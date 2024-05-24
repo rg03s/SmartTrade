@@ -26,6 +26,6 @@ namespace SmartTrade.Entities
         [Column ("puntos")]
         public int Puntos_obtenidos { get; set; }
         [Column("estado")]
-        public int Estado { get; set; }
+        public string Estado { get; set; }
     }
 }

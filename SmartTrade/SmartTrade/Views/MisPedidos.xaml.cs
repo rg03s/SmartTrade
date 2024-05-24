@@ -115,7 +115,8 @@ namespace SmartTrade.Views
             
             // Actualizar resumen
             this.FindByName<Label>("span_costeTotal").Text = pedido.Precio_total.ToString("F2") + "€";
-            string estado = service.GenerarEstadoPedido();
+            service.ActualizarEstadoPedido(pedido);
+            string estado = pedido.Estado;
             this.FindByName<Label>("span_estadoPedido").Text = estado;
             this.FindByName<Label>("span_fechaEstimada").Text = pedido.Fecha.AddDays(5).ToString("dd/MM/yyyy");
 

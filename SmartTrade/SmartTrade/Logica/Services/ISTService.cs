@@ -45,5 +45,6 @@ namespace SmartTrade.Logica.Services
        Task<Producto_vendedor> GetProductoVendedorById(int id);
        Task CancelarPedido(Pedido pedido);
        Task DevolverPedido(Pedido pedido);
+       void ActualizarEstadoPedido(Pedido pedido);
     }
 }

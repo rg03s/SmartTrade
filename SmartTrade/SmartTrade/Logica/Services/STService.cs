@@ -626,23 +626,32 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        //metodo para generar un string random de estos 3: "en preparación", "enviado" o "entregado"
-        public string GenerarEstadoPedido()
+        //metodo para para establecer el estado 
+        public void ActualizarEstadoPedido(Pedido pedido)
         {
-            Random random = new Random();
-            int num = random.Next(1, 4);
-            switch (num)
+            try
             {
-                case 1:
-                    return "En preparación";
-                case 2:
-                    return "Enviado";
-                case 3:
-                    return "Entregado";
-                default:
-                    return "En preparación";
+                pedido.Estado = "En preparación";
+                DateTime fechaActual = DateTime.Now;
+                DateTime fechaPedido = pedido.Fecha;
+                TimeSpan diferencia = fechaActual - fechaPedido;
+                if (diferencia.Days == 1)
+                {
+                    pedido.Estado = "Enviado";
+                    dal.Update<Pedido>(pedido);
+                }
+                else if (diferencia.Days == 5)
+                {
+                    pedido.Estado = "Entregado";
+                    dal.Update<Pedido>(pedido);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al actualizar el estado del pedido: ", e.Message);
             }
         }
+        
 
         //metodo para cancelar un pedido
         public async Task CancelarPedido(Pedido pedido)
