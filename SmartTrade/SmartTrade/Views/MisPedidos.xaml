@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartTrade.Views.MisPedidos"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Barra de navegación -->
+            <StackLayout Orientation="Horizontal" Margin="10,10,5,0" Grid.Row="0">
+                <Button 
+                    Text="&#xf053;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnAtras_click"
+                />
+                <Button HorizontalOptions="EndAndExpand"
+                    Text="&#xf007;" 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    FontSize="21"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Clicked="BtnPerfil_click"
+                />
+            </StackLayout>
+
+            <!-- Título de la página -->
+            <StackLayout Grid.Row="1" Margin="20,20,0,0">
+                <Label Text="Mis pedidos" FontSize="Title" TextColor="Black" />
+            </StackLayout>
+
+            <!-- Contenido principal -->
+            <ScrollView Grid.Row="2" Padding="20" Orientation="Vertical">
+                <StackLayout Orientation="Vertical">
+                    <StackLayout x:Name="listaPedidos">
+                        <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
+                    </StackLayout>
+                    <!-- Resumen del pedido y Botón de canecelar pedido -->
+                    <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_Resumen">
+                        <Frame BorderColor="LightGray" BackgroundColor="#f0f0f0" CornerRadius="10">
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_costeTotal" />
+                                <Label Text="Estado del pedido: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_estadoPedido" />
+                                <Label Text="Fecha estimada: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="" FontSize="Medium" FontAttributes="Bold" TextColor="Black" x:Name="span_fechaEstimada" />
+                                <Button Text="Cancelar pedido" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnCancelarPedido_click" CornerRadius="10" Margin="0,20,0,0"/>
+                                <Button Text="Devolver pedido" BorderColor="LightGray" BorderWidth="1" BackgroundColor="#f0f0f0" TextColor="Black" FontAttributes="Bold" Clicked="BtnDevolverPedido_click" CornerRadius="10" Margin="0,20,0,0" IsVisible="False" x:Name="btnDevolverPedido"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+
