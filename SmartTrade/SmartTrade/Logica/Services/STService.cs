@@ -560,6 +560,8 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
+                //guardar en una List<ItemCarrito> los productos del pedido
+                //List<ItemCarrito> itemsPedido = pedido.ItemsCarrito.Select(i => dal.GetById<ItemCarrito>(i).Result).ToList();
                 pedido.ItemsCarrito = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
             }
             catch (Exception e)
@@ -692,6 +694,29 @@ namespace SmartTrade.Logica.Services
             catch (Exception e)
             {
                 throw new ServiceException("Error al devolver el pedido", e);
+            }
+        }
+
+        //metodo para obtener la lista de productos de un pedido
+        public async Task<List<Producto>> GetProductosPedido(Pedido pedido)
+        {
+            try
+            {
+                List<Producto> productos = new List<Producto>();
+                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+                List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
+                foreach (int id in pedido.ItemsCarrito)
+                {
+                    Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    productos.Add(p);
+                }
+                return productos;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener los productos del pedido: ", e.Message);
+                return null;
             }
         }
 
