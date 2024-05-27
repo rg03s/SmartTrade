@@ -238,7 +238,7 @@ namespace SmartTrade.Views
                                 Children =
                                 {
                                     new Label { Text = producto.Nombre, FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
-                                    new Label { Text = producto.Descripcion.Substring(0, 50) + "...", TextColor = Color.Gray },
+                                    new Label { Text = producto.Descripcion.Length > 50 ? producto.Descripcion.Substring(0, 50) + "..." : producto.Descripcion, TextColor = Color.Gray },
                                     new Label { Text = caracteristicas, TextColor = Color.Gray } ,
                                     quantityButtonsLayout,
                                     new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black },
