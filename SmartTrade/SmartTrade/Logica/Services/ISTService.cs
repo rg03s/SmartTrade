@@ -9,27 +9,17 @@ namespace SmartTrade.Logica.Services
 {
     public partial interface ISTService
     {
-        /*
-        void Commit();
-        void AddUser(Usuario u);
-
-        void GetUsuarios();
-        */
         Task<bool> Login(string nickname, string password);
-
         Usuario GetUsuarioLogueado();
         Task<List<Producto>> GetProductosPorCategoria(string categoria);
         Task<List<ItemCarrito>> GetCarrito();
-        Producto GetProductoById(string idProducto);
         Task<Producto> GetProductoByIdProductoVendedor(int idProductoVendedor);
-       // Producto_vendedor GetProductoVendedorById(int idProductoVendedor);
         Task<List<Producto>> GetAllProductos();
         Task<bool> ActualizarItemCarrito(ItemCarrito itemCarrito);
         Task<bool> EliminarItemCarrito(ItemCarrito itemCarrito);
         string GetLoggedNickname();
         bool IsVendedor();
         Task<List<Producto>> GetProductosDeVendedor(string nickname);
-
         Task<bool> AgregarItemCarrito(ItemCarrito itemCarrito);
         Task<List<Producto>> getProductosListaDeseos();
         Task EliminarProductoListaDeseos(Producto_vendedor pv);
@@ -42,9 +32,9 @@ namespace SmartTrade.Logica.Services
         string GetNombreProductoPedido(int idProducto);
         string GetDescripcionProductoPedido(int idProducto);
         double GetPrecioProductoPedido(int idProducto);
-       Task<Producto_vendedor> GetProductoVendedorById(int id);
-       Task CancelarPedido(Pedido pedido);
-       Task DevolverPedido(Pedido pedido);
-       void ActualizarEstadoPedido(Pedido pedido);
+        Task<Producto_vendedor> GetProductoVendedorById(int id);
+        Task CancelarPedido(Pedido pedido);
+        Task DevolverPedido(Pedido pedido);
+        void ActualizarEstadoPedido(Pedido pedido);
     }
 }
