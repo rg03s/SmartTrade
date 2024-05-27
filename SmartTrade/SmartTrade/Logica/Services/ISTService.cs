@@ -31,7 +31,6 @@ namespace SmartTrade.Logica.Services
         ImageSource GetImagenPedido(Pedido pedido);
         string GetNombreProductoPedido(int idProducto);
         string GetDescripcionProductoPedido(int idProducto);
-        double GetPrecioProductoPedido(int idProducto);
        Task<Producto_vendedor> GetProductoVendedorById(int id);
        Task CancelarPedido(Pedido pedido);
        Task DevolverPedido(Pedido pedido);

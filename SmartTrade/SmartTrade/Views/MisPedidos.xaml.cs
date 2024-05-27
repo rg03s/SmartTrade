@@ -50,7 +50,9 @@ namespace SmartTrade.Views
         {
             try
             {
+                Console.WriteLine("Cargando productos del pedido...");
                 productos = await service.GetProductosPedido(pedido);
+                Console.WriteLine($"Productos del pedido: {productos.Count}");
                 StackLayout stackLayout = this.FindByName<StackLayout>("listaPedidos");
                 StackLayout stack_resumen = this.FindByName<StackLayout>("stack_resumen");
 
@@ -58,7 +60,7 @@ namespace SmartTrade.Views
 
                 if (productos.Count == 0)
                 {
-                    stack_Resumen.IsVisible = false;
+                    stack_resumen.IsVisible = false;
 
                     StackLayout stack = new StackLayout
                     {
@@ -85,10 +87,15 @@ namespace SmartTrade.Views
                     MostrarDetallesPedido(pedido);
                 }
             }
+            catch (ServiceException err)
+            {
+                UserDialogs.Instance.Alert("Error al cargar los productos del pedido");
+            }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "No se pudo cargar los productos del pedido", "OK");
                 Console.WriteLine($"Error al cargar los productos del pedido: {ex.Message}");
+                //await DisplayAlert("Error", "No se pudo cargar los productos del pedido", "OK");
+                //Console.WriteLine($"Error al cargar los productos del pedido: {ex.Message}");
             }
             
         }
@@ -97,9 +104,9 @@ namespace SmartTrade.Views
         {
             var stackLayout = this.FindByName<StackLayout>("listaPedidos");
 
-            foreach (var producto in pedido.ItemsCarrito)
+            foreach (var producto in pedido.IdProductoVendedor)
             {
-                crearTarjeta(producto, stackLayout);
+                crearTarjetaAsync(producto, stackLayout);
             }
             
             // Actualizar resumen
@@ -121,11 +128,16 @@ namespace SmartTrade.Views
             }
         }
 
-        private void crearTarjeta(int idProducto, StackLayout stackLayout)
+        private async Task crearTarjetaAsync(int idProductoVendedor, StackLayout stackLayout)
         {
+
+            Console.WriteLine($"Creando tarjeta del producto {idProductoVendedor}");
             try
             {
-                Producto producto = productos.Find(p => p.Id == idProducto);
+                Producto producto = productos.Find(p => p.Producto_Vendedor.First().Id == idProductoVendedor);
+                Console.WriteLine($"Producto encontrado: {producto.Nombre}");
+                string precio = producto.Producto_Vendedor.First().Precio.ToString("F2") + "€";
+                Console.WriteLine($"Precio: {precio}");
 
                 var productCard = new Frame
                 {
@@ -170,12 +182,12 @@ namespace SmartTrade.Views
                                         FontAttributes = FontAttributes.Bold
                                     },
                                     new Label{
-                                        Text = producto.Descripcion,
+                                        Text = producto.Descripcion.Length > 50 ? producto.Descripcion.Substring(0, 50) + "..." : producto.Descripcion,
                                         FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                                         TextColor = Color.Black
                                     },
                                     new Label{
-                                        Text = service.GetPrecioProductoPedido(idProducto).ToString("F2") + "€",
+                                        Text = precio,
                                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                         TextColor = Color.Black,
                                         FontAttributes = FontAttributes.Bold

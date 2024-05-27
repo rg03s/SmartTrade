@@ -39,7 +39,7 @@ namespace SmartTrade.Logica.Services
 
         public async Task AddUser(Usuario usuario)
         {
-            if (await IsEmailAlreadyRegistered(usuario.Email))
+            if (IsEmailAlreadyRegistered(usuario.Email))
             {
                 throw new EmailYaRegistradoException();
             }
@@ -60,7 +60,7 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        private async Task<bool> IsEmailAlreadyRegistered(string email)
+        private bool IsEmailAlreadyRegistered(string email)
         {
             Usuario usuario = dal.GetByEmail(email);
             return usuario != null;
@@ -562,7 +562,7 @@ namespace SmartTrade.Logica.Services
                 List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
                 //guardar en una List<ItemCarrito> los productos del pedido
                 //List<ItemCarrito> itemsPedido = pedido.ItemsCarrito.Select(i => dal.GetById<ItemCarrito>(i).Result).ToList();
-                pedido.ItemsCarrito = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
+                pedido.IdProductoVendedor = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
             }
             catch (Exception e)
             {
@@ -580,7 +580,7 @@ namespace SmartTrade.Logica.Services
                 List<Producto> productos = dal.GetAll<Producto>().Result;
                 List<Producto> productosPedido = new List<Producto>();
 
-                foreach (int id in pedido.ItemsCarrito)
+                foreach (int id in pedido.IdProductoVendedor)
                 {
                     Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
                     Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
@@ -592,7 +592,6 @@ namespace SmartTrade.Logica.Services
             catch (Exception e)
             {
                 throw new ServiceException("Error al obtener la imagen del pedido", e);
-                return null;
             }
         }
 
@@ -627,21 +626,6 @@ namespace SmartTrade.Logica.Services
             catch (Exception e)
             {
                 throw new ServiceException("Error al obtener la descripción del producto del pedido", e);
-            }
-        }
-
-        //metodo para obtener el atributo precio a partir de un entero (id del producto de la lista de productos de un objeto de tipo pedido)
-        public double GetPrecioProductoPedido(int idProducto)
-        {
-            try
-            {
-                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
-                Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == idProducto).FirstOrDefault();
-                return pv.Precio;
-            }
-            catch (Exception e)
-            {
-                throw new ServiceException("Error al obtener el precio del producto del pedido", e);
             }
         }
 
@@ -702,24 +686,24 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                List<Producto> productos = new List<Producto>();
-                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
-                //List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
-                List<Producto> itemsPedido = await dal.GetAll<Producto>();
+                List<Producto> productosPedido = new List<Producto>();
 
-                foreach (int id in pedido.ItemsCarrito)
+                foreach (int id in pedido.IdProductoVendedor)
                 {
-                    Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
-                    //Producto p = await dal.GetById<Producto>(pv.IdProducto);
-                    Producto p = itemsPedido.Where(pTemp => pTemp.Id == pv.IdProducto).FirstOrDefault();
-                    productos.Add(p);
+                    Console.WriteLine("[+] Id: " + id);
+                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(id);
+                    Console.WriteLine("[+] Producto vendedor encontrado: " + pv.Id);
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    p.Producto_Vendedor.Add(pv);
+                    productosPedido.Add(p);
+                    Console.WriteLine("[*] Producto: " + p.Nombre);
                 }
-                return productos;
+                return productosPedido;
+
             }
             catch (Exception e)
-            {
-                Console.WriteLine("Error al obtener los productos del pedido: ", e.Message);
-                return new List<Producto>();
+            { 
+                throw new ServiceException("Error al obtener los productos del pedido", e);
             }
         }
 
