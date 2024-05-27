@@ -704,14 +704,20 @@ namespace SmartTrade.Logica.Services
             {
                 List<Producto> productos = new List<Producto>();
                 List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
-                //List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
-                List<Producto> itemsPedido = await dal.GetAll<Producto>();
+                List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
+                //List<Producto> itemsPedido = await dal.GetAll<Producto>();
 
                 foreach (int id in pedido.ItemsCarrito)
                 {
+
+                    Console.WriteLine("ID de producto: " + id);
+
                     Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
-                    //Producto p = await dal.GetById<Producto>(pv.IdProducto);
-                    Producto p = itemsPedido.Where(pTemp => pTemp.Id == pv.IdProducto).FirstOrDefault();
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+
+                    Console.WriteLine("Producto encontrado: " + p.Nombre);
+
+                    //Producto p = itemsPedido.Where(pTemp => pTemp.Id == pv.IdProducto).FirstOrDefault();
                     productos.Add(p);
                 }
                 return productos;

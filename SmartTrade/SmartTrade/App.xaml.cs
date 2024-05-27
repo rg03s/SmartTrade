@@ -20,7 +20,7 @@ namespace SmartTrade
         public App()
         {
             InitializeComponent();
-            /*pedido = new Pedido();
+            pedido = new Pedido();
             pedido.Fecha = DateTime.Now;
             pedido.Precio_total = 100;
             pedido.ItemsCarrito = new List<int>();
@@ -29,9 +29,8 @@ namespace SmartTrade
             pedido.Num_tarjeta = 123456789;
             pedido.Id = 0;
             pedido.ItemsCarrito.Add(1);
-            pedido.ItemsCarrito.Add(5);
-            pedido.ItemsCarrito.Add(6);*/
-            MainPage = new NavigationPage(new Catalogo());
+            pedido.ItemsCarrito.Add(2);
+            MainPage = new NavigationPage(new MisPedidos(pedido));
         }
 
         protected override void OnStart()
