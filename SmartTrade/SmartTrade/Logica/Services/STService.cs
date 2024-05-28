@@ -679,5 +679,39 @@ namespace SmartTrade.Logica.Services
             }
         }
 
+        public async Task<List<Tarjeta>> getTarjetas() 
+        {
+            try
+            {
+               
+                Usuario user = GetUsuarioLogueado();
+                if (loggedUser == null)
+                {
+                    Console.WriteLine("Error: Usuario no está logueado.");
+                    return null;
+                }
+                var tarjetas = await dal.GetAll<Tarjeta>();
+                if (tarjetas == null)
+                {
+                    Console.WriteLine("Error: No se pudieron obtener las tarjetas.");
+                    return null;
+                }
+
+                return tarjetas.Where(tarj => tarj.Nick_comprador == loggedUser.Nickname).ToList();
+
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al obtener tarjetas: ", e.Message);
+                return null;
+            }
+
+        }
+        public async Task <Tarjeta> getTarjetaById(string idTarjeta)
+        {
+            return await dal.GetById<Tarjeta>(idTarjeta);
+        }
+
     }
 }

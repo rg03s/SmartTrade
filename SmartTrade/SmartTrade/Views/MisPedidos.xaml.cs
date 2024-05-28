@@ -15,7 +15,7 @@ namespace SmartTrade.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MisPedidos : ContentPage
-    {
+    {/*
         STService service;
         Pedido miPedido;
         public MisPedidos(Pedido pedido)
@@ -181,6 +181,6 @@ namespace SmartTrade.Views
                 }
             }
         }
-
+        */
     }
 }
