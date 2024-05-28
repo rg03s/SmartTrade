@@ -15,27 +15,11 @@ namespace SmartTrade
     {
 
         ISTService service = STService.Instance;
-        Pedido pedido;
 
         public App()
         {
             InitializeComponent();
-            pedido = new Pedido();
-            pedido.Fecha = DateTime.Now;
-            pedido.Precio_total = 100;
-            pedido.IdProductoVendedor = new List<int>();
-            pedido.NickComprador = "rgc";
-            pedido.Direccion = "si";
-            pedido.Num_tarjeta = 123456789;
-            pedido.Id = 0;
-            pedido.IdProductoVendedor.Add(1);
-            pedido.IdProductoVendedor.Add(12);
-            pedido.IdProductoVendedor.Add(2);
-            pedido.Puntos_obtenidos = 0;
-            pedido.Estado = "Enviado";
-
-            MainPage = new MisPedidos(pedido);
-            //MainPage = new NavigationPage(new Catalogo());
+            MainPage = new NavigationPage(new Catalogo());
         }
 
         protected override void OnStart()
