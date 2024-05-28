@@ -706,6 +706,11 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos del pedido", e);
             }
         }
+        public async void AddTarjeta(Tarjeta tarjeta)
+        {
+            await dal.Add(tarjeta);
+
+        }
 
         public async Task<List<Tarjeta>> getTarjetas() 
         {

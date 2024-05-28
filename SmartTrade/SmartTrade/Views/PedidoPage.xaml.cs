@@ -507,7 +507,7 @@ namespace SmartTrade.Views
             {
                 List<Tarjeta> tarjetasUser = await service.getTarjetas();
                 nuevaTarjeta = new Tarjeta(numTarjeta.Text, fechaCad.Date, codSeguridad.Text, service.GetLoggedNickname());
-                if (!tarjetasUser.Contains(nuevaTarjeta)) await service.AddTarjeta(nuevaTarjeta);
+                if (!tarjetasUser.Contains(nuevaTarjeta))  service.AddTarjeta(nuevaTarjeta);
 
 
             }
