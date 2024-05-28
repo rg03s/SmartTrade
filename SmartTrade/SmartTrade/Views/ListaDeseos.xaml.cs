@@ -124,13 +124,32 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
 
         Button btnEliminarFav = new Button
         {
-            Text = "&#xf004;",
-            FontFamily = Device.RuntimePlatform == Device.iOS ? "FontAwesome" : "FontAwesomeSolid",
-            FontSize = 19,
-            TextColor = Color.Red,
             BackgroundColor = Color.Transparent,
-            WidthRequest = 45,
-            HeightRequest = 40,
+            WidthRequest = 30,
+            HeightRequest = 45,
+            HorizontalOptions = LayoutOptions.EndAndExpand,
+            ContentLayout = new Button.ButtonContentLayout(Button.ButtonContentLayout.ImagePosition.Top, 0),
+            ImageSource = "https://i.ibb.co/x2FHfq7/2764-1.png",
+
+        };
+
+        btnEliminarFav.Clicked += async (sender, e) =>
+        {
+            UserDialogs.Instance.Confirm(new ConfirmConfig
+            {
+                Message = "¿Estás seguro de que quieres eliminar este producto de la lista de deseos?",
+                OkText = "Sí",
+                CancelText = "No",
+                OnAction = async (result) =>
+                {
+                    if (result)
+                    {
+                        await service.EliminarProductoListaDeseos(producto.Producto_Vendedor.First());
+                        await CargarProductosListaDeseos();
+                        UserDialogs.Instance.Toast("Producto eliminado de la lista de deseos", TimeSpan.FromSeconds(2));
+                    }
+                }
+            });
         };
 
         btnCarrito.Clicked += async (sender, e) =>

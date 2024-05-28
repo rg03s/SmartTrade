@@ -47,7 +47,7 @@
                         <!-- CONTENIDO MANEJADO POR CODIGO. NO BORRAR NADA -->
                     </StackLayout>
                     <!-- Resumen del pedido y Botón de canecelar pedido -->
-                    <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_Resumen">
+                    <StackLayout Grid.Row="3" Margin="20,20,20,20" VerticalOptions="EndAndExpand" x:Name="stack_resumen">
                         <Frame BorderColor="LightGray" BackgroundColor="#f0f0f0" CornerRadius="10">
                             <StackLayout Orientation="Vertical" Padding="10">
                                 <Label Text="Coste total: " FontSize="Medium" FontAttributes="Bold" TextColor="Black" />

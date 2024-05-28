@@ -24,6 +24,7 @@ namespace SmartTrade.Logica.Services
         {
             this.dal = dal;
         }
+
         public static STService Instance
         {
             get
@@ -38,51 +39,47 @@ namespace SmartTrade.Logica.Services
 
         public async Task AddUser(Usuario usuario)
         {
-            if (dal.GetByEmail(usuario.Email) != null)
+            if (IsEmailAlreadyRegistered(usuario.Email))
             {
                 throw new EmailYaRegistradoException();
             }
-            else if (await dal.GetById<Usuario>(usuario.Nickname) != null)
+            else if (await IsNicknameAlreadyRegistered(usuario.Nickname))
             {
                 throw new NickYaRegistradoException();
             }
             else
             {
-                if (usuario.Email.Contains("@"))
+                if (IsValidEmailFormat(usuario.Email))
                 {
-                    if (usuario.Email.StartsWith("@"))
-                        throw new EmailFormatoIncorrectoException();
-                    if (usuario.Email.EndsWith(".com") || usuario.Email.EndsWith(".es"))
-                    {
-                        await dal.Add<Usuario>(usuario);
-                    }
-                    else throw new EmailFormatoIncorrectoException();
+                    await dal.Add<Usuario>(usuario);
                 }
-                else throw new EmailFormatoIncorrectoException();
+                else
+                {
+                    throw new EmailFormatoIncorrectoException();
+                }
             }
+        }
+
+        private bool IsEmailAlreadyRegistered(string email)
+        {
+            Usuario usuario = dal.GetByEmail(email);
+            return usuario != null;
+        }
+
+        private async Task<bool> IsNicknameAlreadyRegistered(string nickname)
+        {
+            return await dal.GetById<Usuario>(nickname) != null;
+        }
+
+        private bool IsValidEmailFormat(string email)
+        {
+            return email.Contains("@") && (email.EndsWith(".com") || email.EndsWith(".es"));
         }
 
         public bool MayorDe18(DateTime fecha_nac)
         {
             TimeSpan edad = DateTime.Now - fecha_nac;
-            if ((int)(edad.TotalDays / 365.25) >= 18) return true;
-            else return false;
-        }
-
-        public async Task AddUserVendedor(Vendedor vendedor)
-        {
-
-            await dal.Add<Vendedor>(vendedor);
-        }
-
-        public async Task AddUserComprador(Comprador comprador)
-        {
-            await dal.Add<Comprador>(comprador);
-        }
-
-        public async Task AddTarjeta(Tarjeta tarjeta)
-        {
-            await dal.Add<Tarjeta>(tarjeta);
+            return (int)(edad.TotalDays / 365.25) >= 18;
         }
 
         public async Task AddProducto(Producto producto)
@@ -121,12 +118,10 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception)
             {
-                // Manejar la excepción adecuadamente, por ejemplo, registrándola o notificando al usuario
-                return false;
+                throw new ServiceException("Ha ocurrido un error al iniciar sesión. Por favor, inténtelo más tarde");
             }
         }
 
-        // metodo para ordenar los productos por categorías
         public async Task<List<Producto>> GetProductosPorCategoria(string categoria)
         {
             var productos = await dal.GetAll<Producto>();
@@ -136,7 +131,8 @@ namespace SmartTrade.Logica.Services
 
         public async Task<List<Producto>> GetAllProductos()
         {
-            try {
+            try
+            {
                 List<Producto> productos = await GetProductosPorCategoria("Deporte");
                 productos.AddRange(await GetProductosPorCategoria("Ropa"));
                 productos.AddRange(await GetProductosPorCategoria("Papeleria"));
@@ -145,59 +141,65 @@ namespace SmartTrade.Logica.Services
                 List<Producto_vendedor> productoVendedor = await dal.GetAll<Producto_vendedor>();
                 productos.ForEach(p => p.Producto_Vendedor = productoVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
 
-                Console.WriteLine("Productos obtenidos correctamente");
-                if (loggedUser == null) return productos;
-
-                //agregar observadores a los productos
-                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
-                foreach (ListaDeseosItem item in listaDeseos)
+                if (loggedUser != null)
                 {
-                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
-                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
-
-                    if (p != null)
-                    {
-                        p.AddObservador(loggedUser);
-                    }
+                    await ProcesarListaDeDeseosYAlertas(productos);
                 }
 
-                //notificar a los observadores si el stock es 0
-                foreach (ListaDeseosItem item in listaDeseos)
-                {
-                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
-                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
-                    if (p != null)
-                    {
-                        if (pv.Stock == 0)
-                        {
-                            p.NotificarObservadores();
-                        }
-                    }
-                }
                 return productos;
             }
-            catch (Exception e) { 
-                Console.WriteLine("Error al obtener los productos: ", e.Message);
-                return null; 
+            catch (Exception e)
+            {
+                throw new ServiceException("Error al obtener los productos", e);
             }
         }
-        public async Task<List<ListaDeseosItem>> GetListaDeseos(string nickPropietario)
-        {
-            var listaDeseos = await dal.GetAll<ListaDeseosItem>();
-            return  listaDeseos.Where(ld => ld.NickPropietario == nickPropietario).ToList();
 
+        private async Task ProcesarListaDeDeseosYAlertas(List<Producto> p)
+        {
+            List<ListaDeseosItem> listaDeseos = await GetListaDeseos(GetLoggedNickname());
+
+            foreach (ListaDeseosItem item in listaDeseos)
+            {
+                await AgregarProductoAListaDeDeseos(item);
+                await NotificarSiStockEsCero(item);
+            }
         }
-        public Producto GetProductoById(string id)
+
+        private async Task AgregarProductoAListaDeDeseos(ListaDeseosItem item)
+        {
+            Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
+            Producto p = await dal.GetById<Producto>(pv.IdProducto);
+
+            if (p != null)
+            {
+                p.AddObservador(loggedUser);
+            }
+        }
+
+        private async Task NotificarSiStockEsCero(ListaDeseosItem item)
+        {
+            Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
+            Producto p = await dal.GetById<Producto>(pv.IdProducto);
+
+            if (p != null && pv.Stock == 0)
+            {
+                p.NotificarObservadores();
+            }
+        }
+
+        public async Task<List<ListaDeseosItem>> GetListaDeseos(string nickPropietario)
         {
             try
             {
-                return dal.GetById<Producto>(id).Result;
+                var listaDeseos = await dal.GetAll<ListaDeseosItem>();
+                return listaDeseos.Where(ld => ld.NickPropietario == nickPropietario).ToList();
             } catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el producto: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener la lista de deseos", e);
             }
+
         }
+
         public async Task<Producto> GetProductoById(int id)
         {
             try
@@ -206,8 +208,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el producto: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener el producto", e);
             }
         }
 
@@ -220,14 +221,11 @@ namespace SmartTrade.Logica.Services
 
                 if (pv == null)
                 {
-                    Console.WriteLine("Producto vendedor no encontrado");
-                    return null;
+                    throw new Exception("No se ha encontrado el producto asociado al vendedor");
                 }
                 else
                 {
-                    //No funciona el getById del DAL
-                    List<Producto> productos = await dal.GetAll<Producto>();
-                    return productos.Where(p => p.Id == pv.IdProducto).FirstOrDefault();
+                    return await GetProductoById(pv.IdProducto);
                 }
             }
             catch (Exception ex)
@@ -244,8 +242,7 @@ namespace SmartTrade.Logica.Services
                 return await dal.GetById<Producto_vendedor>(id);
             } catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el producto vendedor: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener la asociacion entre el producto y el vendedor", e);
             }
         }
 
@@ -257,8 +254,7 @@ namespace SmartTrade.Logica.Services
                 return productosCarrito.Where(p => p.NicknameUsuario == loggedUser.Nickname).ToList();
             } catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el carrito: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener el carrito", e);
             }
 
         }
@@ -275,14 +271,21 @@ namespace SmartTrade.Logica.Services
 
         public async Task<List<Producto>> GetProductosDeVendedor(string nickname)
         {
-            List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
-            productosVendedor = productosVendedor.Where(pv => pv.NicknameVendedor == nickname).ToList();
+            try
+            {
+                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+                productosVendedor = productosVendedor.Where(pv => pv.NicknameVendedor == nickname).ToList();
 
-            List<Producto> productos = await dal.GetAll<Producto>();
-            productos = productos.Where(p => productosVendedor.Select(pv => pv.IdProducto).Contains(p.Id)).ToList();
-            productos.ForEach(p => p.Producto_Vendedor = productosVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
+                List<Producto> productos = await dal.GetAll<Producto>();
+                productos = productos.Where(p => productosVendedor.Select(pv => pv.IdProducto).Contains(p.Id)).ToList();
+                productos.ForEach(p => p.Producto_Vendedor = productosVendedor.Where(pv => pv.IdProducto == p.Id).ToList());
 
-            return productos;
+                return productos;
+            } catch (Exception e)
+            {
+                throw new ServiceException("Error al obtener los productos del vendedor '" + nickname + "'", e);
+            }
+
         }
 
         public async Task<bool> ActualizarItemCarrito(ItemCarrito item)
@@ -293,8 +296,7 @@ namespace SmartTrade.Logica.Services
                 return true;
             } catch (Exception e)
             {
-                Console.WriteLine("Error al actualizar el item del carrito: ", e.Message);
-                return false;
+                throw new ServiceException("Error al actualizar el item del carrito. Vuelva a intentarlo más tarde", e);
             }
         }
 
@@ -306,8 +308,7 @@ namespace SmartTrade.Logica.Services
                 return true;
             } catch (Exception e)
             {
-                Console.WriteLine("Error al eliminar el item del carrito: ", e.Message);
-                return false;
+                throw new ServiceException("Error al eliminar el item del carrito. Vuelva a intentarlo más tarde", e);
             }
         }
 
@@ -331,21 +332,27 @@ namespace SmartTrade.Logica.Services
                 }
             } catch (Exception e)
             {
-                Console.WriteLine("Error al añadir el item al carrito: ", e.Message);
-                return false;
+                throw new ServiceException("Error al añadir el item al carrito. Vuelva a intentarlo más tarde", e);
             }
         }
 
         public async Task<List<Producto_vendedor>> GetAProductoVendedorByProducto(Producto p) 
         {
-           List<Producto_vendedor> pvList = await dal.GetAll<Producto_vendedor>();
-           return  pvList.Where(pv => pv.IdProducto == p.Id).ToList();
+           try
+           {
+                List<Producto_vendedor> pvList = await dal.GetAll<Producto_vendedor>();
+                return pvList.Where(pv => pv.IdProducto == p.Id).ToList();
+           } catch (Exception e)
+            {
+                throw new ServiceException("Error al obtener los productos vendedor asociados al producto", e);
+           }
         }
+
         public async Task<List<Producto>> getProductosListaDeseos()
         {
             try
             {
-                List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(GetLoggedNickname());
+                List<ListaDeseosItem> listaDeseos = await GetListaDeseos(GetLoggedNickname());
                 List<Producto> productos = new List<Producto>();
                 foreach (ListaDeseosItem item in listaDeseos)
                 {
@@ -358,14 +365,14 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al obtener los productos de la Lista de Deseos. " + ex.Message);
-                return null;
+                throw new ServiceException("Error al obtener los productos de la Lista de Deseos", ex);
             }
         }
+
         public async Task EliminarProductoListaDeseos(Producto_vendedor pv)
         {
             try {
-                List<ListaDeseosItem> ListaLoggedUser = await dal.GetListaDeseos(GetLoggedNickname());
+                List<ListaDeseosItem> ListaLoggedUser = await GetListaDeseos(GetLoggedNickname());
                 foreach (ListaDeseosItem item in ListaLoggedUser)
                 {
                     Producto p = await dal.GetById<Producto>(pv.IdProducto);
@@ -378,7 +385,7 @@ namespace SmartTrade.Logica.Services
                 }
             }catch (Exception ex)
             {
-                Console.WriteLine("Error al eliminar el producto de la Lista de Deseos. " + ex.Message);
+                throw new ServiceException("Error al eliminar el producto de la Lista de Deseos", ex);
             }
             
         }
@@ -399,24 +406,33 @@ namespace SmartTrade.Logica.Services
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine("Error al añadir el producto a la Lista de Deseos.: " + ex.Message);
+                throw new ServiceException("Error al añadir el producto a la Lista de Deseos", ex);
             }
 
         }
+
         public async Task<Boolean> ProductoEnListaDeseos(Usuario user, Producto_vendedor pv)
         {
-            List<ListaDeseosItem> listaDeseos = await dal.GetListaDeseos(user.Nickname);
-            ListaDeseosItem item = listaDeseos.Where(i => i.ProductoVendedorId == pv.Id).FirstOrDefault();
-            return item != null;
-        }
-        public async Task<List<Producto>> GetProductosGuardarMasTarde()
-        {
-            string nickPropietario = GetLoggedNickname();
-            List<int> productoslistaMasTarde = new List<int>();
-            List<Producto> listaMasTarde = new List<Producto>();
             try
             {
-                productoslistaMasTarde = await GetProductosIdGuardarMasTarde(nickPropietario);
+                List<ListaDeseosItem> listaDeseos = await GetListaDeseos(user.Nickname);
+                ListaDeseosItem item = listaDeseos.Where(i => i.ProductoVendedorId == pv.Id).FirstOrDefault();
+                return item != null;
+            } catch (Exception ex)
+            {
+                throw new ServiceException("Error al comprobar si el producto está en la Lista de Deseos", ex);
+            }
+        }
+
+        public async Task<List<Producto>> GetProductosGuardarMasTarde()
+        {
+            try
+            {
+                string nickPropietario = GetLoggedNickname();
+                List<int> productoslistaMasTarde = new List<int>();
+                List<Producto> listaMasTarde = new List<Producto>();
+                productoslistaMasTarde = await GetIdProductosGuardarMasTarde();
+
                 if (productoslistaMasTarde != null)
                 {
                     Producto p = null;
@@ -430,7 +446,6 @@ namespace SmartTrade.Logica.Services
                         }
                     }
                 }
-
                 return listaMasTarde;
             }
             catch (Exception ex)
@@ -439,6 +454,7 @@ namespace SmartTrade.Logica.Services
                 return null;
             }
         }
+
         public async Task EliminarProductoGuardarMasTarde(Producto productoLista)
         {
             try
@@ -455,7 +471,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al eliminar el producto de la Lista Guardar para más tarde. " + ex.Message);
+                throw new ServiceException("Error al eliminar el producto de la Lista de Deseos", ex);
             }
 
         }
@@ -468,8 +484,7 @@ namespace SmartTrade.Logica.Services
                 GuardarMasTardeItem gmt = new GuardarMasTardeItem(propietario, producto.Id);
                 bool estaEnLista = await ProductoEnGuardarMasTarde(producto);
 
-
-                    if (!estaEnLista)
+                if (!estaEnLista)
                 {
                     await dal.Add<GuardarMasTardeItem>(gmt);
                     producto.AddObservador(loggedUser);
@@ -477,16 +492,23 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al añadir el producto a la Lista Guardar para más tarde.: " + ex.Message);
+                throw new ServiceException("Error al añadir el producto a la Lista de Deseos", ex);
             }
 
         }
+
         public async Task<Boolean> ProductoEnGuardarMasTarde(Producto producto)
         {
-            string propietario = GetLoggedNickname();
-            List<GuardarMasTardeItem> gmt = await GetGuardarMasTarde();
-            GuardarMasTardeItem item = gmt.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
-            return item != null;
+            try
+            {
+                string propietario = GetLoggedNickname();
+                List<GuardarMasTardeItem> gmt = await GetGuardarMasTarde();
+                GuardarMasTardeItem item = gmt.Where(ld => ld.ProductoId == producto.Id).FirstOrDefault();
+                return item != null;
+            } catch (Exception ex)
+            {
+                throw new ServiceException("Error al comprobar si el producto está en la Lista de Deseos", ex);
+            }
         }
 
         public async Task<List<GuardarMasTardeItem>> GetGuardarMasTarde()
@@ -498,29 +520,28 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el carrito: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener la lista de deseos", e);
             }
         }
-        public async Task<List<int>> GetProductosIdGuardarMasTarde(string nickPropietario)
+
+        public async Task<List<int>> GetIdProductosGuardarMasTarde()
         {
             try
             {
-                List<GuardarMasTardeItem> productosGuardarMasTarde = await dal.GetAll<GuardarMasTardeItem>();
-                return productosGuardarMasTarde.Where(p => p.NickPropietario == loggedUser.Nickname).Select(gmt => gmt.ProductoId).ToList();
+                List<GuardarMasTardeItem> listaGuardarMasTarde = await GetGuardarMasTarde();
+                return listaGuardarMasTarde.Select(ld => ld.ProductoId).ToList();
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el carrito: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener los productos de la lista de deseos", e);
             }
         }
+
         public Usuario GetUsuarioLogueado()
         {
             return loggedUser;
         }
 
-        //Servicio para obtener los pedidos de un usuario
         public async Task<List<Pedido>> GetPedidos()
         {
             try
@@ -530,8 +551,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener los pedidos: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener los pedidos", e);
             }
         }
 
@@ -540,11 +560,13 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
-                pedido.ItemsCarrito = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
+                //guardar en una List<ItemCarrito> los productos del pedido
+                //List<ItemCarrito> itemsPedido = pedido.ItemsCarrito.Select(i => dal.GetById<ItemCarrito>(i).Result).ToList();
+                pedido.IdProductoVendedor = itemsPedido.Where(i => i.Id == pedido.Id).Select(i => i.idProductoVendedor).ToList();
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al cargar los detalles del pedido: ", e.Message);
+                throw new ServiceException("Error al cargar los detalles del pedido", e);
             }
         }
 
@@ -558,7 +580,7 @@ namespace SmartTrade.Logica.Services
                 List<Producto> productos = dal.GetAll<Producto>().Result;
                 List<Producto> productosPedido = new List<Producto>();
 
-                foreach (int id in pedido.ItemsCarrito)
+                foreach (int id in pedido.IdProductoVendedor)
                 {
                     Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == id).FirstOrDefault();
                     Producto p = productos.Where(prod => prod.Id == pv.IdProducto).FirstOrDefault();
@@ -569,8 +591,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener la imagen del pedido: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener la imagen del pedido", e);
             }
         }
 
@@ -587,8 +608,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener el nombre del producto del pedido: ", e.Message);
-                return null;
+                throw new ServiceException("Error al obtener el nombre del producto del pedido", e);
             }
         }
 
@@ -605,24 +625,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al obtener la descripción del producto del pedido: ", e.Message);
-                return null;
-            }
-        }
-
-        //metodo para obtener el atributo precio a partir de un entero (id del producto de la lista de productos de un objeto de tipo pedido)
-        public double GetPrecioProductoPedido(int idProducto)
-        {
-            try
-            {
-                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
-                Producto_vendedor pv = productosVendedor.Where(pvTemp => pvTemp.Id == idProducto).FirstOrDefault();
-                return pv.Precio;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error al obtener el precio del producto del pedido: ", e.Message);
-                return 0;
+                throw new ServiceException("Error al obtener la descripción del producto del pedido", e);
             }
         }
 
@@ -648,11 +651,10 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al actualizar el estado del pedido: ", e.Message);
+                throw new ServiceException("Error al actualizar el estado del pedido", e);
             }
         }
         
-
         //metodo para cancelar un pedido
         public async Task CancelarPedido(Pedido pedido)
         {
@@ -662,7 +664,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al cancelar el pedido: ", e.Message);
+                throw new ServiceException("Error al cancelar el pedido", e);
             }
         }
 
@@ -675,7 +677,33 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error al devolver el pedido: ", e.Message);
+                throw new ServiceException("Error al devolver el pedido", e);
+            }
+        }
+
+        //metodo para obtener la lista de productos de un pedido
+        public async Task<List<Producto>> GetProductosPedido(Pedido pedido)
+        {
+            try
+            {
+                List<Producto> productosPedido = new List<Producto>();
+
+                foreach (int id in pedido.IdProductoVendedor)
+                {
+                    Console.WriteLine("[+] Id: " + id);
+                    Producto_vendedor pv = await dal.GetById<Producto_vendedor>(id);
+                    Console.WriteLine("[+] Producto vendedor encontrado: " + pv.Id);
+                    Producto p = await dal.GetById<Producto>(pv.IdProducto);
+                    p.Producto_Vendedor.Add(pv);
+                    productosPedido.Add(p);
+                    Console.WriteLine("[*] Producto: " + p.Nombre);
+                }
+                return productosPedido;
+
+            }
+            catch (Exception e)
+            { 
+                throw new ServiceException("Error al obtener los productos del pedido", e);
             }
         }
 

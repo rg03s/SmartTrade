@@ -184,7 +184,6 @@ namespace SmartTrade.Views
                 } catch (Exception ex)
                 {
                     await DisplayAlert("Error", "Error al añadir el producto", "Aceptar");
-                    Debug.WriteLine("Error al añadir el producto: " + ex.Message);
                 }
             }
         }

@@ -69,6 +69,11 @@ namespace SmartTrade.Views
 
                 }
             }
+            catch (ServiceException e)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert(e.Message, "Error", "Aceptar");
+            }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error al cargar los productos: {e.Message}");

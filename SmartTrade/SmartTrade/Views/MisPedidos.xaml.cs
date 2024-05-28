@@ -18,6 +18,7 @@ namespace SmartTrade.Views
     {/*
         STService service;
         Pedido miPedido;
+        List<Producto> productos;
         public MisPedidos(Pedido pedido)
         {
             InitializeComponent();
@@ -40,77 +41,72 @@ namespace SmartTrade.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            UserDialogs.Instance.ShowLoading("Cargando...");
-            
+            UserDialogs.Instance.ShowLoading("Cargando pedidos...");
+            await CargarProductosPedido(miPedido);
             UserDialogs.Instance.HideLoading();
-            if (miPedido != null)
-            {
-                // Cargar los detalles del pedido
-                await CargarDetallesPedido(miPedido);
-            }
-            else
-            {
-                await DisplayAlert("Error", "No se pudo cargar el pedido", "OK");
-            }
         }
 
-        private async Task CargarDetallesPedido(Pedido pedido)
+        private async Task CargarProductosPedido(Pedido pedido)
         {
             try
             {
-                // Cargar los detalles del pedido
-                await service.CargarDetallesPedido(pedido);
-                MostrarDetallesPedido(pedido);
+                Console.WriteLine("Cargando productos del pedido...");
+                productos = await service.GetProductosPedido(pedido);
+                Console.WriteLine($"Productos del pedido: {productos.Count}");
+                StackLayout stackLayout = this.FindByName<StackLayout>("listaPedidos");
+                StackLayout stack_resumen = this.FindByName<StackLayout>("stack_resumen");
+
+                stackLayout.Children.Clear();
+
+                if (productos.Count == 0)
+                {
+                    stack_resumen.IsVisible = false;
+
+                    StackLayout stack = new StackLayout
+                    {
+                        Orientation = StackOrientation.Vertical,
+                        Children =
+                        {
+                            new Label
+                            {
+                                Text = "No hay pedidos",
+                                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                                TextColor = Color.Black,
+                                FontAttributes = FontAttributes.Bold,
+                                HorizontalOptions = LayoutOptions.Center,
+                                VerticalOptions = LayoutOptions.Center
+                            }
+                        }
+                    };
+                    stackLayout.Children.Add(stack);
+                    return;
+                }
+                else
+                {
+                    stack_resumen.IsVisible = true;
+                    MostrarDetallesPedido(pedido);
+                }
+            }
+            catch (ServiceException err)
+            {
+                UserDialogs.Instance.Alert("Error al cargar los productos del pedido");
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "No se pudo cargar los detalles del pedido", "OK");
-                Console.WriteLine($"Error al cargar los detalles del pedido: {ex.Message}");
+                Console.WriteLine($"Error al cargar los productos del pedido: {ex.Message}");
+                //await DisplayAlert("Error", "No se pudo cargar los productos del pedido", "OK");
+                //Console.WriteLine($"Error al cargar los productos del pedido: {ex.Message}");
             }
+            
         }
 
         private void MostrarDetallesPedido(Pedido pedido)
         {
             var stackLayout = this.FindByName<StackLayout>("listaPedidos");
 
-            foreach (var producto in pedido.ItemsCarrito)
+            foreach (var producto in pedido.IdProductoVendedor)
             {
-                var productCard = new Frame
-                {
-                    BackgroundColor = Color.White,
-                    CornerRadius = 10,
-                    Margin = new Thickness(10),
-                    Padding = new Thickness(10),
-                    HasShadow = true,
-                    Content = new StackLayout
-                    {
-                        Orientation = StackOrientation.Horizontal,
-                        Spacing = 10,
-                        Children =
-                        {
-                            new Image
-                            {
-                                Source = service.GetImagenPedido(pedido),
-                                HeightRequest = 100,
-                                WidthRequest = 100,
-                                Aspect = Aspect.AspectFit
-                            },
-                            new StackLayout
-                            {
-                                VerticalOptions = LayoutOptions.Center,
-                                Spacing = 5,
-                                Children =
-                                {
-                                    new Label { Text = service.GetNombreProductoPedido(producto), FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)), TextColor = Color.Black, FontAttributes = FontAttributes.Bold },
-                                    new Label { Text = service.GetDescripcionProductoPedido(producto).Length > 50 ? service.GetDescripcionProductoPedido(producto).Substring(0, 50) + "..." : service.GetDescripcionProductoPedido(producto), TextColor = Color.Gray },
-                                    new Label { Text = service.GetPrecioProductoPedido(producto).ToString("F2") + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black }
-                                }
-                            }
-                        }
-                    }
-                };
-
-                stackLayout.Children.Add(productCard);
+                crearTarjetaAsync(producto, stackLayout);
             }
             
             // Actualizar resumen
@@ -131,7 +127,85 @@ namespace SmartTrade.Views
                 btnDevolverPedido.IsVisible = false;
             }
         }
-        
+
+        private async Task crearTarjetaAsync(int idProductoVendedor, StackLayout stackLayout)
+        {
+
+            Console.WriteLine($"Creando tarjeta del producto {idProductoVendedor}");
+            try
+            {
+                Producto producto = productos.Find(p => p.Producto_Vendedor.First().Id == idProductoVendedor);
+                Console.WriteLine($"Producto encontrado: {producto.Nombre}");
+                string precio = producto.Producto_Vendedor.First().Precio.ToString("F2") + "€";
+                Console.WriteLine($"Precio: {precio}");
+
+                var productCard = new Frame
+                {
+                    BackgroundColor = Color.White,
+                    CornerRadius = 10,
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    HasShadow = true,
+                    Content = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                        {
+                            new Image
+                            {
+                                Source = producto.Imagen,
+                                HeightRequest = 100,
+                                WidthRequest = 100,
+                                Aspect = Aspect.AspectFit,
+                                GestureRecognizers =
+                                {
+                                    new TapGestureRecognizer
+                                    {
+                                        Command = new Command(async () =>
+                                        {
+                                            await Navigation.PushAsync(new ProductPage( producto));
+                                        })
+                                    }
+                                }
+                            },
+                            new StackLayout
+                            {
+                                VerticalOptions = LayoutOptions.Center,
+                                Spacing = 5,
+                                Children =
+                                {
+                                   new Label{
+                                        Text = producto.Nombre,
+                                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                                        TextColor = Color.Black,
+                                        FontAttributes = FontAttributes.Bold
+                                    },
+                                    new Label{
+                                        Text = producto.Descripcion.Length > 50 ? producto.Descripcion.Substring(0, 50) + "..." : producto.Descripcion,
+                                        FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                                        TextColor = Color.Black
+                                    },
+                                    new Label{
+                                        Text = precio,
+                                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                                        TextColor = Color.Black,
+                                        FontAttributes = FontAttributes.Bold
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                stackLayout.Children.Add(productCard);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al crear la tarjeta del producto: {ex.Message}");
+            }
+            
+        }
+
         private async void BtnCancelarPedido_click(object sender, EventArgs e)
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig

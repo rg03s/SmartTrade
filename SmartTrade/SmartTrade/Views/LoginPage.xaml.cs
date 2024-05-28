@@ -70,6 +70,11 @@ namespace SmartTrade.Views
                     }
                 }
             }  
+            catch (ServiceException err)
+            {
+                UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.Alert(err.Message, "Error", "OK");
+            }
             catch (Exception)
             {
                 mail.Text = string.Empty;

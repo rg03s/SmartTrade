@@ -16,7 +16,7 @@ namespace SmartTrade.Entities
         [Column("precio_total")]
         public double Precio_total { get; set; }
         [Column("id_ProductoVendedor")]
-        public List<int> Productosvendedor { get; set; }
+        public List<int> IdProductoVendedor { get; set; }
         [Column("id_comprador")]
         public string NickComprador{ get; set; }
         [Column("direccion_entrega")]
