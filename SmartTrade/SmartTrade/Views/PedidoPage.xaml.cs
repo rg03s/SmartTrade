@@ -27,7 +27,7 @@ namespace SmartTrade.Views
         STService service;
         List<ItemCarrito> Carrito;
         public Producto_vendedor productoVendedor_seleccionado;
-        List<int> productosVendedor;
+        List<int> ProductosVendedor;
         public double precioTotalPedido;
         public int puntosTotalesPedido;
         public Entry numTarjeta;
@@ -51,25 +51,31 @@ namespace SmartTrade.Views
         } 
         public async void CalcularPrecioTotal()
         {
-            Usuario user = service.GetUsuarioLogueado();
-            double precioT = 0;
-            int puntosT = 0;
-            foreach (ItemCarrito item in Carrito) 
+            try
             {
-               Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                productosVendedor.Add(pv.Id);
-               Producto p = await service.GetProductoById(pv.IdProducto);
-               puntosT = p.Puntos;
-               precioT +=  pv.Precio;
+                Usuario user = service.GetUsuarioLogueado();
+                double precioT = 0;
+                int puntosT = 0;
+                foreach (ItemCarrito item in Carrito)
+                {
+                    Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
+                    ProductosVendedor.Add(pv.Id);
+                    Producto p = await service.GetProductoById(pv.IdProducto);
+                    puntosT = p.Puntos;
+                    precioT += pv.Precio;
+                }
+                puntosTotalesPedido = puntosT;
+                precioTotalPedido = precioT;
+                PrecioTotal.Text = precioT.ToString() + "€";
+                PuntosTotal.Text = puntosT.ToString();
+                string[] direccion = user.Direccion.Split(',');
+                calleEntry.Text = direccion[0];
+                numeroEntry.Text = direccion[1];
+                ciudadEntry.Text = direccion[2];
+            } catch (Exception e)
+            {
+                Console.WriteLine($"Error al calcular el precio total: {e.Message}");
             }
-            puntosTotalesPedido = puntosT;
-            precioTotalPedido = precioT;
-            PrecioTotal.Text = precioT.ToString() + "€";
-            PuntosTotal.Text = puntosT.ToString();
-            string[] direccion = user.Direccion.Split(',');
-            calleEntry.Text = direccion[0];
-            numeroEntry.Text = direccion[1];
-            ciudadEntry.Text = direccion[2];
         }
 
 
@@ -102,7 +108,7 @@ namespace SmartTrade.Views
 
             StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
 
-            foreach (ItemCarrito item in Carrito)
+            foreach (ItemCarrito item in carrito)
             {
                 Console.WriteLine("EL ITEM " + item.Id);
                 await crearTarjeta(item, stackLayout);
@@ -116,13 +122,19 @@ namespace SmartTrade.Views
             {
                 int cantidad = item.Cantidad;
                 //De product_vendedor saco el precio 
-                Producto_vendedor product_vendedor =  await service.GetProductoVendedorById(item.idProductoVendedor);
+                Producto_vendedor producto_vendedor =  await service.GetProductoVendedorById(item.idProductoVendedor);
                 //De producto saco los datos de él, nombre, imagen ...
-                int idProducto = product_vendedor.IdProducto;
+                int idProducto = producto_vendedor.IdProducto;
                 Producto producto = await service.GetProductoById(idProducto);
-                Console.WriteLine("PRODUCCCTO:" + producto.Id);
+                Console.WriteLine("[+] PRODUCTO:" + producto.Id);
+                Console.WriteLine("[+] PRODUCTO_VENDEDOR:" + producto_vendedor.Id);
+                Console.WriteLine("[+] CANTIDAD:" + cantidad);
+                Console.WriteLine("[+] PRECIO:" + producto_vendedor.Precio);
+                Console.WriteLine("[+] NOMBRE:" + producto.Nombre);
+
+
                 string caracteristicas = "";
-                double precio_total = cantidad * product_vendedor.Precio;
+                double precio_total = cantidad * producto_vendedor.Precio;
 
  
                 var productCard = new Frame
@@ -516,7 +528,7 @@ namespace SmartTrade.Views
                     string numeroTarjeta = null;
                     if (pickerPago.SelectedItem.ToString() == "Tarjeta de crédito") { numeroTarjeta = numTarjeta.ToString(); }
 
-                    Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, productosVendedor, service.GetLoggedNickname(), Direccion,numeroTarjeta,puntosTotalesPedido,"En preparación"); 
+                    Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion,numeroTarjeta,puntosTotalesPedido,"En preparación"); 
                 }
                 catch (Exception ex) { await DisplayAlert("Error", ex.Message, "Aceptar"); }
         }
