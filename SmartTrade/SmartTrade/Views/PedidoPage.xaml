@@ -103,7 +103,7 @@
                     </StackLayout>
                     <StackLayout  Orientation ="Horizontal" Margin = "50,-20,0,20" HorizontalOptions = "CenterAndExpand" WidthRequest = "250">
                         <Label Text ="Puntos obtenidos: " FontSize="18" TextColor="Black" HorizontalOptions="StartAndExpand" Margin="0,20,-80,0" />
-                        <Label  x:Name="PuntosTotal" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="StartAndExpand" Margin="0,0,0,0" />
+                        <Label  x:Name="PuntosTotal" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="StartAndExpand" Margin="0,20,-20,0" />
 
                     </StackLayout>
                     <Button HorizontalOptions="FillAndExpand" Text="Realizar pedido" x:Name="RealizarPedidoButton" Clicked="RealizarPedidoButton_Clicked"  Margin="80,10,40,30" WidthRequest="250" HeightRequest="39" CornerRadius="25" BackgroundColor="DarkBlue"  FontSize="15" />

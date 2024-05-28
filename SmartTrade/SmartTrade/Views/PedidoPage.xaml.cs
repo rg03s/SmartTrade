@@ -54,14 +54,16 @@ namespace SmartTrade.Views
             try
             {
                 Usuario user = service.GetUsuarioLogueado();
+                Console.WriteLine(user.ToString());
                 double precioT = 0;
                 int puntosT = 0;
+                ProductosVendedor = new List<int>();
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
                     ProductosVendedor.Add(pv.Id);
                     Producto p = await service.GetProductoById(pv.IdProducto);
-                    puntosT = p.Puntos;
+                    puntosT += p.Puntos;
                     precioT += pv.Precio;
                 }
                 puntosTotalesPedido = puntosT;
