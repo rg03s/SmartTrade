@@ -706,9 +706,22 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos del pedido", e);
             }
         }
-        public async void AddTarjeta(Tarjeta tarjeta)
+        public async Task AddTarjeta(Tarjeta nuevaTarjeta)
         {
-            await dal.Add(tarjeta);
+            try 
+            {
+                List<Tarjeta> tarjetasUser = await getTarjetas();
+                Tarjeta tarjeta = tarjetasUser.Where(t => t.Numero == nuevaTarjeta.Numero).FirstOrDefault();
+                if (tarjeta == null)
+                {
+                    await dal.Add(tarjeta);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al agregar tarjeta: ", e.Message);
+            }
+
 
         }
 
@@ -718,21 +731,9 @@ namespace SmartTrade.Logica.Services
             {
                
                 Usuario user = GetUsuarioLogueado();
-                if (loggedUser == null)
-                {
-                    Console.WriteLine("Error: Usuario no está logueado.");
-                    return null;
-                }
+               
                 var tarjetas = await dal.GetAll<Tarjeta>();
-                if (tarjetas == null)
-                {
-                    Console.WriteLine("Error: No se pudieron obtener las tarjetas.");
-                    return null;
-                }
-
                 return tarjetas.Where(tarj => tarj.Nick_comprador == loggedUser.Nickname).ToList();
-
-                
             }
             catch (Exception e)
             {
@@ -746,5 +747,17 @@ namespace SmartTrade.Logica.Services
             return await dal.GetById<Tarjeta>(idTarjeta);
         }
 
+
+        public async Task AddPedido(Pedido pedido) 
+        {
+            try { 
+                await dal.Add<Pedido>(pedido);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al añadir pedido: {e.Message}");
+                
+            }
+        }
     }
 }

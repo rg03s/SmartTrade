@@ -7,7 +7,7 @@ namespace SmartTrade.Entities
     public partial class Pedido
     {
         public Pedido() { }
-        public Pedido(DateTime fecha, double precio_total, List <int> IdProductosCarrito, string nickcomprador, string direccion, string num_tarjeta, int puntos_obtenidos, string estado)
+        public Pedido(DateTime fecha, double precio_total, List <int> IdProductosCarrito, string nickcomprador, string direccion, int num_tarjeta, int puntos_obtenidos, string estado)
         {
             this.Fecha = fecha;
             this.Precio_total = precio_total;

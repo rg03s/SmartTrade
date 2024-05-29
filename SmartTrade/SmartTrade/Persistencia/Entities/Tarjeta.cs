@@ -11,13 +11,13 @@ namespace SmartTrade.Entities
     {
         [Key]
         [Column("nº")]
-        public string Numero { get; set; }
+        public int Numero { get; set; }
 
         [Column("fecha_cad")]
         public DateTime Fecha_cad { get; set; }
 
         [Column("nº_seguridad")]
-        public string Num_seguridad { get; set; }
+        public int Num_seguridad { get; set; }
 
 
         [Column("id_comprador")]

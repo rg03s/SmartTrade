@@ -22,7 +22,7 @@ namespace SmartTrade.Entities
         [Column("direccion_entrega")]
         public string Direccion { get; set; }
         [Column("tarjeta")]
-        public string Num_tarjeta { get; set; }
+        public int Num_tarjeta { get; set; }
         [Column ("puntos")]
         public int Puntos_obtenidos { get; set; }
         [Column("estado")]

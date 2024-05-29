@@ -38,6 +38,7 @@ namespace SmartTrade.Views
         public Entry correoPaypal;
         public Entry passwordPaypal;
         public CheckBox verContraseña;
+        Boolean pagoTarjeta;
 
 
     public PedidoPage(List <ItemCarrito> carrito)
@@ -47,9 +48,9 @@ namespace SmartTrade.Views
             this.service = STService.Instance;
             this.Carrito = carrito;
             InicializarElementos();
-            CalcularPrecioTotal();
         } 
-        public async void CalcularPrecioTotal()
+
+        public async void InicializarElementos()
         {
             try
             {
@@ -74,13 +75,92 @@ namespace SmartTrade.Views
                 calleEntry.Text = direccion[0];
                 numeroEntry.Text = direccion[1];
                 ciudadEntry.Text = direccion[2];
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine($"Error al calcular el precio total: {e.Message}");
             }
+            numTarjeta = new Entry
+            {
+                Placeholder = "Nº tarjeta",
+                FontSize = 15,
+                TextColor = Color.Gray,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Margin = new Thickness(70, 10, 0, 0),
+                WidthRequest = 250,
+                MaxLength = 10
+            };
+            numTarjeta.Focused += NumTarjeta_Focused;
+            numTarjeta.TextChanged += NumTarjeta_TextChanged;
+            codSeguridad = new Entry
+            {
+                Placeholder = "Cod seguridad",
+                FontSize = 15,
+                TextColor = Color.Gray,
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                Margin = new Thickness(15, 0, 0, 0),
+                MaxLength = 3
+            };
+            codSeguridad.Focused += CodSeguridad_Focused;
+            codSeguridad.TextChanged += CodSeguridad_TextChanged;
+            fechaCad = new DatePicker
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                MinimumDate = DateTime.Today
+            };
+            guardarTarjetaCheck = new CheckBox
+            {
+                Margin = new Thickness(50, 0, 0, 0),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                IsChecked = false,
+
+            };
+            selectTarjetaButton = new Button
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Text = "Seleccionar tarjeta",
+                Margin = new Thickness(90, 10, 40, 0),
+                HeightRequest = 39,
+                CornerRadius = 25,
+                BackgroundColor = Color.DarkBlue,
+                FontSize = 13
+            };
+            selectTarjetaButton.Clicked += SelectTarjetaButton_Clicked;
+
+            correoPaypal = new Entry
+            {
+                Placeholder = "Correo electrónico",
+                FontSize = 15,
+                TextColor = Color.Gray,
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                Margin = new Thickness(70, 0, 0, 0),
+                MaxLength = 35,
+                WidthRequest = 200
+
+            };
+            correoPaypal.Focused += correoPaypal_Focused;
+            correoPaypal.TextChanged += correoPaypal_TextChanged;
+
+            passwordPaypal = new Entry
+            {
+                Placeholder = "Contraseña",
+                IsPassword = true,
+                FontSize = 15,
+                TextColor = Color.Gray,
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                Margin = new Thickness(70, 0, 0, 0),
+                MaxLength = 35
+            };
+            passwordPaypal.Focused += passwordPaypal_Focused;
+            passwordPaypal.TextChanged += passwordPaypal_TextChanged;
+
+            verContraseña = new CheckBox
+            {
+                IsChecked = false,
+                Margin = new Thickness(75, 0, 0, 0)
+            };
+            verContraseña.CheckedChanged += verContraseña_Changed;
         }
-
-
         override protected void OnAppearing()
         {
             base.OnAppearing();
@@ -234,88 +314,22 @@ namespace SmartTrade.Views
             //TODO
             Console.WriteLine("Finalizar Compra");
         }
-     
-        public void InicializarElementos()
+
+        private bool IsValidoCorreo(string correo)
         {
-            numTarjeta = new Entry
+            try
             {
-                Placeholder = "Nº tarjeta",
-                FontSize = 15,
-                TextColor = Color.Gray,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Margin = new Thickness(70, 20, 0, 0),
-                WidthRequest = 250,
-                MaxLength = 10
-            };
-            numTarjeta.Focused += NumTarjeta_Focused;
-            numTarjeta.TextChanged += NumTarjeta_TextChanged;
-            codSeguridad = new Entry
+                var addr = new System.Net.Mail.MailAddress(correo);
+                return addr.Address == correo;
+            }
+            catch
             {
-                Placeholder = "Cod seguridad",
-                FontSize = 15,
-                TextColor = Color.Gray,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                Margin = new Thickness(15, 0, 0, 0),
-                MaxLength = 3
-            };
-            codSeguridad.Focused += CodSeguridad_Focused;
-            codSeguridad.TextChanged += CodSeguridad_TextChanged;
-            fechaCad = new DatePicker
-            {
-                HorizontalOptions = LayoutOptions.Start,
-                MinimumDate = DateTime.Today
-            };
-            guardarTarjetaCheck = new CheckBox
-            {
-                Margin = new Thickness(50, 0, 0, 0),
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                IsChecked = false,
-               
-            };
-             selectTarjetaButton = new Button
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = "Seleccionar tarjeta",
-                Margin = new Thickness(90, 10, 40, 0),
-                HeightRequest = 39,
-                CornerRadius = 25,
-                BackgroundColor = Color.DarkBlue,
-                FontSize = 13
-            };
-            selectTarjetaButton.Clicked += SelectTarjetaButton_Clicked;
+                return false;
+            }
+        }
 
-            correoPaypal = new Entry
-            {
-                Placeholder = "Correo electrónico",
-                FontSize = 15,
-                TextColor = Color.Gray,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                Margin = new Thickness(70, 0, 0, 0),
-                MaxLength = 35
-            };
-            correoPaypal.Focused += correoPaypal_Focused;
-            correoPaypal.TextChanged += correoPaypal_TextChanged;
 
-            passwordPaypal = new Entry
-            {
-                Placeholder = "Contraseña",
-                IsPassword = true,
-                FontSize = 15,
-                TextColor = Color.Gray,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                Margin = new Thickness(70, 0, 0, 0),
-                MaxLength = 35
-            };
-            passwordPaypal.Focused += passwordPaypal_Focused;
-            passwordPaypal.TextChanged += passwordPaypal_TextChanged;
-
-            verContraseña = new CheckBox
-            {
-                IsChecked = false,
-                Margin = new Thickness(75, 0, 0, 0)
-            };
-            verContraseña.CheckedChanged += verContraseña_Changed;
-    }
+        //Pone los elementos de la tarjeta o del paypal segun la eleccion
     private void pickerPago_SelectedIndexChanged(object sender, EventArgs e)
         {
             StackLayout stackLayout = this.FindByName<StackLayout>("PagoStacklayout");
@@ -331,7 +345,7 @@ namespace SmartTrade.Views
                     {
                         Text = "Fecha caducidad",
                         FontSize= 13,
-                        Margin= new Thickness(70,40,0,10),
+                        Margin= new Thickness(70,20,0,-20),
                         HorizontalOptions= LayoutOptions.StartAndExpand
                     },
                     new StackLayout
@@ -349,7 +363,7 @@ namespace SmartTrade.Views
                     new StackLayout
                     {
                         Orientation = StackOrientation.Horizontal,
-                        Margin = new Thickness(70,0,0,20),
+                        Margin = new Thickness(50,0,0,20),
                         HorizontalOptions = LayoutOptions.StartAndExpand,
                         WidthRequest = 250,
                         Children =
@@ -377,7 +391,24 @@ namespace SmartTrade.Views
                     {
                         correoPaypal,
                         passwordPaypal,
-                        verContraseña,
+                        new StackLayout
+                        {
+                            Orientation = StackOrientation.Horizontal,
+                            Margin = new Thickness(50,0,0,20),
+                            HorizontalOptions = LayoutOptions.StartAndExpand,
+                            WidthRequest = 250,
+                            Children =
+                            {
+                                verContraseña,
+                                new Label
+                                {
+                                    Text= "Mostrar contraseña",
+                                    FontSize = 13,
+                                    TextColor= Color.Black,
+
+                                }
+                            }
+                       }
                         
                     }
                 };
@@ -385,7 +416,18 @@ namespace SmartTrade.Views
             }
             
         }
-
+        public Boolean isNumerico(string s)
+        {
+                foreach (char c in s)
+                {
+                    if (!char.IsDigit(c))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            
+        }
         
         private void NumTarjeta_Focused(object sender, FocusEventArgs e)
         {
@@ -399,6 +441,7 @@ namespace SmartTrade.Views
         private void NumTarjeta_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(numTarjeta.Text)) { numTarjeta.TextColor = Color.Black; }
+            
         }
         private void CodSeguridad_Focused(object sender, FocusEventArgs e)
         {
@@ -493,8 +536,8 @@ namespace SmartTrade.Views
 
         private async void RealizarPedidoButton_Clicked(object sender, EventArgs e)
         {
-            Tarjeta nuevaTarjeta;
-           if (pickerPago.SelectedItem.ToString() != "Tarjeta de crédito" || pickerPago.SelectedItem.ToString() != "Paypal")
+            
+           if (pickerPago.SelectedIndex == -1)
             {
                     await DisplayAlert("Error", "Por favor, elija un método de pago", "Aceptar");
                     return;
@@ -505,34 +548,77 @@ namespace SmartTrade.Views
                 await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
                 return;
             }
-            if (pickerPago.SelectedItem.ToString() == "Tarjeta de crédito")
+          
+           
+
+            else
             {
-                if(string.IsNullOrWhiteSpace(numTarjeta.Text) || string.IsNullOrWhiteSpace(codSeguridad.Text))
-                    await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
-                    return;
+                if (pickerPago.SelectedItem.ToString() == "Tarjeta de crédito")
+                {
+                    pagoTarjeta = true;
+                    if (string.IsNullOrWhiteSpace(numTarjeta.Text) || string.IsNullOrWhiteSpace(codSeguridad.Text))
+                    {
+                        await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
+                        return;
+                    }
+                    
+                    if ( !isNumerico(numTarjeta.Text))
+                    {
+                        await DisplayAlert("Error", "Por favor, introduzca una tarjeta válida", "Aceptar");
+                        numTarjeta.TextColor = Color.Red;
+                        return;
+                    }
+                    if (!isNumerico(codSeguridad.Text))
+                    {
+                        await DisplayAlert("Error", "Por favor, introduzca una tarjeta válida", "Aceptar");
+                        codSeguridad.TextColor = Color.Red;
+                        return;
+                    }
 
-            }
-            else if(pickerPago.SelectedItem.ToString() == "Paypal")
-            {
-                await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
-                return;
-            }
-            if (guardarTarjetaCheck.IsChecked)
-            {
-                List<Tarjeta> tarjetasUser = await service.getTarjetas();
-                nuevaTarjeta = new Tarjeta(numTarjeta.Text, fechaCad.Date, codSeguridad.Text, service.GetLoggedNickname());
-                if (!tarjetasUser.Contains(nuevaTarjeta))  service.AddTarjeta(nuevaTarjeta);
-
-
-            }
-            else try {
-                    string Direccion = calleEntry.Text + "," + numeroEntry.Text + "," + ciudadEntry;
-                    string numeroTarjeta = null;
-                    if (pickerPago.SelectedItem.ToString() == "Tarjeta de crédito") { numeroTarjeta = numTarjeta.ToString(); }
-
-                    Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion,numeroTarjeta,puntosTotalesPedido,"En preparación"); 
                 }
-                catch (Exception ex) { await DisplayAlert("Error", ex.Message, "Aceptar"); }
+                if (pickerPago.SelectedItem.ToString() == "Paypal")
+                {
+                    pagoTarjeta = false;
+                    if (string.IsNullOrWhiteSpace(correoPaypal.Text) || string.IsNullOrWhiteSpace(passwordPaypal.Text))
+                    {
+                        await DisplayAlert("Error", "Por favor, complete todos los campos.", "Aceptar");
+                        return;
+                    }
+                    if (!IsValidoCorreo(correoPaypal.Text))
+                    {
+                        await DisplayAlert("Error", "Por favor, ponga un correo válido.", "Aceptar");
+                        correoPaypal.TextColor = Color.Red;
+                        return;
+                    }
+                }
+
+                int numeroTarjeta = 0;
+                if (pagoTarjeta)
+                {
+                    if (guardarTarjetaCheck.IsChecked)
+                    {
+                        List<Tarjeta> tarjetasUser = await service.getTarjetas();
+                        int.TryParse(numTarjeta.Text, out int numTarjetaInt);
+                        int.TryParse(codSeguridad.Text, out int codSeguridadInt);
+                        numeroTarjeta = numTarjetaInt;
+                        Tarjeta nuevaTarjeta = new Tarjeta(numTarjetaInt, fechaCad.Date, codSeguridadInt, service.GetLoggedNickname());
+                        await service.AddTarjeta(nuevaTarjeta);
+                    }
+                }
+                foreach(ItemCarrito item in Carrito)
+                {
+                   await service.EliminarItemCarrito(item);
+                }
+
+            string Direccion = $"{calleEntry.Text}, {numeroEntry.Text}, {ciudadEntry.Text}";
+              
+            Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion, numeroTarjeta, puntosTotalesPedido, "En preparación");
+
+            await service.AddPedido(pedidoNuevo);
+            MisPedidos misPedidos = new MisPedidos(pedidoNuevo);
+            await Navigation.PushAsync(misPedidos);
+                
+            }
         }
     }
 }

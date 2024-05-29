@@ -26,7 +26,7 @@ namespace SmartTrade
             pedido.IdProductoVendedor = new List<int>();
             pedido.NickComprador = "rgc";
             pedido.Direccion = "si";
-            pedido.Num_tarjeta = "123456789";
+            pedido.Num_tarjeta = 123456789;
             pedido.Id = 0;
             pedido.IdProductoVendedor.Add(1);
             pedido.IdProductoVendedor.Add(12);
