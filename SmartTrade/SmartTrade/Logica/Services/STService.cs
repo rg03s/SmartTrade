@@ -353,21 +353,24 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<ListaDeseosItem> listaDeseos = await GetListaDeseos(GetLoggedNickname());
-                List<Producto> productos = new List<Producto>();
-                foreach (ListaDeseosItem item in listaDeseos)
+
+                var productos = await Task.WhenAll(listaDeseos.Select(async item =>
                 {
                     Producto_vendedor pv = await dal.GetById<Producto_vendedor>(item.ProductoVendedorId);
                     Producto p = await dal.GetById<Producto>(pv.IdProducto);
                     p.Producto_Vendedor = new List<Producto_vendedor> { pv };
-                    productos.Add(p);
-                }
-                return productos;
+                    return p;
+                }));
+
+                return productos.ToList();
             }
             catch (Exception ex)
             {
                 throw new ServiceException("Error al obtener los productos de la Lista de Deseos", ex);
             }
         }
+
+
 
         public async Task EliminarProductoListaDeseos(Producto_vendedor pv)
         {
