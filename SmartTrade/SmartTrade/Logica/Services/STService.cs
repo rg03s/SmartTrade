@@ -667,7 +667,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                throw new ServiceException("Error al cancelar el pedido", e);
+                throw new ServiceException("Error al cancelar el pedido con Id {pedido.Id}", e);
             }
         }
 
