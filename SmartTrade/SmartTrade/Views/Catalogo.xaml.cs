@@ -268,7 +268,7 @@ namespace SmartTrade.Views
         {
             //PARA PROBAR GUARDARMASTARDE
            //  Navigation.PushAsync(new ListaDeseos());
-            Navigation.PushAsync(new GuardarMasTarde());
+            Navigation.PushAsync(new ListaDeseos());
         }
 
         private void BtnLogin_click(object sender, EventArgs e)
