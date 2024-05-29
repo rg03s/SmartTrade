@@ -667,7 +667,14 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                throw new ServiceException("Error al cancelar el pedido con Id {pedido.Id}", e);
+                // Registrar la excepción completa incluyendo InnerException si existe
+                string errorMessage = $"Error al cancelar el pedido con Id {pedido.Id}: {e.Message}";
+                if (e.InnerException != null)
+                {
+                    errorMessage += $" | Inner Exception: {e.InnerException.Message}";
+                }
+                Console.WriteLine(errorMessage); // Usar el mecanismo de logging apropiado
+                throw new ServiceException(errorMessage, e);
             }
         }
 

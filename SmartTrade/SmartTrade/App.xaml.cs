@@ -32,7 +32,7 @@ namespace SmartTrade
             pedido.IdProductoVendedor.Add(12);
             pedido.IdProductoVendedor.Add(2);
             pedido.Puntos_obtenidos = 0;
-            //pedido.Estado = "Enviado";
+            //pedido.Estado = "Entregado";
 
             ///MainPage = new LoginPage();
             MainPage = new NavigationPage(new MisPedidos(pedido));
