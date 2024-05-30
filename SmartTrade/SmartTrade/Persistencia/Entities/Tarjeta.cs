@@ -19,7 +19,8 @@ namespace SmartTrade.Entities
         [Column("nº_seguridad")]
         public int Num_seguridad { get; set; }
 
-        [ForeignKey("id_comprador")]
+
+        [Column("id_comprador")]
         public string Nick_comprador { get; set; }
 
 
