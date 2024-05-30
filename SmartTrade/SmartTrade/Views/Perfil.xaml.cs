@@ -99,7 +99,7 @@ namespace SmartTrade.Views
                     List<ListaDeseosItem> listaDeseos = await service.GetListaDeseos(service.GetLoggedNickname());
                     List<Pedido> pedidos = await service.GetPedidos();
                     List<Producto_vendedor> productosVendedor = await service.GetLoggedProductosVendedor();
-                    List<Tarjeta> tarjetas = await service.GetLoggedTarjetas();
+                    List<Tarjeta> tarjetas = await service.getTarjetas();
                     foreach (ItemCarrito ic in carrito)
                     {
                         ic.NicknameUsuario = UsuarioEntry.Text;
