@@ -18,18 +18,25 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="125" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Text="Nombre usuario:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
                     <Entry x:Name="UsuarioEntry" Grid.Row="0" Grid.Column="1" />
-                <Label Grid.Row="1" Grid.Column="0" Text="Contraseña:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="Contraseña:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
                     <Entry x:Name="ContraseñaEntry" Grid.Row="1" Grid.Column="1" IsPassword="True" />
-                <Label Grid.Row="2" Grid.Column="0" Text="Correo:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
-                    <Entry x:Name="EmailEntry" Grid.Row="2" Grid.Column="1" Keyboard="Email" />
-                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Guardar cambios" Margin="30,10,30,0" Clicked="BtnModificar_click"/>
+                <StackLayout Grid.Row="2" Orientation="Horizontal">
+                    <CheckBox x:Name="verPass" CheckedChanged="VerContraseña_Changed"/>
+                    <Label Text="Ver Contraseña" TextColor="Gray" FontSize="13" VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+                    
+                    <Label Grid.Row="3" Grid.Column="0" Text="Correo:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
+                    <Entry x:Name="EmailEntry" Grid.Row="3" Grid.Column="1" Keyboard="Email" />
+                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Guardar cambios" Margin="30,10,30,0" Clicked="BtnModificar_click"/>
                 </Grid>
                 <Label x:Name="PuntosLabel" HorizontalOptions="CenterAndExpand" FontSize="24" FontAttributes="Bold" Margin="0,0,0,15"/>
                 <StackLayout Orientation="Vertical" Margin="30,0,30,0">

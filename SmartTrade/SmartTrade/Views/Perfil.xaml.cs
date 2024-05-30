@@ -40,6 +40,12 @@ namespace SmartTrade.Views
             EmailEntry.Text = service.GetEmail(nickname).Result;
         }
 
+        private void VerContraseña_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (verPass.IsChecked == true) ContraseñaEntry.IsPassword = false;
+            else ContraseñaEntry.IsPassword = true;
+        }
+
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Navigation.PopAsync();
