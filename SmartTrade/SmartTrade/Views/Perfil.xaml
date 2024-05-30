@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Text="Nombre usuario:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
-                    <Entry x:Name="UsuarioEntry" Grid.Row="0" Grid.Column="1" />
+                    <Entry x:Name="UsuarioEntry" Grid.Row="0" Grid.Column="1" IsEnabled="false"/>
                     <Label Grid.Row="1" Grid.Column="0" Text="Contraseña:" VerticalOptions="Center" HorizontalOptions="Center" FontSize="16"/>
                     <Entry x:Name="ContraseñaEntry" Grid.Row="1" Grid.Column="1" IsPassword="True" />
                 <StackLayout Grid.Row="2" Orientation="Horizontal">
