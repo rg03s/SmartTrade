@@ -40,6 +40,11 @@ namespace SmartTrade.Logica.Services
             }
         }
 
+        public void SaveChanges()
+        {
+            dal.Commit();
+        }
+
         public async Task AddUser(Usuario usuario)
         {
             if (IsEmailAlreadyRegistered(usuario.Email))
@@ -559,7 +564,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                throw new ServiceException("Error al obtener los pedidos", e);
+                throw new ServiceException("Error al obtener los pedidos " + e);
             }
         }
 
@@ -731,6 +736,45 @@ namespace SmartTrade.Logica.Services
         {
             Usuario usuario = await dal.GetById<Usuario>(nickname);
             return usuario.Email;
+        }
+
+        public Usuario GetLoggedUser()
+        {
+            return this.loggedUser;
+        }
+
+        public string GetLoggedPassword()
+        {
+            return this.loggedUser.Password;
+        }
+
+        public string GetLoggedEmail()
+        {
+            return this.loggedUser.Email;
+        }
+
+        public async Task<List<Producto_vendedor>> GetLoggedProductosVendedor()
+        {
+            try
+            {
+                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+                return productosVendedor.Where(pv => pv.NicknameVendedor == GetLoggedNickname()).ToList();
+            } catch (Exception e)
+            {
+                throw new ServiceException("Error al obtener los productos vendedor");
+            }
+        }
+
+        public async Task<List<Tarjeta>> GetLoggedTarjetas()
+        {
+            try
+            {
+                List<Tarjeta> tarjetas = await dal.GetAll<Tarjeta>();
+                return tarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
+            } catch (Exception e) 
+            {
+                throw new ServiceException("Error al obtener las tarjetas");
+            }
         }
     }
 }
