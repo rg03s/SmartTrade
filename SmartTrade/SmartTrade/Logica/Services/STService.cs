@@ -770,7 +770,7 @@ namespace SmartTrade.Logica.Services
             try
             {
                 List<Tarjeta> tarjetas = await dal.GetAll<Tarjeta>();
-                return tarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
+                return tarjetas.Where(t => t.Nick_comprador == loggedUser.Nickname).ToList();
             } catch (Exception e) 
             {
                 throw new ServiceException("Error al obtener las tarjetas");
