@@ -48,8 +48,8 @@ namespace SmartTrade.Views
             this.service = STService.Instance;
             this.Carrito = carrito;
             InicializarElementos();
-        } 
-
+        }
+      
         public async void InicializarElementos()
         {
             try
@@ -62,10 +62,10 @@ namespace SmartTrade.Views
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                    ProductosVendedor.Add(pv.Id);
+                    ProductosVendedor.Add(pv.Id * item.Cantidad);
                     Producto p = await service.GetProductoById(pv.IdProducto);
-                    puntosT += p.Puntos;
-                    precioT += pv.Precio;
+                    puntosT += p.Puntos * item.Cantidad;
+                    precioT += pv.Precio * item.Cantidad;
                 }
                 puntosTotalesPedido = puntosT;
                 precioTotalPedido = precioT;
@@ -597,11 +597,11 @@ namespace SmartTrade.Views
                 {
                     if (guardarTarjetaCheck.IsChecked)
                     {
-                        List<Tarjeta> tarjetasUser = await service.getTarjetas();
                         int.TryParse(numTarjeta.Text, out int numTarjetaInt);
                         int.TryParse(codSeguridad.Text, out int codSeguridadInt);
                         numeroTarjeta = numTarjetaInt;
-                        Tarjeta nuevaTarjeta = new Tarjeta(numTarjetaInt, fechaCad.Date, codSeguridadInt, service.GetLoggedNickname());
+                        string nickUser = service.GetLoggedNickname();
+                        Tarjeta nuevaTarjeta = new Tarjeta(numTarjetaInt, fechaCad.Date, codSeguridadInt, nickUser);
                         await service.AddTarjeta(nuevaTarjeta);
                     }
                 }

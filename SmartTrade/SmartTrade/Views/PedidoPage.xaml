@@ -107,7 +107,7 @@
                         <Label  x:Name="PuntosTotal" FontSize="18" FontAttributes="Bold" TextColor="Black" HorizontalOptions="StartAndExpand" Margin="0,20,-20,0" />
 
                     </StackLayout>
-                    <Button HorizontalOptions="FillAndExpand" Text="Realizar pedido" x:Name="RealizarPedidoButton" Clicked="RealizarPedidoButton_Clicked"  Margin="80,20,40,80" WidthRequest="250" HeightRequest="39" CornerRadius="25" BackgroundColor="DarkBlue"  FontSize="15" />
+                    <Button HorizontalOptions="FillAndExpand" Text="Realizar pedido" x:Name="RealizarPedidoButton" Clicked="RealizarPedidoButton_Clicked"  Margin="80,0,40,60" WidthRequest="250" HeightRequest="39" CornerRadius="25" BackgroundColor="DarkBlue"  FontSize="15" />
                     
                 </StackLayout>
                 
