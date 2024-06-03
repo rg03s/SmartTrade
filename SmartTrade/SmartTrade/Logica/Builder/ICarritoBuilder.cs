@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SmartTrade.Logica.CarritoBuilder
 {
     public interface IBuilder
     {
-        void SetProducts(List<ItemCarrito> p);
+        Task SetProducts(List<ItemCarrito> p);
         void Reset();   
     }
 }

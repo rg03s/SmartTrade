@@ -20,7 +20,6 @@ public class Director
     {
         builder.Reset();
         List<ItemCarrito> carrito = await service.GetCarrito();
-        Console.WriteLine("Setting products... " + carrito.Count);
-        builder.SetProducts(carrito);
+        await builder.SetProducts(carrito);
     }
 }

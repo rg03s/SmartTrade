@@ -29,21 +29,21 @@ public class CarritoBuilder : IBuilder
         this.puntosObtenidos = 0;
     }
 
-    public async void SetProducts(List<ItemCarrito> carrito)
+    public async Task SetProducts(List<ItemCarrito> carrito)
     {
         this.carrito = carrito;
         this.costeTotal = 0;
         this.puntosObtenidos = 0;
 
-        this.carrito.ForEach(async item =>
+        foreach (var item in this.carrito)
         {
             Producto producto = await service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
             Producto_vendedor productoVendedor = producto.Producto_Vendedor.FirstOrDefault(pv => pv.Id == item.idProductoVendedor);
 
             this.costeTotal += productoVendedor.Precio * item.Cantidad;
             this.puntosObtenidos += producto.Puntos * item.Cantidad;
-        });
-    }   
+        }
+    }
 
     public async Task AddItem(ItemCarrito item)
     {
