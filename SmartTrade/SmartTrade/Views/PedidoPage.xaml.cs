@@ -63,8 +63,10 @@ namespace SmartTrade.Views
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                    
-                    ProductosVendedor.Add(pv.Id);
+                    for(int i = 0; i < item.Cantidad; i++)
+                    {
+                        ProductosVendedor.Add(pv.Id);
+                    }
                     
                     Producto p = await service.GetProductoById(pv.IdProducto);
                     puntosT += p.Puntos * item.Cantidad;
@@ -623,8 +625,9 @@ namespace SmartTrade.Views
                 }
                 else { pedidoNuevo.EstablecerEstrategiaPago(new PagoPaypal(correoPaypal.Text, passwordPaypal.Text)); }
 
-                await service.AddPedido(pedidoNuevo);
                 pedidoNuevo.Pagar();
+                await service.AddPedido(pedidoNuevo);
+                
             MisPedidos misPedidos = new MisPedidos(pedidoNuevo);
             await Navigation.PushAsync(misPedidos);
                 
