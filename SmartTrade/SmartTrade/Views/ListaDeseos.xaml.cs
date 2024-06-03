@@ -184,7 +184,8 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
                                     new Image
                                     {
                                         Source = producto.Imagen,
-                                        HeightRequest = 150
+                                        HeightRequest = 150,
+                                        WidthRequest = 100,
                                     },
                                     btnEliminarFav
                                 },
@@ -227,7 +228,7 @@ private async Task CrearTarjeta(Producto producto, StackLayout stackLayout)
                                             {
                                                 Source = new UriImageSource { Uri = new Uri("https://i.ibb.co/NZ99Tp4/Huella-Eco.png") },
                                                 Aspect = Aspect.AspectFill,
-                                                HeightRequest = 13
+                                                HeightRequest = 15
                                             },
                                             new Label
                                             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SmartTrade.Logica.Estrategia;
 namespace SmartTrade.Entities
 {
     [Table("Pedido")]
@@ -27,5 +28,7 @@ namespace SmartTrade.Entities
         public int Puntos_obtenidos { get; set; }
         [Column("estado")]
         public string Estado { get; set; }
+        [NotMapped]
+        public IEstrategiaPago estrategiaPago { get; set;}
     }
 }
