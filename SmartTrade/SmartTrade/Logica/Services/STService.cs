@@ -20,7 +20,7 @@ namespace SmartTrade.Logica.Services
         private static STService instance;
         private Usuario loggedUser;
 
-        private STService(IDAL dal)
+        public STService(IDAL dal)
         {
             this.dal = dal;
         }
@@ -801,11 +801,6 @@ namespace SmartTrade.Logica.Services
             return usuario.Email;
         }
 
-        public Usuario GetLoggedUser()
-        {
-            return this.loggedUser;
-        }
-
         public string GetLoggedPassword()
         {
             return this.loggedUser.Password;
@@ -826,6 +821,11 @@ namespace SmartTrade.Logica.Services
             {
                 throw new ServiceException("Error al obtener los productos vendedor");
             }
+        }
+
+        public async Task<Usuario> GetUsuarioById(string nick)
+        {
+            return await dal.GetById<Usuario>(nick);
         }
     }
 }

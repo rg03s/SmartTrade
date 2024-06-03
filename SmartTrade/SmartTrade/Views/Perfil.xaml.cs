@@ -18,10 +18,12 @@ namespace SmartTrade.Views
     public partial class Perfil : ContentPage
     {
         STService service;
+        Usuario usuario;
         public Perfil()
         {
             InitializeComponent();
             this.service = STService.Instance;
+            this.usuario = service.GetUsuarioLogueado();
             HandlerBotones();
             HandlerEntries();
         }
@@ -38,6 +40,16 @@ namespace SmartTrade.Views
             UsuarioEntry.Text = nickname;
             ContraseñaEntry.Text = service.GetPassword(nickname).Result;
             EmailEntry.Text = service.GetEmail(nickname).Result;
+        }
+
+        public void ModificarContraseña(string nuevaContraseña)
+        {
+            this.usuario.Password = nuevaContraseña;
+        }
+
+        public void ModificarEmail(string nuevoEmail)
+        {
+            this.usuario.Email = nuevoEmail;
         }
 
         private void VerContraseña_Changed(object sender, TextChangedEventArgs e)
@@ -89,15 +101,14 @@ namespace SmartTrade.Views
             else 
             {
                 if (!await DisplayAlert("Confirmación", "¿Está seguro de que desea realizar cambios en su cuenta?", "SI", "NO")) return;
-                Usuario usuario = service.GetLoggedUser();
                 
                 if (ContraseñaEntry.Text != service.GetLoggedPassword())
                 {
-                    usuario.Password = ContraseñaEntry.Text;
+                    ModificarContraseña(ContraseñaEntry.Text);
                 }
                 if (EmailEntry.Text != service.GetLoggedEmail())
                 {
-                    usuario.Email = EmailEntry.Text;
+                    ModificarEmail(EmailEntry.Text);
                 }
                 service.SaveChanges();
                 await DisplayAlert("Éxito", "Cambios realizados con éxito", "ACEPTAR");
