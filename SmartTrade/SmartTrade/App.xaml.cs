@@ -34,8 +34,8 @@ namespace SmartTrade
             pedido.Puntos_obtenidos = 0;
             //pedido.Estado = "Entregado";
 
-            ///MainPage = new LoginPage();
-            MainPage = new NavigationPage(new MisPedidos(pedido));
+            MainPage = new NavigationPage(new Catalogo());
+            //MainPage = new NavigationPage(new MisPedidos(pedido));
         }
 
         protected override void OnStart()
