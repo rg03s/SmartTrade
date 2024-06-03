@@ -44,11 +44,10 @@ namespace SmartTrade.Persistencia.DataAccess
         public DbSet<Ropa> Ropa { get; set; }
         public DbSet<Tecnologia> Tecnologia { get; set; }
         public DbSet<ItemCarrito> Carrito { get; set; }
-        /*
-       
         public DbSet<Pedido> Pedido { get; set; }
         
-        
+        /*
+         
         public DbSet<Valoracion> Valoracion { get; set; }
        
         */
