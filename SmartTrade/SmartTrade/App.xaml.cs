@@ -15,7 +15,6 @@ namespace SmartTrade
     {
 
         ISTService service = STService.Instance;
-        Pedido pedido;
 
         public App()
         {

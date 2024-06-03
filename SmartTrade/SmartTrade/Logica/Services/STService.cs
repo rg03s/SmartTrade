@@ -20,7 +20,7 @@ namespace SmartTrade.Logica.Services
         private static STService instance;
         private Usuario loggedUser;
 
-        private STService(IDAL dal)
+        public STService(IDAL dal)
         {
             this.dal = dal;
         }
@@ -35,6 +35,14 @@ namespace SmartTrade.Logica.Services
                 }
                 return instance;
             }
+            set {
+                instance = value;
+            }
+        }
+
+        public void SaveChanges()
+        {
+            dal.Commit();
         }
 
         public async Task AddUser(Usuario usuario)
@@ -120,6 +128,11 @@ namespace SmartTrade.Logica.Services
             {
                 throw new ServiceException("Ha ocurrido un error al iniciar sesión. Por favor, inténtelo más tarde");
             }
+        }
+
+        public void Logout()
+        {
+            instance = null;
         }
 
         public async Task<List<Producto>> GetProductosPorCategoria(string categoria)
@@ -554,7 +567,7 @@ namespace SmartTrade.Logica.Services
             }
             catch (Exception e)
             {
-                throw new ServiceException("Error al obtener los pedidos", e);
+                throw new ServiceException("Error al obtener los pedidos " + e);
             }
         }
         
@@ -770,6 +783,50 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-       
+        public async Task<int> GetPuntos()
+        {
+            string nickname = GetLoggedNickname();
+            Usuario usuario = await dal.GetById<Usuario>(nickname);
+            return usuario.Puntos;
+        }
+
+        public async Task<string> GetPassword(string nickname)
+        {
+            Usuario usuario = await dal.GetById<Usuario>(nickname);
+            return usuario.Password;
+        }
+
+        public async Task<string> GetEmail(string nickname)
+        {
+            Usuario usuario = await dal.GetById<Usuario>(nickname);
+            return usuario.Email;
+        }
+
+        public string GetLoggedPassword()
+        {
+            return this.loggedUser.Password;
+        }
+
+        public string GetLoggedEmail()
+        {
+            return this.loggedUser.Email;
+        }
+
+        public async Task<List<Producto_vendedor>> GetLoggedProductosVendedor()
+        {
+            try
+            {
+                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+                return productosVendedor.Where(pv => pv.NicknameVendedor == GetLoggedNickname()).ToList();
+            } catch (Exception e)
+            {
+                throw new ServiceException("Error al obtener los productos vendedor");
+            }
+        }
+
+        public async Task<Usuario> GetUsuarioById(string nick)
+        {
+            return await dal.GetById<Usuario>(nick);
+        }
     }
 }

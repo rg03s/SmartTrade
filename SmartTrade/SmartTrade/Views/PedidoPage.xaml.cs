@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using SmartTrade.Entities;
+using SmartTrade.Logica.Estrategia;
 using SmartTrade.Logica.Services;
 using System;
 using System.Collections;
@@ -26,7 +27,7 @@ namespace SmartTrade.Views
 
         STService service;
         List<ItemCarrito> Carrito;
-        public Producto_vendedor productoVendedor_seleccionado;
+        
         List<int> ProductosVendedor;
         public double precioTotalPedido;
         public int puntosTotalesPedido;
@@ -62,7 +63,11 @@ namespace SmartTrade.Views
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                    ProductosVendedor.Add(pv.Id * item.Cantidad);
+                    for(int i = 0; i < item.Cantidad; i++)
+                    {
+                        ProductosVendedor.Add(pv.Id);
+                    }
+                    
                     Producto p = await service.GetProductoById(pv.IdProducto);
                     puntosT += p.Puntos * item.Cantidad;
                     precioT += pv.Precio * item.Cantidad;
@@ -296,6 +301,7 @@ namespace SmartTrade.Views
             }
         }
 
+      
 
         private void BtnAtras_click(object sender, EventArgs e)
         {
@@ -527,7 +533,6 @@ namespace SmartTrade.Views
                 
                 if (DateTime.TryParse(tarjetaArray[1], out DateTime dateValue))
                 {
-                    // Establecer la fecha en el DatePicker
                     fechaCad.Date = dateValue;
                 }
                 codSeguridad.Text = tarjetaArray[2];
@@ -536,7 +541,6 @@ namespace SmartTrade.Views
 
         private async void RealizarPedidoButton_Clicked(object sender, EventArgs e)
         {
-            
            if (pickerPago.SelectedIndex == -1)
             {
                     await DisplayAlert("Error", "Por favor, elija un método de pago", "Aceptar");
@@ -593,6 +597,7 @@ namespace SmartTrade.Views
                 }
 
                 int numeroTarjeta = 0;
+                int codigoSeguridad = 0;
                 if (pagoTarjeta)
                 {
                     if (guardarTarjetaCheck.IsChecked)
@@ -600,6 +605,7 @@ namespace SmartTrade.Views
                         int.TryParse(numTarjeta.Text, out int numTarjetaInt);
                         int.TryParse(codSeguridad.Text, out int codSeguridadInt);
                         numeroTarjeta = numTarjetaInt;
+                        codigoSeguridad = codSeguridadInt;
                         string nickUser = service.GetLoggedNickname();
                         Tarjeta nuevaTarjeta = new Tarjeta(numTarjetaInt, fechaCad.Date, codSeguridadInt, nickUser);
                         await service.AddTarjeta(nuevaTarjeta);
@@ -613,8 +619,15 @@ namespace SmartTrade.Views
             string Direccion = $"{calleEntry.Text}, {numeroEntry.Text}, {ciudadEntry.Text}";
               
             Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion, numeroTarjeta, puntosTotalesPedido, "En preparación");
+                if (pagoTarjeta)
+                {
+                    pedidoNuevo.EstablecerEstrategiaPago(new PagoTarjeta(numeroTarjeta, fechaCad.Date, codigoSeguridad));
+                }
+                else { pedidoNuevo.EstablecerEstrategiaPago(new PagoPaypal(correoPaypal.Text, passwordPaypal.Text)); }
 
-            await service.AddPedido(pedidoNuevo);
+                pedidoNuevo.Pagar();
+                await service.AddPedido(pedidoNuevo);
+                
             MisPedidos misPedidos = new MisPedidos(pedidoNuevo);
             await Navigation.PushAsync(misPedidos);
                 

@@ -255,8 +255,8 @@ namespace SmartTrade.Views
 
         public void BtnPerfil_click(object sender, EventArgs e)
         {
-            //TODO
-            Console.WriteLine("Perfil");
+            Perfil perfil = new Perfil();
+            Navigation.PushAsync(perfil);
         }
 
         private void BtnAlerta_click(object sender, EventArgs e)

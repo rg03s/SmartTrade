@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartTrade.Logica.Estrategia;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,6 +18,22 @@ namespace SmartTrade.Entities
             this.Num_tarjeta = num_tarjeta;
             this.Puntos_obtenidos = puntos_obtenidos;
             this.Estado = estado;
+        }
+        public void EstablecerEstrategiaPago(IEstrategiaPago estrategiaPago)
+        {
+            this.estrategiaPago = estrategiaPago;
+        }
+        public void Pagar()
+        {
+
+            if (estrategiaPago != null)
+            {
+                estrategiaPago.pagar();
+            }
+            else
+            {
+                Console.WriteLine("No se ha establecido una estrategia de pago.");
+            }
         }
     }
 }
