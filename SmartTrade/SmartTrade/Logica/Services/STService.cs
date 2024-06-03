@@ -827,22 +827,5 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos vendedor");
             }
         }
-
-        public async Task<List<Tarjeta>> getTarjetas()
-        {
-            try
-            {
-
-                Usuario user = GetUsuarioLogueado();
-
-                var tarjetas = await dal.GetAll<Tarjeta>();
-                return tarjetas.Where(tarj => tarj.Nick_comprador == loggedUser.Nickname).ToList();
-            }
-            catch (Exception e)
-            {
-                throw new ServiceException("Error al obtener tarjetas: " + e);
-            }
-
-        }
     }
 }
