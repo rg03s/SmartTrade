@@ -63,7 +63,9 @@ namespace SmartTrade.Views
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                    ProductosVendedor.Add(pv.Id * item.Cantidad);
+                    
+                    ProductosVendedor.Add(pv.Id);
+                    
                     Producto p = await service.GetProductoById(pv.IdProducto);
                     puntosT += p.Puntos * item.Cantidad;
                     precioT += pv.Precio * item.Cantidad;
@@ -529,7 +531,6 @@ namespace SmartTrade.Views
                 
                 if (DateTime.TryParse(tarjetaArray[1], out DateTime dateValue))
                 {
-                    // Establecer la fecha en el DatePicker
                     fechaCad.Date = dateValue;
                 }
                 codSeguridad.Text = tarjetaArray[2];

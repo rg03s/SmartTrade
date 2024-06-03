@@ -9,3 +9,4 @@ namespace SmartTrade.Logica.Estrategia
         void pagar();
     }
 }
+
