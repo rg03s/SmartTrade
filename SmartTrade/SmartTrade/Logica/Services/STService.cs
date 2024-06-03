@@ -783,8 +783,9 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public async Task<int> GetPuntos(string nickname)
+        public async Task<int> GetPuntos()
         {
+            string nickname = GetLoggedNickname();
             Usuario usuario = await dal.GetById<Usuario>(nickname);
             return usuario.Puntos;
         }

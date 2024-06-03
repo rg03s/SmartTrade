@@ -31,7 +31,7 @@ namespace SmartTrade.Views
         private void HandlerBotones()
         {
             HolaLabel.Text = "Hola, " + service.GetLoggedNickname();
-            PuntosLabel.Text = "Puntos acumulados: " + service.GetPuntos(service.GetLoggedNickname()).Result;
+            PuntosLabel.Text = "Puntos acumulados: " + service.GetPuntos().Result;
         }
 
         private void HandlerEntries()

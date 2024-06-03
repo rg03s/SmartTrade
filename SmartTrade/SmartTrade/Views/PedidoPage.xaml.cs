@@ -63,7 +63,11 @@ namespace SmartTrade.Views
                 foreach (ItemCarrito item in Carrito)
                 {
                     Producto_vendedor pv = await service.GetProductoVendedorById(item.idProductoVendedor);
-                    ProductosVendedor.Add(pv.Id * item.Cantidad);
+                    for(int i = 0; i < item.Cantidad; i++)
+                    {
+                        ProductosVendedor.Add(pv.Id);
+                    }
+                    
                     Producto p = await service.GetProductoById(pv.IdProducto);
                     puntosT += p.Puntos * item.Cantidad;
                     precioT += pv.Precio * item.Cantidad;
@@ -529,7 +533,6 @@ namespace SmartTrade.Views
                 
                 if (DateTime.TryParse(tarjetaArray[1], out DateTime dateValue))
                 {
-                    // Establecer la fecha en el DatePicker
                     fechaCad.Date = dateValue;
                 }
                 codSeguridad.Text = tarjetaArray[2];
@@ -622,8 +625,9 @@ namespace SmartTrade.Views
                 }
                 else { pedidoNuevo.EstablecerEstrategiaPago(new PagoPaypal(correoPaypal.Text, passwordPaypal.Text)); }
 
-                await service.AddPedido(pedidoNuevo);
                 pedidoNuevo.Pagar();
+                await service.AddPedido(pedidoNuevo);
+                
             MisPedidos misPedidos = new MisPedidos(pedidoNuevo);
             await Navigation.PushAsync(misPedidos);
                 
