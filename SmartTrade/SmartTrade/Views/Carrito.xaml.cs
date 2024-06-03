@@ -74,7 +74,7 @@ namespace SmartTrade.Views
                 else
                 {
                     stack_resumen.IsVisible = true;
-                    ActualizarResumen();
+                    ActualizarResumen();    
                     MostrarProductosCarrito(carrito.GetProductos());
                 }
             }
