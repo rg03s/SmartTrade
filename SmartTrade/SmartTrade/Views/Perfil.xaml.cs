@@ -67,7 +67,8 @@ namespace SmartTrade.Views
 
         private async void BtnTarjetas_click(object sender, EventArgs e)
         {
-            //TODO
+            Tarjetas tarjetas = new Tarjetas();
+            await Navigation.PushAsync(tarjetas);
         }
 
         private async void BtnMasTarde_click(object sender, EventArgs e)
@@ -97,6 +98,7 @@ namespace SmartTrade.Views
                 }
                 if (EmailEntry.Text != service.GetLoggedEmail())
                 {
+                    //TODO: checkear que el email sea valido
                     usuario.Email = EmailEntry.Text;
                 }
                 service.SaveChanges();

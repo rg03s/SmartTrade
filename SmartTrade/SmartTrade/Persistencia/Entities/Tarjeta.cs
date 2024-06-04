@@ -11,7 +11,7 @@ namespace SmartTrade.Entities
     {
         [Key]
         [Column("nº")]
-        public int Numero { get; set; }
+        public string Numero { get; set; }
 
         [Column("fecha_cad")]
         public DateTime Fecha_cad { get; set; }
