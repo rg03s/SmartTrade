@@ -221,6 +221,13 @@ namespace SmartTrade.Views
                 {
                     await service.CancelarPedido(miPedido);
                     UserDialogs.Instance.Toast("Pedido cancelado", TimeSpan.FromSeconds(3));
+                    //eliminar todos los productos del pedido para que ya no se muestre ninguno
+                    StackLayout stackLayout = this.FindByName<StackLayout>("listaPedidos");
+                    stackLayout.Children.Clear();
+                    //restableces la tarjeta de resumen toda vacía
+                    this.FindByName<Label>("span_costeTotal").Text = "0.00€";
+                    this.FindByName<Label>("span_estadoPedido").Text = "";
+                    this.FindByName<Label>("span_fechaEstimada").Text = "";
                     await Navigation.PopAsync();
                 }
                 catch (Exception ex)
@@ -233,28 +240,34 @@ namespace SmartTrade.Views
         
         private async void BtnDevolverPedido_click(object sender, EventArgs e)
         {
-            var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            if (miPedido.Estado == "Entregado")
             {
-                Message = "¿Desea devolver el pedido?",
-                OkText = "Sí",
-                CancelText = "No"
-            });
+                btnDevolverPedido.IsVisible = true;
+                var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Message = "¿Desea devolver el pedido?",
+                    OkText = "Sí",
+                    CancelText = "No"
+                });
 
-            if (result)
-            {
-                try
+                if (result)
                 {
-                    await service.DevolverPedido(miPedido);
-                    UserDialogs.Instance.Toast("Pedido pendiente de devolución", TimeSpan.FromSeconds(3));
-                    await Navigation.PopAsync();
+                    try
+                    {
+                        await service.DevolverPedido(miPedido);
+                        UserDialogs.Instance.Toast("Pedido pendiente de devolución", TimeSpan.FromSeconds(3));
+                        await Navigation.PopAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlert("Error", "No se pudo procesar la devolución", "OK");
+                        Console.WriteLine($"Error al devolver el pedido: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Error", "No se pudo procesar la devolución", "OK");
-                    Console.WriteLine($"Error al devolver el pedido: {ex.Message}");
-                }
+
             }
+            
         }
-
+        
     }
 }
