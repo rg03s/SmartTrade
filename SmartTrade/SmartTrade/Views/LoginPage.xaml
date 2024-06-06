@@ -61,7 +61,7 @@
 
 
                     <Button Grid.Row="5" 
-                            Text="Login" 
+                            Text="INICIAR SESIÓN" 
                             BackgroundColor="#1C375C" 
                             CornerRadius="20"
                             TextColor="White"

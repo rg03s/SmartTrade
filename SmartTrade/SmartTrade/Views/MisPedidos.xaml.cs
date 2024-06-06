@@ -29,7 +29,8 @@ namespace SmartTrade.Views
         private void BtnAtras_click(object sender, EventArgs e)
         {
             Console.WriteLine("Atras");
-            Navigation.PopAsync();
+            Catalogo catalogo = new Catalogo();
+            Navigation.PushAsync(catalogo);
         }
 
         private void BtnPerfil_click(object sender, EventArgs e)
