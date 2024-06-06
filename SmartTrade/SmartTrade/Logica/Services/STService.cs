@@ -825,6 +825,7 @@ namespace SmartTrade.Logica.Services
             listaTarjetas = listaTarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
 
             return listaTarjetas.Any();
+        }
             
         public async Task<Usuario> GetUsuarioById(string nick)
         {
