@@ -12,7 +12,8 @@
                     <Button Text="&#xf053;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="21" TextColor="Black" BackgroundColor="Transparent" WidthRequest="50" HeightRequest="50" Clicked="BtnAtras_click" />
                 </StackLayout>
                 <Label Text="Mis Tarjetas" FontSize="24" Margin="15,0,0,15" TextColor="SlateGray"/>
-                <StackLayout Orientation="Horizontal" x:Name="StackTarjetas">
+                <StackLayout Orientation="Vertical" x:Name="StackTarjetas">
+                    <!-- MANEJADO CON CÓDIGO -->
                 </StackLayout>
                 <Frame CornerRadius="10" Margin="10">
                     <StackLayout>

@@ -821,10 +821,7 @@ namespace SmartTrade.Logica.Services
         public async Task<bool> NumTarjetaYaRegistradoEnMismoUsuario(string num)
         {
             Tarjeta tarjeta = await dal.GetById<Tarjeta>(num);
-            List<Tarjeta> listaTarjetas = await dal.GetAll<Tarjeta>();
-            listaTarjetas = listaTarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
-
-            return listaTarjetas.Any();
+            return tarjeta != null;
         }
             
         public async Task<Usuario> GetUsuarioById(string nick)
