@@ -616,6 +616,12 @@ namespace SmartTrade.Views
                    await service.EliminarItemCarrito(item);
                 }
 
+                foreach(ItemCarrito item in Carrito)
+                {
+                  Producto_vendedor prodven = await service.GetProductoVendedorById(item.idProductoVendedor); 
+                    prodven.Stock -= item.Cantidad;
+                }
+
             string Direccion = $"{calleEntry.Text}, {numeroEntry.Text}, {ciudadEntry.Text}";
               
             Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion, numeroTarjeta, puntosTotalesPedido, "En preparación");
@@ -625,6 +631,7 @@ namespace SmartTrade.Views
                 }
                 else { pedidoNuevo.EstablecerEstrategiaPago(new PagoPaypal(correoPaypal.Text, passwordPaypal.Text)); }
 
+                
                 pedidoNuevo.Pagar();
                 await service.AddPedido(pedidoNuevo);
                 
