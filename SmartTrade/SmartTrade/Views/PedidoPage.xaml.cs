@@ -596,7 +596,7 @@ namespace SmartTrade.Views
                     }
                 }
 
-                int numeroTarjeta = 0;
+                string numeroTarjeta = "";
                 int codigoSeguridad = 0;
                 if (pagoTarjeta)
                 {
@@ -604,10 +604,10 @@ namespace SmartTrade.Views
                     {
                         int.TryParse(numTarjeta.Text, out int numTarjetaInt);
                         int.TryParse(codSeguridad.Text, out int codSeguridadInt);
-                        numeroTarjeta = numTarjetaInt;
+                        numeroTarjeta = numTarjeta.Text;
                         codigoSeguridad = codSeguridadInt;
                         string nickUser = service.GetLoggedNickname();
-                        Tarjeta nuevaTarjeta = new Tarjeta(numTarjetaInt, fechaCad.Date, codSeguridadInt, nickUser);
+                        Tarjeta nuevaTarjeta = new Tarjeta(numeroTarjeta, fechaCad.Date, codSeguridadInt, nickUser);
                         await service.AddTarjeta(nuevaTarjeta);
                     }
                 }

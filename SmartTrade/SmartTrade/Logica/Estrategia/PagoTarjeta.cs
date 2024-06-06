@@ -8,10 +8,10 @@ namespace SmartTrade.Logica.Estrategia
     public class PagoTarjeta : IEstrategiaPago
     {
 
-        private int numero;
+        private string numero;
         private DateTime fecha_cad;
         private int codSeduridad;
-        public PagoTarjeta(int numeroTarjeta, DateTime fechaExpiracion, int codigoSeguridad)
+        public PagoTarjeta(string numeroTarjeta, DateTime fechaExpiracion, int codigoSeguridad)
         {
             this.numero = numeroTarjeta;
             this.fecha_cad = fechaExpiracion;
