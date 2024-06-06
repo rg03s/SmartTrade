@@ -21,3 +21,5 @@ namespace SmartTrade.Logica.Estrategia
         }
     }
 }
+
+

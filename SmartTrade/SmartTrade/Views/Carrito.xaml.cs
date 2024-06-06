@@ -16,9 +16,8 @@ namespace SmartTrade.Views
     public partial class Carrito : ContentPage
     {
 
-        STService service;
-        double costeTotal = 0, puntosObtenidos = 0;
-        List<ItemCarrito> carrito;
+        public STService service;
+        CarritoBuilder carrito;
 
         public Carrito()
         {
@@ -38,14 +37,15 @@ namespace SmartTrade.Views
         {
             try
             {
-                carrito = await service.GetCarrito();
+                carrito = new CarritoBuilder();
+                Director director = new Director();
+                await director.ConstruirCarrito(carrito);
                 StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
                 StackLayout stack_resumen = this.FindByName<StackLayout>("stack_Resumen");
 
                 stackLayout.Children.Clear();
-                costeTotal = 0; puntosObtenidos = 0;
 
-                if (carrito.Count == 0)
+                if (carrito.GetProductos().Count == 0)
                 {
 
                     stack_resumen.IsVisible = false;
@@ -74,7 +74,8 @@ namespace SmartTrade.Views
                 else
                 {
                     stack_resumen.IsVisible = true;
-                    MostrarProductosCarrito(carrito);
+                    ActualizarResumen();    
+                    MostrarProductosCarrito(carrito.GetProductos());
                 }
             }
             catch (Exception e)
@@ -83,14 +84,12 @@ namespace SmartTrade.Views
             }
         }
 
-        private void MostrarProductosCarrito(List<ItemCarrito> carrito)
+        private void MostrarProductosCarrito(List<ItemCarrito> productosCarrito)
         {
 
             StackLayout stackLayout = this.FindByName<StackLayout>("listaItems");
-            Span span_costeTotal = this.FindByName<Span>("span_costeTotal");
-            Span span_puntosObtenidos = this.FindByName<Span>("span_puntosObtenidos");
 
-            foreach (ItemCarrito item in carrito)
+            foreach (ItemCarrito item in productosCarrito)
             {
                 crearTarjeta(item, stackLayout);
             }
@@ -103,12 +102,8 @@ namespace SmartTrade.Views
             {
                 Producto producto = await service.GetProductoByIdProductoVendedor(item.idProductoVendedor);
                 Producto_vendedor productoVendedor = producto.Producto_Vendedor.FirstOrDefault(pv => pv.Id == item.idProductoVendedor);
-
-                costeTotal += productoVendedor.Precio * item.Cantidad;
-                puntosObtenidos += producto.Puntos * item.Cantidad;
-
-                span_costeTotal.Text = costeTotal.ToString() + "€";
-                span_puntosObtenidos.Text = puntosObtenidos.ToString();
+                span_costeTotal.Text = carrito.GetCosteTotal().ToString() + "€";
+                span_puntosObtenidos.Text = carrito.GetPuntosObtenidos().ToString();
 
                 string caracteristicas = "";
                 if (item.Caracteristica != null)
@@ -130,16 +125,13 @@ namespace SmartTrade.Views
 
                 Label cantidadLabel = new Label { Text = item.Cantidad.ToString(), FontAttributes = FontAttributes.Bold, TextColor = Color.Black, VerticalOptions = LayoutOptions.Center };
 
-                roundedButtonPlus.Clicked += (sender, args) =>
+                roundedButtonPlus.Clicked += async (sender, args) =>
                 {
-                    // Sumar la cantidad al hacer clic en el botón de sumar
-                    item.Cantidad++;
+                    
+                    await carrito.ActualizarCantidadItem(item, 1);
                     cantidadLabel.Text = item.Cantidad.ToString();
-                    costeTotal += productoVendedor.Precio;
-                    puntosObtenidos += producto.Puntos;
-                    //actualizar en la base de datos
-                    service.ActualizarItemCarrito(item);
                     ActualizarResumen();
+
                     UserDialogs.Instance.Toast("Cantidad del producto actualizada", TimeSpan.FromSeconds(3));
                 };
 
@@ -155,18 +147,16 @@ namespace SmartTrade.Views
                     HorizontalOptions = LayoutOptions.Center
                 };
 
-                roundedButtonMinus.Clicked += (sender, args) =>
+                roundedButtonMinus.Clicked += async (sender, args) =>
                 {
                     // Restar la cantidad al hacer clic en el botón de restar
                     if (item.Cantidad > 1)
                     {
-                        item.Cantidad--;
+                        
+                        await carrito.ActualizarCantidadItem(item, -1);
                         cantidadLabel.Text = item.Cantidad.ToString();
-                        costeTotal -= productoVendedor.Precio;
-                        puntosObtenidos -= producto.Puntos;
-                        //actualizar en la base de datos
-                        service.ActualizarItemCarrito(item);
                         ActualizarResumen();
+
                         UserDialogs.Instance.Toast("Cantidad del producto actualizada", TimeSpan.FromSeconds(3));
                     }
                     else if (item.Cantidad == 1)
@@ -181,6 +171,7 @@ namespace SmartTrade.Views
                                 if (result)
                                 {
                                     await service.EliminarItemCarrito(item);
+                                    _ = carrito.RemoveItem(item);
                                     CargarProductosCarrito();
                                 }
                             }
@@ -242,16 +233,6 @@ namespace SmartTrade.Views
                                     new Label { Text = caracteristicas, TextColor = Color.Gray } ,
                                     quantityButtonsLayout,
                                     new Label { Text = productoVendedor.Precio.ToString() + "€", FontAttributes = FontAttributes.Bold, FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)), TextColor = Color.Black },
-                                    //new Button
-                                    //{
-                                    //    Text = "Eliminar",
-                                    //    CornerRadius = 10,
-                                    //    Command = new Command(async () =>
-                                    //    {
-                                    //        await service.EliminarItemCarrito(item);
-                                    //        CargarProductosCarrito();
-                                    //    })
-                                    //}
                                 }
                             }
                         }
@@ -259,6 +240,7 @@ namespace SmartTrade.Views
                 };
 
                 stackLayout.Children.Add(productCard);
+
             }
             catch (Exception e)
             {
@@ -268,8 +250,8 @@ namespace SmartTrade.Views
 
         private void ActualizarResumen()
         {
-            span_costeTotal.Text = costeTotal.ToString() + "€";
-            span_puntosObtenidos.Text = puntosObtenidos.ToString();
+            span_costeTotal.Text = carrito.GetCosteTotal().ToString() + "€";
+            span_puntosObtenidos.Text = carrito.GetPuntosObtenidos().ToString();
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
@@ -286,7 +268,7 @@ namespace SmartTrade.Views
 
         private void BtnFinalizarCompra_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PedidoPage(carrito));
+            Navigation.PushAsync(new PedidoPage(carrito.GetProductos()));
             //TODO
             Console.WriteLine("Finalizar Compra");
         }

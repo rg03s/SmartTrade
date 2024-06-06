@@ -20,7 +20,7 @@ namespace SmartTrade.Logica.Services
         private static STService instance;
         private Usuario loggedUser;
 
-        private STService(IDAL dal)
+        public STService(IDAL dal)
         {
             this.dal = dal;
         }
@@ -765,8 +765,9 @@ namespace SmartTrade.Logica.Services
             }
         }
 
-        public async Task<int> GetPuntos(string nickname)
+        public async Task<int> GetPuntos()
         {
+            string nickname = GetLoggedNickname();
             Usuario usuario = await dal.GetById<Usuario>(nickname);
             return usuario.Puntos;
         }
@@ -781,11 +782,6 @@ namespace SmartTrade.Logica.Services
         {
             Usuario usuario = await dal.GetById<Usuario>(nickname);
             return usuario.Email;
-        }
-
-        public Usuario GetLoggedUser()
-        {
-            return this.loggedUser;
         }
 
         public string GetLoggedPassword()
@@ -809,7 +805,7 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos vendedor");
             }
         }
-
+        
         public async Task BorrarTarjeta(Tarjeta tarjeta)
         {
             await dal.Delete<Tarjeta>(tarjeta);
@@ -829,6 +825,10 @@ namespace SmartTrade.Logica.Services
             listaTarjetas = listaTarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
 
             return listaTarjetas.Any();
+            
+        public async Task<Usuario> GetUsuarioById(string nick)
+        {
+            return await dal.GetById<Usuario>(nick);
         }
     }
 }
