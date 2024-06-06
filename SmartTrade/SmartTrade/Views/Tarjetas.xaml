@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             x:Class="SmartTrade.Views.Tarjetas"
+             NavigationPage.HasNavigationBar="False">
+             
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="&#xf053;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="21" TextColor="Black" BackgroundColor="Transparent" WidthRequest="50" HeightRequest="50" Clicked="BtnAtras_click" />
+                </StackLayout>
+                <Label Text="Mis Tarjetas" FontSize="24" Margin="15,0,0,15" TextColor="SlateGray"/>
+                <StackLayout Orientation="Horizontal" x:Name="StackTarjetas">
+                </StackLayout>
+                <Frame CornerRadius="10" Margin="10">
+                    <StackLayout>
+                        <Label Text="N° de tarjeta:"/>
+                        <Entry Unfocused="NumEntry_unfocused" x:Name="NumEntry" Keyboard="Telephone"/>
+                        <Label Text="Caducidad:" />
+                        <DatePicker x:Name="CaducidadPicker" MinimumDate="{x:Static System:DateTime.Today}"/>
+                        <Label Text="N° seguridad:" />
+                        <Entry Unfocused="SegEntry_unfocused" x:Name="SegEntry" Keyboard="Telephone"/>
+                        <Label Text="Titular:" />
+                        <Entry x:Name="TitularEntry"/>
+                    </StackLayout>
+                </Frame>
+                <Button Text="Añadir nueva tarjeta" HorizontalOptions="FillAndExpand" Margin="15,0,15,0" Clicked="BtnAñadir_click"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

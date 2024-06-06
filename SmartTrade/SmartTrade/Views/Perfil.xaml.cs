@@ -79,7 +79,8 @@ namespace SmartTrade.Views
 
         private async void BtnTarjetas_click(object sender, EventArgs e)
         {
-            //TODO
+            Tarjetas tarjetas = new Tarjetas();
+            await Navigation.PushAsync(tarjetas);
         }
 
         private async void BtnMasTarde_click(object sender, EventArgs e)

@@ -48,6 +48,9 @@
 	  <EmbeddedResource Update="Views\AgregarProducto.xaml">
 		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>
+	  <EmbeddedResource Update="Views\Tarjetas.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Views\PedidoPage.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>
@@ -78,6 +81,9 @@
     </Compile>
     <Compile Update="Views\AgregarProducto.xaml.cs">
       <DependentUpon>AgregarProducto.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Tarjetas.xaml.cs">
+      <DependentUpon>Tarjetas.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

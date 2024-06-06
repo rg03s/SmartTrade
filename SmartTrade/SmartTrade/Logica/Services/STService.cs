@@ -729,24 +729,6 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos del pedido", e);
             }
         }
-        public async Task AddTarjeta(Tarjeta nuevaTarjeta)
-        {
-            try
-            {
-                List<Tarjeta> tarjetasUser = await dal.GetAll<Tarjeta>();
-                Tarjeta tarjeta = tarjetasUser.Where(t => t.Numero == nuevaTarjeta.Numero && t.Nick_comprador == GetLoggedNickname()).FirstOrDefault();
-                if (tarjeta == null)
-                {
-                    await dal.Add(nuevaTarjeta);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error al agregar tarjeta: " + e.Message);
-            }
-
-
-        }
 
         public async Task<List<Tarjeta>> getTarjetas()
         {
@@ -823,7 +805,27 @@ namespace SmartTrade.Logica.Services
                 throw new ServiceException("Error al obtener los productos vendedor");
             }
         }
+        
+        public async Task BorrarTarjeta(Tarjeta tarjeta)
+        {
+            await dal.Delete<Tarjeta>(tarjeta);
+            dal.Commit();
+        }
 
+        public async Task AddTarjeta(Tarjeta tarjeta)
+        {
+            await dal.Add<Tarjeta>(tarjeta);
+            dal.Commit();
+        }
+
+        public async Task<bool> NumTarjetaYaRegistradoEnMismoUsuario(string num)
+        {
+            Tarjeta tarjeta = await dal.GetById<Tarjeta>(num);
+            List<Tarjeta> listaTarjetas = await dal.GetAll<Tarjeta>();
+            listaTarjetas = listaTarjetas.Where(t => t.Nick_comprador == GetLoggedNickname()).ToList();
+
+            return listaTarjetas.Any();
+            
         public async Task<Usuario> GetUsuarioById(string nick)
         {
             return await dal.GetById<Usuario>(nick);
