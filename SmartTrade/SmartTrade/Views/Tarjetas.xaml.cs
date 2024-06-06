@@ -112,7 +112,7 @@ namespace SmartTrade.Views
 
         private async void BtnAñadir_click(object sender, EventArgs e)
         {
-            if (NumEntry.Text == null || SegEntry.Text == null || TitularEntry.Text == null)
+            if (NumEntry.Text == null || SegEntry.Text == null)
             {
                 await DisplayAlert("Error", "No pueden haber campos vacíos", "ACEPTAR");
                 return;

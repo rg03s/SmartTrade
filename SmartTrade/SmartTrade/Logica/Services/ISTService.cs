@@ -28,7 +28,7 @@ namespace SmartTrade.Logica.Services
         Task<List<Producto_vendedor>> GetAProductoVendedorByProducto(Producto p);
         Task<List<Pedido>> GetPedidos();
         Task CargarDetallesPedido(Pedido pedido);
-        ImageSource GetImagenPedido(Pedido pedido);
+        Task<ImageSource> GetImagenPedido(Pedido pedido);
         string GetNombreProductoPedido(int idProducto);
         string GetDescripcionProductoPedido(int idProducto);
        Task<Producto_vendedor> GetProductoVendedorById(int id);

@@ -75,7 +75,8 @@ namespace SmartTrade.Views
         
         private async void BtnPedidos_click(object sender, EventArgs e)
         {
-            //TODO: Acceder a la página de pedidos del usuario
+            ResumenPedidos resumenPedidos = new ResumenPedidos();
+            await Navigation.PushAsync(resumenPedidos);
         }
 
         private async void BtnTarjetas_click(object sender, EventArgs e)

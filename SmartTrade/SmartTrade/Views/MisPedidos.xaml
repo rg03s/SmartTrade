@@ -21,6 +21,7 @@
                     BackgroundColor="Transparent"
                     WidthRequest="50"
                     HeightRequest="50"
+                    Clicked="BtnAtras_click"
                 />
                 <Button HorizontalOptions="EndAndExpand"
                     Text="&#xf007;" 
@@ -30,12 +31,13 @@
                     BackgroundColor="Transparent"
                     WidthRequest="50"
                     HeightRequest="50"
+                    Clicked="BtnPerfil_click"
                 />
             </StackLayout>
 
             <!-- Título de la página -->
             <StackLayout Grid.Row="1" Margin="20,20,0,0">
-                <Label Text="Mis pedidos" FontSize="Title" TextColor="Black" />
+                <Label Text="Mi pedido" FontSize="Title" TextColor="Black" />
             </StackLayout>
 
             <!-- Contenido principal -->

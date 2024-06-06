@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             x:Class="SmartTrade.Views.ResumenPedidos"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="&#xf053;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="21" TextColor="Black" BackgroundColor="Transparent" WidthRequest="50" HeightRequest="50" Clicked="BtnAtras_click" />
+                </StackLayout>
+                <Label Text="Mis Pedidos" FontSize="24" Margin="15,0,0,15" TextColor="SlateGray"/>
+                <StackLayout Orientation="Vertical" x:Name="StackPedidos">
+                    <!-- MANEJADO CON CÓDIGO -->
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

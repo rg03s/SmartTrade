@@ -23,8 +23,6 @@
                         <DatePicker x:Name="CaducidadPicker" MinimumDate="{x:Static System:DateTime.Today}"/>
                         <Label Text="N° seguridad:" />
                         <Entry Unfocused="SegEntry_unfocused" x:Name="SegEntry" Keyboard="Telephone"/>
-                        <Label Text="Titular:" />
-                        <Entry x:Name="TitularEntry"/>
                     </StackLayout>
                 </Frame>
                 <Button Text="Añadir nueva tarjeta" HorizontalOptions="FillAndExpand" Margin="15,0,15,0" Clicked="BtnAñadir_click"/>
