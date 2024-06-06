@@ -23,17 +23,6 @@
                        Margin="15,10,0,0"
                        HorizontalOptions="EndAndExpand"/>-->
                 <Button HorizontalOptions="EndAndExpand"
-                    Text="&#xf07a;" 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    FontSize="21"
-                    TextColor="Black"
-                    BackgroundColor="Transparent"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Margin="15,10,0,0"
-                    Clicked="BtnCarrito_click"
-                />
-                <Button HorizontalOptions="End"
                     Text="&#xf007;" 
                     FontFamily="{StaticResource FontAwesomeSolid}"
                     FontSize="21"

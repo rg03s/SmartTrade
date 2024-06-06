@@ -34,8 +34,9 @@ namespace SmartTrade.Views
 
         private void BtnPerfil_click(object sender, EventArgs e)
         {
-            //TODO 
             Console.WriteLine("Perfil");
+            Perfil perfil = new Perfil();
+            Navigation.PushAsync(perfil);
         }
 
         protected override async void OnAppearing()

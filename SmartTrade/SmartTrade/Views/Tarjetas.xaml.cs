@@ -25,7 +25,7 @@ namespace SmartTrade.Views
             MostrarTarjetas();
         }
 
-        private async void MostrarTarjetas()
+        private async Task MostrarTarjetas()
         {
             listaTarjetas = await service.getTarjetas();
             StackLayout StackTarjetas = (StackLayout)FindByName("StackTarjetas");
@@ -50,7 +50,7 @@ namespace SmartTrade.Views
                     if (confirmacion)
                     {
                         await service.BorrarTarjeta(t);
-                        MostrarTarjetas();
+                        await MostrarTarjetas();
                     }
                 };
 
@@ -112,8 +112,7 @@ namespace SmartTrade.Views
 
         private async void BtnAñadir_click(object sender, EventArgs e)
         {
-            //TODO
-            if (NumEntry.Text == null || SegEntry.Text == null || TitularEntry.Text == null)
+            if (NumEntry.Text == null || SegEntry.Text == null)
             {
                 await DisplayAlert("Error", "No pueden haber campos vacíos", "ACEPTAR");
                 return;
@@ -137,7 +136,7 @@ namespace SmartTrade.Views
                 await Task.Delay(1000);
                 UserDialogs.Instance.HideLoading();
                 await DisplayAlert("Éxito", "Tarjeta añadida con éxito", "ACEPTAR");
-                Navigation.PopAsync();
+                await MostrarTarjetas();
             }
         }
 

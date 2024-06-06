@@ -587,13 +587,13 @@ namespace SmartTrade.Logica.Services
         }
 
         //metodo para obtener la imagen de a partir de un objeto de tipo Pedido, teniendo los id de la lista de productos
-        public ImageSource GetImagenPedido(Pedido pedido)
+        public async Task<ImageSource> GetImagenPedido(Pedido pedido)
         {
             try
             {
-                List<ItemCarrito> itemsPedido = dal.GetAll<ItemCarrito>().Result;
-                List<Producto_vendedor> productosVendedor = dal.GetAll<Producto_vendedor>().Result;
-                List<Producto> productos = dal.GetAll<Producto>().Result;
+                List<ItemCarrito> itemsPedido = await dal.GetAll<ItemCarrito>();
+                List<Producto_vendedor> productosVendedor = await dal.GetAll<Producto_vendedor>();
+                List<Producto> productos = await dal.GetAll<Producto>();
                 List<Producto> productosPedido = new List<Producto>();
 
                 foreach (int id in pedido.IdProductoVendedor)

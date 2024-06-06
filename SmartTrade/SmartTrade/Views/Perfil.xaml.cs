@@ -6,6 +6,7 @@ using SmartTrade.Persistencia.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,7 +75,8 @@ namespace SmartTrade.Views
         
         private async void BtnPedidos_click(object sender, EventArgs e)
         {
-            //TODO: Acceder a la página de pedidos del usuario
+            ResumenPedidos resumenPedidos = new ResumenPedidos();
+            await Navigation.PushAsync(resumenPedidos);
         }
 
         private async void BtnTarjetas_click(object sender, EventArgs e)
@@ -98,21 +100,39 @@ namespace SmartTrade.Views
         private async void BtnModificar_click(object sender, EventArgs e)
         {
             if (ContraseñaEntry.Text == service.GetLoggedPassword() && EmailEntry.Text == service.GetLoggedEmail())
-                await DisplayAlert("Error", "¡No se ha realizado ningún cambio!", "ACEPTAR");
-            else 
             {
-                if (!await DisplayAlert("Confirmación", "¿Está seguro de que desea realizar cambios en su cuenta?", "SI", "NO")) return;
-                
-                if (ContraseñaEntry.Text != service.GetLoggedPassword())
-                {
-                    ModificarContraseña(ContraseñaEntry.Text);
-                }
-                if (EmailEntry.Text != service.GetLoggedEmail())
-                {
-                    ModificarEmail(EmailEntry.Text);
-                }
-                service.SaveChanges();
-                await DisplayAlert("Éxito", "Cambios realizados con éxito", "ACEPTAR");
+                await DisplayAlert("Error", "¡No se ha realizado ningún cambio!", "ACEPTAR"); return;
+            }
+            if (!IsValidoCorreo(EmailEntry.Text))
+            {
+                await DisplayAlert("Error", "¡El email proporcionado no es válido!", "ACEPTAR"); return;
+            }
+            
+            if (!await DisplayAlert("Confirmación", "¿Está seguro de que desea realizar cambios en su cuenta?", "SI", "NO")) return;
+            
+            if (ContraseñaEntry.Text != service.GetLoggedPassword())
+            {
+                ModificarContraseña(ContraseñaEntry.Text);
+            }
+            if (EmailEntry.Text != service.GetLoggedEmail())
+            {
+                ModificarEmail(EmailEntry.Text);
+            }
+            service.SaveChanges();
+            await DisplayAlert("Éxito", "Cambios realizados con éxito", "ACEPTAR");
+            
+        }
+
+        private bool IsValidoCorreo(string correo)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(correo);
+                return addr.Address == correo;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
