@@ -1,4 +1,5 @@
-﻿using SmartTrade.Entities;
+﻿using Acr.UserDialogs;
+using SmartTrade.Entities;
 using SmartTrade.Logica.Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,14 @@ namespace SmartTrade.Views
         {
             InitializeComponent();
             this.service = STService.Instance;
-            MostrarPedidos();
+        }
+
+        override async protected void OnAppearing()
+        {
+            base.OnAppearing();
+            UserDialogs.Instance.ShowLoading("Cargando pedidos...");
+            await MostrarPedidos();
+            UserDialogs.Instance.HideLoading();
         }
 
         private void BtnAtras_click(object sender, EventArgs e)
