@@ -2,46 +2,45 @@ using SmartTrade.Entities;
 using SmartTrade.Logica.Services;
 using SmartTrade.Persistencia.DataAccess;
 using SmartTrade.Views;
+using SmartTrade.Logica.Estado;
 
 namespace SmartTrade.Tests
 { 
     public class Tests
     {
-        STService service = new STService(new STDAL(new SupabaseContext()));
-        private Usuario usuario;
-        private Perfil perfil;
-
-        string contraseñaPrevia;
-        string emailPrevio;
+        Pedido pedido;
+        IEstadoPedido estadoPreparacion;
+        IEstadoPedido estadoEnviado;
+        IEstadoPedido estadoEntregado;
 
         [SetUp]
-        public async Task Setup()
+        public void Setup()
         {
-                this.usuario = await service.GetUsuarioById("usuariotest");
-                if (usuario == null) Assert.Fail("No se pudo encontrar al usuario con el nick proporcionado");
-                this.contraseñaPrevia = this.usuario.Password;
-                this.emailPrevio = this.usuario.Email;
-                
-                perfil = new Perfil();
+            pedido = new Pedido();
+            estadoPreparacion = new EstadoEnPreparacion(pedido);
+            estadoEnviado = new EstadoEnviado(pedido);
+            estadoEntregado = new EstadoEntregado(pedido);
         }
 
-        [TestCase("nuevaContraseña", "nuevoEmail")]
-        public async Task TestCambiarUsuario(string contraseñaEsperada, string emailEsperado)
+        [TestCase]
+        public void TestCambiarEstadoPreparacion()
         {
-            if (contraseñaEsperada == contraseñaPrevia || emailEsperado == emailPrevio)
-            {
-                Assert.Fail("¡La contraseña esperada y la contraseña previa son iguales!");
-            }
+            pedido.CambiarEstado(estadoPreparacion);
+            Assert.That(pedido.Estado, Is.EqualTo("Pedido en preparación"));
+        }
 
-            perfil.ModificarContraseña(contraseñaEsperada);
-            perfil.ModificarEmail(emailEsperado);
+        [TestCase]
+        public void TestCambiarEstadoEnviado()
+        {
+            pedido.CambiarEstado(estadoEnviado);
+            Assert.That(pedido.Estado, Is.EqualTo("Pedido enviado"));
+        }
 
-            service.SaveChanges();
-
-            usuario = await service.GetUsuarioById("usuariotest");
-
-            Assert.Equals(contraseñaEsperada, usuario.Password);
-            Assert.Equals(emailEsperado, usuario.Email);
+        [TestCase]
+        public void TestCambiarEstadoEntregado()
+        {
+            pedido.CambiarEstado(estadoEntregado);
+            Assert.That(pedido.Estado, Is.EqualTo("Pedido entregado"));
         }
     }
 }

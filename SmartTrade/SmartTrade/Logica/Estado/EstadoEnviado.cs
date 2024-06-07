@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SmartTrade.Logica.Estado
 {
-    internal class EstadoEnviado : IEstadoPedido
+    public class EstadoEnviado : IEstadoPedido
     {
         Pedido pedido;
         public EstadoEnviado(Pedido p)
