@@ -163,18 +163,26 @@ namespace SmartTrade.Views
             Navigation.PopAsync();
         }
 
-        private void BtnCarrito_click(object sender, EventArgs e)
+        private async void BtnCarrito_click(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Carrito());
+            if (service.GetUsuarioLogueado() == null) { await DisplayAlert("Error", "¡Necesitas iniciar sesión para realizar cualquier acción!", "ACEPTAR"); return; }
+
+            await Navigation.PushAsync(new Carrito());
         }
 
-        private void BtnPerfil_click(object sender, EventArgs e)
+        private async void BtnPerfil_click(object sender, EventArgs e)
         {
-            //TODO
+            if (service.GetUsuarioLogueado() == null) { await DisplayAlert("Error", "¡Necesitas iniciar sesión para realizar cualquier acción!", "ACEPTAR"); return; }
+
+
             Console.WriteLine("Perfil");
+            Perfil perfil = new Perfil();
+            await Navigation.PushAsync(perfil);
         }
         private async void BtnAgregarGuardarMasTarde_clickAsync(object sender, EventArgs e)
         {
+            if(service.GetUsuarioLogueado() == null) { await DisplayAlert("Error", "¡Necesitas iniciar sesión para realizar cualquier acción!", "ACEPTAR"); return; }
+            
             bool estaEnLista = await service.ProductoEnGuardarMasTarde(productoVista);
             if (estaEnLista)
             {
@@ -194,6 +202,8 @@ namespace SmartTrade.Views
         
         private async void BtnAgregarCarrito_clickAsync(object sender, EventArgs e)
         {
+            if (service.GetUsuarioLogueado() == null) { await DisplayAlert("Error", "¡Necesitas iniciar sesión para realizar cualquier acción!", "ACEPTAR"); return; }
+
             if (await service.ProductoEnGuardarMasTarde(productoVista)) await service.EliminarProductoGuardarMasTarde(productoVista);
             ItemCarrito item = new ItemCarrito(productoVendedor_seleccionado.Id, 1, service.GetUsuarioLogueado(), tallaSeleccionada);
             var confirmacion = await DisplayAlert("Confirmación", "¿Desea agregar este producto al carrito?", "SI", "NO");
@@ -206,19 +216,19 @@ namespace SmartTrade.Views
         }
         private void BtnModelo3d_click(object sender, EventArgs e)
         {
-            //TODO
             Console.WriteLine("Modelo 3D");
         }
 
         private void BtnVerComentarios_click(object sender, EventArgs e)
         {
-            //TODO
             Console.WriteLine("Ver Comentarios");
         }
 
 
         private async void BtnDeseos_ClickedAsync(object sender, EventArgs e)
         {
+            if (service.GetUsuarioLogueado() == null) { await DisplayAlert("Error", "¡Necesitas iniciar sesión para realizar cualquier acción!", "ACEPTAR"); return; }
+
             bool estaEnLista = await service.ProductoEnListaDeseos(service.GetUsuarioLogueado(), productoVendedor_seleccionado);
             if (!estaEnLista) 
             {

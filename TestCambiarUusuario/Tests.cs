@@ -10,7 +10,7 @@ namespace SmartTrade.Tests
     {
         Pedido pedido;
         IEstadoPedido estadoPreparacion;
-        IEstadoPedido estadoEnviado;
+        IEstadoPedido estadoEnviado;        
         IEstadoPedido estadoEntregado;
 
         [SetUp]
