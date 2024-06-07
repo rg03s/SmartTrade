@@ -24,6 +24,7 @@ namespace SmartTrade.Views
             InitializeComponent();
             this.service = STService.Instance;
             miPedido = pedido;
+            service.ActualizarEstadoPedido(miPedido);
         }
 
         private void BtnAtras_click(object sender, EventArgs e)

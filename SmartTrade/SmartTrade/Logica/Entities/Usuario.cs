@@ -11,6 +11,7 @@ namespace SmartTrade.Entities
     {
         public Usuario() { 
             AlertasProductosSinStock = new List<Producto>();
+            AlertasCambioEstadoPedido = new List<Pedido>();
         }
         public Usuario(string nickname, string nombre, string password, string direccion, string email, DateTime fecha_nac, Boolean isVendedor)
         {

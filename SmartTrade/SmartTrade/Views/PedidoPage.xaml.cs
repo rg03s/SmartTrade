@@ -624,7 +624,7 @@ namespace SmartTrade.Views
 
             string Direccion = $"{calleEntry.Text}, {numeroEntry.Text}, {ciudadEntry.Text}";
               
-            Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion, numeroTarjeta, puntosTotalesPedido, "En preparación");
+            Pedido pedidoNuevo = new Pedido(DateTime.Now, precioTotalPedido, ProductosVendedor, service.GetLoggedNickname(), Direccion, numeroTarjeta, puntosTotalesPedido);
                 if (pagoTarjeta)
                 {
                     pedidoNuevo.EstablecerEstrategiaPago(new PagoTarjeta(numeroTarjeta, fechaCad.Date, codigoSeguridad));
