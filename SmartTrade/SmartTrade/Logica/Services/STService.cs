@@ -654,12 +654,12 @@ namespace SmartTrade.Logica.Services
                 DateTime fechaActual = DateTime.Now;
                 DateTime fechaPedido = pedido.Fecha;
                 TimeSpan diferencia = fechaActual - fechaPedido;
-                if (diferencia.Days == 1)
+                if (diferencia.Days >= 1 && diferencia.Days < 5)
                 {
                     pedido.Estado = "Enviado";
                     dal.Update<Pedido>(pedido);
                 }
-                else if (diferencia.Days == 5)
+                else if (diferencia.Days >= 5)
                 {
                     pedido.Estado = "Entregado";
                     dal.Update<Pedido>(pedido);
