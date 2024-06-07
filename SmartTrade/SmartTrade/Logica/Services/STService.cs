@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using Postgrest;
 using SmartTrade.Entities;
+using SmartTrade.Logica.Estado;
 using SmartTrade.Persistencia.DataAccess;
 using SmartTrade.Views;
 using Xamarin.Essentials;
@@ -650,18 +651,18 @@ namespace SmartTrade.Logica.Services
         {
             try
             {
-                pedido.Estado = "En preparación";
+                pedido.CambiarEstado(new EstadoEnPreparacion(pedido));
                 DateTime fechaActual = DateTime.Now;
                 DateTime fechaPedido = pedido.Fecha;
                 TimeSpan diferencia = fechaActual - fechaPedido;
                 if (diferencia.Days >= 1 && diferencia.Days < 5)
                 {
-                    pedido.Estado = "Enviado";
+                    pedido.CambiarEstado(new EstadoEnviado(pedido));
                     dal.Update<Pedido>(pedido);
                 }
                 else if (diferencia.Days >= 5)
                 {
-                    pedido.Estado = "Entregado";
+                    pedido.CambiarEstado(new EstadoEntregado(pedido));
                     dal.Update<Pedido>(pedido);
                 }
             }
